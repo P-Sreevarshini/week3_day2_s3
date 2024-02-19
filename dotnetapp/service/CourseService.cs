@@ -11,6 +11,5 @@ namespace dotnetapp.Service
         Task CreateCourse(Course course);
         Task UpdateCourse(Course course);
         Task DeleteCourse(Course course);
-       // bool CourseExists(int id);
     }
 }
