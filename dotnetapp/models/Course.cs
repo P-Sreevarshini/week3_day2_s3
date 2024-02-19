@@ -1,6 +1,13 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace dotnetapp.Models
+{
 public class Course
 {
-    [key]
+    [Key]
     public int CourseID { get; set; }
     public string CourseName { get; set; }
     public string Description { get; set; }
@@ -9,4 +16,5 @@ public class Course
     
     // Navigation property for related enquiries
     public ICollection<Enquiry> Enquiries { get; set; }
+}
 }
