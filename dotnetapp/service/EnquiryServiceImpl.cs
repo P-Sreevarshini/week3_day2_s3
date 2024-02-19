@@ -1,14 +1,13 @@
 using dotnetapp.Models;
 using dotnetapp.Repository;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace dotnetapp.Services
+namespace dotnetapp.Service
 {
     public class EnquiryServiceImpl : EnquiryService
     {
-        private readonly IEnquiryRepository _enquiryRepository;
+        private readonly EnquiryRepo _enquiryRepository;
 
         public EnquiryServiceImpl(EnquiryRepo enquiryRepository)
         {
@@ -35,9 +34,9 @@ namespace dotnetapp.Services
             await _enquiryRepository.UpdateEnquiry(enquiry);
         }
 
-        public async Task DeleteEnquiry(int EnquiryID)
+        public async Task DeleteEnquiry(int id)
         {
-            await _enquiryRepository.DeleteEnquiry(EnquiryID);
+            await _enquiryRepository.DeleteEnquiry(id);
         }
     }
 }

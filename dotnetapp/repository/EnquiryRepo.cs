@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace dotnetapp.Repository
 {
-    public class EnquiryRepository
+    public class EnquiryRepo
     {
         private readonly ApplicationDbContext _context;
 
-        public EnquiryRepository(ApplicationDbContext context)
+        public EnquiryRepo(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -19,9 +19,9 @@ namespace dotnetapp.Repository
             return await _context.Enquiries.ToListAsync();
         }
 
-        public async Task<Enquiry> GetEnquiryById(int EnquiryID)
+        public async Task<Enquiry> GetEnquiryById(int id)
         {
-            return await _context.Enquiries.FindAsync(EnquiryID);
+            return await _context.Enquiries.FindAsync(id);
         }
 
         public async Task CreateEnquiry(Enquiry enquiry)
