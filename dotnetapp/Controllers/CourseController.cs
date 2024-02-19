@@ -17,6 +17,7 @@ namespace dotnetapp.Controllers
         {
             _courseService = courseService;
         }
+        
 
         [HttpGet]
         public async Task<IActionResult> GetAllCourses()
@@ -44,7 +45,7 @@ namespace dotnetapp.Controllers
             return CreatedAtAction(nameof(GetCourseById), new { id = course.CourseID }, course);
         }
 
-        [HttpPut("{CourseID}")]
+[HttpPut("{CourseID}")]
 public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
 {
     if (CourseID != course.CourseID)
@@ -60,18 +61,23 @@ public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
 
     try
     {
-        await _courseService.UpdateCourse(course);
+        // Update the existing course with the properties of the provided course
+        existingCourse.CourseName = course.CourseName;
+        existingCourse.Description = course.Description;
+        existingCourse.Duration = course.Duration;
+        existingCourse.Amount = course.Amount;
+
+        await _courseService.UpdateCourse(existingCourse);
     }
     catch (Exception)
     {
         return StatusCode(500);
     }
 
-    // Get the updated course
-    var updatedCourse = await _courseService.GetCourseById(CourseID);
-
-    return Ok(updatedCourse);
+    // Return the updated course
+    return Ok(existingCourse);
 }
+
 
 
         [HttpDelete("{id}")]
