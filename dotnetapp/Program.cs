@@ -54,6 +54,8 @@ builder.Services.AddScoped<CourseService, CourseServiceImpl>();
 builder.Services.AddScoped<CourseRepo>();
 builder.Services.AddScoped<EnquiryService, EnquiryServiceImpl>(); 
 builder.Services.AddScoped<EnquiryRepo>();
+builder.Services.AddScoped<PaymentService, PaymentServiceImpl>(); 
+builder.Services.AddScoped<PaymentRepo>();
 
 var app = builder.Build();
 
