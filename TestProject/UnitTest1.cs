@@ -424,6 +424,47 @@ public async Task Backend_TestDeleteCourse()
     Assert.AreEqual(HttpStatusCode.NotFound, verifyDeleteResponse.StatusCode);
 }
 
+ [Test] //......check for Enquiry resort authorized to Customer
+    public async Task Backend_TestPostEnquiry()
+    {
+        string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Customer\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
+         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+        
+        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string adminAuthToken = responseMap.token;
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
+
+        var enquiry = new
+        {
+            EnquiryDate = DateTime.Now,
+            Title = "Test Enquiry",
+            Description = "Test Description",
+            EmailID = "test@example.com",
+            EnquiryType = "General",
+            CourseID = 1, // Assuming the ID of the related course
+            UserId = 1 // Assuming the ID of the related user
+        };
+
+
+        string requestBody = JsonConvert.SerializeObject(enquiry);
+        HttpResponseMessage response = await _httpClient.PostAsync("/api/Enquiry", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+        
+        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+    }
+
 
 
 
