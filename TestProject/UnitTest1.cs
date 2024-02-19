@@ -341,6 +341,42 @@ public async Task Backend_TestPutCourse()
         
         Assert.AreEqual(HttpStatusCode.OK, getBookingsResponse.StatusCode);
     }
+[Test] // Check GET course by CourseID
+public async Task Backend_TestGetCourseByCourseID()
+{
+    // Register a customer user
+    string uniqueId = Guid.NewGuid().ToString();
+    string uniqueUsername = $"abcd_{uniqueId}";
+    string uniquePassword = $"abcdA{uniqueId}@123";
+    string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+    string registerRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registerRequestBody, Encoding.UTF8, "application/json"));
+    Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+    // Log in as Customer
+    string customerLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(customerLoginRequestBody, Encoding.UTF8, "application/json"));
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+    string responseString = await loginResponse.Content.ReadAsStringAsync();
+    dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+    string customerAuthToken = responseMap.token;
+
+    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", customerAuthToken);
+
+    // Make a GET request to get a course by CourseID
+    int courseId = 1; // Assuming CourseID 1 is available
+    HttpResponseMessage getCourseByCourseIdResponse = await _httpClient.GetAsync($"/api/Course/{courseId}");
+    Assert.AreEqual(HttpStatusCode.OK, getCourseByCourseIdResponse.StatusCode);
+
+    // Deserialize the response content as a course object
+    string responseBody = await getCourseByCourseIdResponse.Content.ReadAsStringAsync();
+    var course = JsonConvert.DeserializeObject<Course>(responseBody);
+
+    // Assert that the returned course is not null
+    Assert.IsNotNull(course);
+}
 
 
 
