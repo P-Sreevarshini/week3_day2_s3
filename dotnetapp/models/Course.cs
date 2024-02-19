@@ -15,6 +15,7 @@ public class Course
     public int Amount { get; set; }
     
     // Navigation property for related enquiries
-    public ICollection<Enquiry> Enquiries { get; set; }
+    [JsonIgnore]
+    public ICollection<Enquiry>? Enquiries { get; set; }
 }
 }
