@@ -454,7 +454,7 @@ public async Task Backend_TestDeleteCourse()
             Description = "Test Description",
             EmailID = "test@example.com",
             EnquiryType = "General",
-            CourseID = 1, // Assuming the ID of the related course
+            CourseID = 3, // Assuming the ID of the related course
             UserId = 1 // Assuming the ID of the related user
         };
 
@@ -466,6 +466,58 @@ public async Task Backend_TestDeleteCourse()
         Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
     }
 
+[Test] // Check for DELETE Enquiry
+public async Task Backend_TestDeleteEnquiry()
+{
+            int courseIdToDelete = 1; // Provide the course ID to delete
+
+       string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Customer\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
+         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+        
+        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string adminAuthToken = responseMap.token;
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
+
+        var enquiry = new
+        {
+            EnquiryDate = DateTime.Now,
+            Title = "Test Enquiry",
+            Description = "Test Description",
+            EmailID = "test@example.com",
+            EnquiryType = "General",
+            CourseID = 3, // Assuming the ID of the related course
+            UserId = 1 // Assuming the ID of the related user
+        };
+
+    Console.WriteLine(enquiry);
+        string requestBody = JsonConvert.SerializeObject(enquiry);
+        HttpResponseMessage response = await _httpClient.PostAsync("/api/Enquiry", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            Console.WriteLine(enquiry);
+
+        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+
+    // Act: Delete the course
+    var deleteCourseResponse = await _httpClient.DeleteAsync($"/api/Enquiry/{courseIdToDelete}");
+    // Assert
+    Assert.AreEqual(HttpStatusCode.NotFound, deleteCourseResponse.StatusCode);
+
+    // Verify that the course is deleted
+    var verifyDeleteResponse = await _httpClient.GetAsync($"/api/Enquiry/{courseIdToDelete}");
+    Assert.AreEqual(HttpStatusCode.NotFound, verifyDeleteResponse.StatusCode);
+}
 
 
 

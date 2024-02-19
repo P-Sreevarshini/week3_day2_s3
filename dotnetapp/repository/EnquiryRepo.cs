@@ -32,6 +32,13 @@ namespace dotnetapp.Repository
         {
             _context.Enquiries.Add(enquiry);
             await _context.SaveChangesAsync();
+              await _context.Entry(enquiry)
+        .Reference(e => e.Course)
+        .LoadAsync();
+
+    await _context.Entry(enquiry)
+        .Reference(e => e.User)
+        .LoadAsync();
         }
 
         public async Task UpdateEnquiry(Enquiry enquiry)
