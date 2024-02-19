@@ -83,10 +83,10 @@ public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
 
 
         [Authorize(Roles="Admin")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(int id)
+        [HttpDelete("{CourseID}")]
+        public async Task<IActionResult> DeleteCourse(int CourseID)
         {
-            var course = await _courseService.GetCourseById(id);
+            var course = await _courseService.GetCourseById(CourseID);
             if (course == null)
             {
                 return NotFound();
