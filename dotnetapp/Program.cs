@@ -28,8 +28,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+// builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
+builder.services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
 
 // Add authentication services
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -49,13 +51,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Register services and repositories
 builder.Services.AddScoped<UserService, UserServiceImpl>(); 
-builder.Services.AddScoped<IUserRepo,UserRepo>();
-// builder.Services.AddScoped<ResortService, ResortServiceImpl>();
-// builder.Services.AddScoped<ResortRepo>();
-// builder.Services.AddScoped<ReviewService, ReviewServiceImpl>();
-// builder.Services.AddScoped<ReviewRepo>();
-// builder.Services.AddScoped<BookingService, BookingServiceImpl>();
-// builder.Services.AddScoped<IBookingRepo, BookingRepo>();
+builder.Services.AddScoped<UserRepo>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
