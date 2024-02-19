@@ -642,7 +642,7 @@ public async Task Backend_TestPostPayment()
 
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", customerAuthToken);
 
-        // Make a GET request to get bookings by  ID
+        // Make a GET request to get payment by  ID
         HttpResponseMessage getBookingByUserIdResponse = await _httpClient.GetAsync($"/api/payment/{responseMap.userId}"); // Assuming bookingId is available in responseMap
         Assert.AreEqual(HttpStatusCode.OK, getBookingByUserIdResponse.StatusCode);
 
