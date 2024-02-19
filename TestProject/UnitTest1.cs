@@ -209,6 +209,46 @@ public class dotnetappApplicationTests
 
         Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
     }
+    
+    [Test] //......check for POST resort authorized to Admin
+    public async Task Backend_TestPostResort()
+    {
+        string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
+         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+        
+        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string adminAuthToken = responseMap.token;
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
+
+        var resort = new
+        {
+            ResortName = "Test Resort",
+            ResortImageUrl = "test-image-url",
+            ResortLocation = "Test Location",
+            ResortAvailableStatus = "Available",
+            Price = 100,
+            Capacity = 50,
+            Description = "Test Description"
+        };
+
+        string requestBody = JsonConvert.SerializeObject(resort);
+        HttpResponseMessage response = await _httpClient.PostAsync("/api/resort", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+        
+        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+    }
 
 
     [TearDown]
