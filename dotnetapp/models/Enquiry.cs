@@ -20,5 +20,9 @@ public class Enquiry
     // Navigation property for the related course
     [ForeignKey(nameof(CourseID))]
     public Course Course { get; set; }
+     public int CourseID { get; set; }
+    // Navigation property for the related course
+    [ForeignKey(nameof(UserId))]
+    public User User { get; set; }
 }
 }
