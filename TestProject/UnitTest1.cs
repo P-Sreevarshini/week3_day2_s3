@@ -618,6 +618,41 @@ public async Task Backend_TestPostPayment()
     // Assert the response status code
     Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 }
+  [Test] // .............Check GET payment by Id
+    public async Task Backend_TestGetPaymentId()
+    {
+        // Register a customer user
+        string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+        string registerRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registerRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+        // Log in as Customer
+        string customerLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(customerLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string customerAuthToken = responseMap.token;
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", customerAuthToken);
+
+        // Make a GET request to get bookings by  ID
+        HttpResponseMessage getBookingByUserIdResponse = await _httpClient.GetAsync($"/api/payment/{responseMap.userId}"); // Assuming bookingId is available in responseMap
+        Assert.AreEqual(HttpStatusCode.OK, getBookingByUserIdResponse.StatusCode);
+
+        // Deserialize the response content as a list of bookings
+        string responseBody = await getBookingByUserIdResponse.Content.ReadAsStringAsync();
+        var bookings = JsonConvert.DeserializeObject<List<Booking>>(responseBody);
+
+        // Assert that the returned bookings list is not null and contains at least one booking
+        Assert.IsNotNull(bookings);
+    }
 
     [TearDown]
     public void TearDown()
