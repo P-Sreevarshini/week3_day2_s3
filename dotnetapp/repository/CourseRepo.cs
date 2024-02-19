@@ -9,7 +9,7 @@ namespace dotnetapp.Repository
     {
         private readonly ApplicationDbContext _context;
 
-        public CourseRepository(ApplicationDbContext context)
+        public CourseRepo(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -42,6 +42,7 @@ namespace dotnetapp.Repository
             await _context.SaveChangesAsync();
         }
 
+        // You can uncomment this method if you need it
         // public bool CourseExists(int id)
         // {
         //     return _context.Courses.Any(e => e.CourseID == id);

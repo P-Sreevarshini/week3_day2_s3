@@ -19,22 +19,23 @@ namespace dotnetapp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllCourses()
+        public async Task<IActionResult> GetAllCourses()
         {
-            var courses = _courseService.GetAllCourses();
+            var courses = await _courseService.GetAllCourses();
             return Ok(courses);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCourseById(int id)
+        public async Task<IActionResult> GetCourseById(int id)
         {
-            var course = _courseService.GetCourseById(id);
+            var course = await _courseService.GetCourseById(id);
             if (course == null)
             {
                 return NotFound();
             }
             return Ok(course);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateCourse(Course course)
@@ -57,14 +58,8 @@ namespace dotnetapp.Controllers
             }
             catch (Exception)
             {
-                if (!_courseService.CourseExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                // Handle exceptions appropriately
+                return StatusCode(500);
             }
 
             return NoContent();
@@ -73,7 +68,7 @@ namespace dotnetapp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            var course = _courseService.GetCourseById(id);
+            var course = await _courseService.GetCourseById(id);
             if (course == null)
             {
                 return NotFound();

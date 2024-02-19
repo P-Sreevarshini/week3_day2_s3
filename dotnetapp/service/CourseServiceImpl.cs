@@ -9,20 +9,20 @@ namespace dotnetapp.Service
     {
         private readonly CourseRepo _courseRepository;
 
-        public CourseService(CourseRepo courseRepository)
+        public CourseServiceImpl(CourseRepo courseRepository)
         {
             _courseRepository = courseRepository;
         }
-
-        public IEnumerable<Course> GetAllCourses()
+        public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            return _courseRepository.GetAllCourses();
+            return await _courseRepository.GetAllCourses();
         }
 
-        public Course GetCourseById(int id)
+        public async Task<Course> GetCourseById(int id)
         {
-            return _courseRepository.GetCourseById(id);
+            return await _courseRepository.GetCourseById(id);
         }
+
 
         public async Task CreateCourse(Course course)
         {
@@ -38,10 +38,5 @@ namespace dotnetapp.Service
         {
             await _courseRepository.DeleteCourse(course);
         }
-
-        // public bool CourseExists(int id)
-        // {
-        //     return _courseRepository.CourseExists(id);
-        // }
     }
 }
