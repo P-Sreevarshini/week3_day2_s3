@@ -571,52 +571,54 @@ public async Task Backend_TestDeleteEnquiry()
         
         Assert.AreEqual(HttpStatusCode.OK, getBookingsResponse.StatusCode);
     }
-[Test] //......check for Enquiry resort authorized to Customer
-    public async Task Backend_TestPostPayment()
+[Test] // Check for Payment creation authorized to Customer
+public async Task Backend_TestPostPayment()
+{
+    // Generate unique user credentials
+    string uniqueId = Guid.NewGuid().ToString();
+    string uniqueUsername = $"abcd_{uniqueId}";
+    string uniquePassword = $"abcdA{uniqueId}@123";
+    string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+    // Register a new customer
+    string registerRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Customer\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registerRequestBody, Encoding.UTF8, "application/json"));
+    Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+    // Log in as the registered customer
+    string loginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+    // Extract authentication token
+    string responseString = await loginResponse.Content.ReadAsStringAsync();
+    dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+    string authToken = responseMap.token;
+
+    // Set authentication token in the HTTP client headers
+    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authToken);
+
+    // Define payment details
+    var payment = new
     {
-        string uniqueId = Guid.NewGuid().ToString();
-        string uniqueUsername = $"abcd_{uniqueId}";
-        string uniquePassword = $"abcdA{uniqueId}@123";
-        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+        CourseID = 3,
+        UserId = 1,
+        AmountPaid = 0,
+        PaymentDate = "2024-02-19T12:53:59.441Z",
+        PaymentMethod = "cash",
+        TransactionID = "abc"
+    };
 
-         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Customer\"}}";
-        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
-         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+    // Convert payment object to JSON string
+    string requestBody = JsonConvert.SerializeObject(payment);
 
-        
-        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
-        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
-        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+    // Send POST request to create payment
+    HttpResponseMessage response = await _httpClient.PostAsync("/api/Payment", new StringContent(requestBody, Encoding.UTF8, "application/json"));
 
-        string responseString = await loginResponse.Content.ReadAsStringAsync();
-        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
-        string adminAuthToken = responseMap.token;
+    // Assert the response status code
+    Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+}
 
-        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
-
-        var payment = new
-        {
-           
-            EnquiryDate: "2024-02-19T12:53:59.441Z",
-            Title: "Test Enquiry",
-            Description: "Test Description",
-            EmailID: "test@example.com",
-            EnquiryType: "General",
-            CourseID: 3,
-            UserId: 1,
-            AmountPaid: 0,
-            PaymentDate: "2024-02-19T12:53:59.441Z",
-            PaymentMethod: "cash",
-            TransactionID: "abc"
-            }
-
-
-        string requestBody = JsonConvert.SerializeObject(payment);
-        HttpResponseMessage response = await _httpClient.PostAsync("/api/Payment", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-            Console.WriteLine(payment);
-
-        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-    }
     [TearDown]
     public void TearDown()
     {

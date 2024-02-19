@@ -48,31 +48,31 @@ namespace dotnetapp.Controllers
             return CreatedAtAction(nameof(GetPaymentById), new { id = payment.PaymentID }, payment);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePayment(int id, Payment payment)
-        {
-            if (id != payment.PaymentID)
-            {
-                return BadRequest();
-            }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> UpdatePayment(int id, Payment payment)
+        // {
+        //     if (id != payment.PaymentID)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            var existingPayment = await _paymentService.GetPaymentById(id);
-            if (existingPayment == null)
-            {
-                return NotFound();
-            }
+        //     var existingPayment = await _paymentService.GetPaymentById(id);
+        //     if (existingPayment == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            try
-            {
-                await _paymentService.UpdatePayment(payment);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
+        //     try
+        //     {
+        //         await _paymentService.UpdatePayment(payment);
+        //     }
+        //     catch (Exception)
+        //     {
+        //         return StatusCode(500);
+        //     }
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         // [HttpDelete("{id}")]
         // public async Task<IActionResult> DeletePayment(int id)
