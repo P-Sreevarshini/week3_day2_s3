@@ -40,12 +40,13 @@ namespace dotnetapp.Controllers
         }
 
         [Authorize(Roles="Admin")]
-        [HttpPost]
+       [HttpPost]
         public async Task<IActionResult> CreateCourse(Course course)
         {
             await _courseService.CreateCourse(course);
             return CreatedAtAction(nameof(GetCourseById), new { id = course.CourseID }, course);
         }
+
 [Authorize(Roles="Admin")]
 [HttpPut("{CourseID}")]
 public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
