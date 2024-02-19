@@ -644,16 +644,17 @@ public async Task Backend_TestGetPaymentByPaymentId()
     // Set authentication token in the HTTP client headers
     _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", customerAuthToken);
 
-    // Make a GET request to get a payment by its ID (assuming payment ID is available in responseMap)
-    HttpResponseMessage getPaymentByIdResponse = await _httpClient.GetAsync($"/api/payment/{paymentId}");
-    Assert.AreEqual(HttpStatusCode.OK, getPaymentByIdResponse.StatusCode);
+     // Make a GET request to get a course by PaymentId
+    HttpResponseMessage getPaymentByPaymentIdResponse = await _httpClient.GetAsync($"/api/Course/{responseMap.paymentId}");
+    Assert.AreEqual(HttpStatusCode.OK, getPaymentByPaymentIdResponse.StatusCode);
 
-    // Deserialize the response content as a payment object
-    string responseBody = await getPaymentByIdResponse.Content.ReadAsStringAsync();
-    var payment = JsonConvert.DeserializeObject<Payment>(responseBody);
+    // Deserialize the response content as a list of Course objects
+    string responseBody = await getPaymentByPaymentIdResponse.Content.ReadAsStringAsync();
+    var payments = JsonConvert.DeserializeObject<List<Course>>(responseBody);
 
-    // Assert that the returned payment is not null
-    Assert.IsNotNull(payment);
+    // Assert that the returned list of payments is not null and contains at least one payment
+    Assert.IsNotNull(payments);
+    Assert.IsTrue(payments.Count > 0);
 }
 
 
