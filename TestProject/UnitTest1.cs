@@ -211,7 +211,7 @@ public class dotnetappApplicationTests
     }
 
     [Test] //......check for POST resort authorized to Admin
-    public async Task Backend_TestPostResort()
+    public async Task Backend_TestPostCourse()
     {
         string uniqueId = Guid.NewGuid().ToString();
         string uniqueUsername = $"abcd_{uniqueId}";
@@ -233,7 +233,7 @@ public class dotnetappApplicationTests
 
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
 
-        var resort = new
+        var course = new
         {
             CourseName = "Test course",
             Description = "Test Description",
@@ -241,11 +241,85 @@ public class dotnetappApplicationTests
             Amount = 1000
         };
 
-        string requestBody = JsonConvert.SerializeObject(resort);
-        HttpResponseMessage response = await _httpClient.PostAsync("/api/resort", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+        string requestBody = JsonConvert.SerializeObject(course);
+        HttpResponseMessage response = await _httpClient.PostAsync("/api/Course", new StringContent(requestBody, Encoding.UTF8, "application/json"));
         
         Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
     }
+     [Test]
+    public async Task Backend_TestPutCourse()
+{
+    // Register Admin user
+    string uniqueId = Guid.NewGuid().ToString();
+    string uniqueUsername = $"abcd_{uniqueId}";
+    string uniquePassword = $"abcdA{uniqueId}@123";
+    string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+    string registerRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registerRequestBody, Encoding.UTF8, "application/json"));
+    Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+    // Log in as Admin
+    string adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+    string responseString = await loginResponse.Content.ReadAsStringAsync();
+    dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+    string adminAuthToken = responseMap.token;
+
+    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
+
+    // Add a new course
+    var Course = new
+    {
+        CourseName = "Test course",
+        Description = "Test Description",
+        Duration = "Test Duration",
+        Amount = 1000
+    };
+
+    string requestBody = JsonConvert.SerializeObject(Course);
+    HttpResponseMessage addResortResponse = await _httpClient.PostAsync("/api/Course", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+    Assert.AreEqual(HttpStatusCode.Created, addResortResponse.StatusCode);
+
+    // Get the added course details
+    string addCourseResponseBody = await addResortResponse.Content.ReadAsStringAsync();
+    dynamic addResortResponseMap = JsonConvert.DeserializeObject(addResortResponseBody);
+
+    int? resortId = addResortResponseMap?.resortId;
+
+    if (resortId.HasValue)
+    {
+        var updatedResortDetails = new
+        {
+            ResortId = resortId, // Corrected variable name and added ResortId
+            ResortName = "Updated Resort Name",
+            ResortImageUrl = "updated-image-url",
+            ResortLocation = "Updated Location",
+            ResortAvailableStatus = "Updated Available Status",
+            Price = 200,
+            Capacity = 30,
+            Description = "Updated Description"
+        };
+
+        string updateResortRequestBody = JsonConvert.SerializeObject(updatedResortDetails);
+        HttpResponseMessage updateResortResponse = await _httpClient.PutAsync($"/api/resort/{resortId}", new StringContent(updateResortRequestBody, Encoding.UTF8, "application/json"));
+
+        // Assert that the resort is updated successfully
+        Assert.AreEqual(HttpStatusCode.OK, updateResortResponse.StatusCode);
+    }
+    else
+    {
+        // Log additional information for debugging
+        string responseContent = await addResortResponse.Content.ReadAsStringAsync();
+        Console.WriteLine($"Add Resort Response Content: {responseContent}");
+
+        Assert.Fail("Resort ID is null or not found in the response.");
+    }
+}
+
+
 
 
     [TearDown]
