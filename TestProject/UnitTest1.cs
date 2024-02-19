@@ -512,7 +512,7 @@ public async Task Backend_TestDeleteEnquiry()
     // Act: Delete the course
     var deleteCourseResponse = await _httpClient.DeleteAsync($"/api/Enquiry/{courseIdToDelete}");
     // Assert
-    Assert.AreEqual(HttpStatusCode.NotFound, deleteCourseResponse.StatusCode);
+    Assert.AreEqual(HttpStatusCode.NoContent, deleteCourseResponse.StatusCode);
 
     // Verify that the course is deleted
     var verifyDeleteResponse = await _httpClient.GetAsync($"/api/Enquiry/{courseIdToDelete}");
