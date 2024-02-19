@@ -4,6 +4,8 @@ using dotnetapp.Service;
 using dotnetapp.Repository;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dotnetapp.Controllers
 {
@@ -37,14 +39,14 @@ namespace dotnetapp.Controllers
             return Ok(course);
         }
 
-        [Authorize("Admin")]
+        [Authorize(Roles="Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateCourse(Course course)
         {
             await _courseService.CreateCourse(course);
             return CreatedAtAction(nameof(GetCourseById), new { id = course.CourseID }, course);
         }
-[Authorize("Admin")]
+[Authorize(Roles="Admin")]
 [HttpPut("{CourseID}")]
 public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
 {
@@ -79,7 +81,7 @@ public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
 }
 
 
-        [Authorize("Admin")]
+        [Authorize(Roles="Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
