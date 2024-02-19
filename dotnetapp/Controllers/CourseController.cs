@@ -44,26 +44,35 @@ namespace dotnetapp.Controllers
             return CreatedAtAction(nameof(GetCourseById), new { id = course.CourseID }, course);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(int id, Course course)
-        {
-            if (id != course.CourseID)
-            {
-                return BadRequest();
-            }
+        [HttpPut("{CourseID}")]
+public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
+{
+    if (CourseID != course.CourseID)
+    {
+        return BadRequest();
+    }
 
-            try
-            {
-                await _courseService.UpdateCourse(course);
-            }
-            catch (Exception)
-            {
-                // Handle exceptions appropriately
-                return StatusCode(500);
-            }
+    var existingCourse = await _courseService.GetCourseById(CourseID);
+    if (existingCourse == null)
+    {
+        return NotFound();
+    }
 
-            return NoContent();
-        }
+    try
+    {
+        await _courseService.UpdateCourse(course);
+    }
+    catch (Exception)
+    {
+        return StatusCode(500);
+    }
+
+    // Get the updated course
+    var updatedCourse = await _courseService.GetCourseById(CourseID);
+
+    return Ok(updatedCourse);
+}
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
