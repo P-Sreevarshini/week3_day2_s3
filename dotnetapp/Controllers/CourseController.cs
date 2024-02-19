@@ -17,7 +17,7 @@ namespace dotnetapp.Controllers
         {
             _courseService = courseService;
         }
-        
+
 
         [HttpGet]
         public async Task<IActionResult> GetAllCourses()
@@ -26,10 +26,10 @@ namespace dotnetapp.Controllers
             return Ok(courses);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCourseById(int id)
+        [HttpGet("{CourseId}")]
+        public async Task<IActionResult> GetCourseById(int CourseId)
         {
-            var course = await _courseService.GetCourseById(id);
+            var course = await _courseService.GetCourseById(CourseId);
             if (course == null)
             {
                 return NotFound();
@@ -37,14 +37,14 @@ namespace dotnetapp.Controllers
             return Ok(course);
         }
 
-
+        [Authorize("Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateCourse(Course course)
         {
             await _courseService.CreateCourse(course);
             return CreatedAtAction(nameof(GetCourseById), new { id = course.CourseID }, course);
         }
-
+[Authorize("Admin")]
 [HttpPut("{CourseID}")]
 public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
 {
@@ -79,7 +79,7 @@ public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
 }
 
 
-
+        [Authorize("Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
