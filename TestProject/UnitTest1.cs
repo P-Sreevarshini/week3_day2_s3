@@ -209,7 +209,7 @@ public class dotnetappApplicationTests
 
         Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
     }
-    
+
     [Test] //......check for POST resort authorized to Admin
     public async Task Backend_TestPostResort()
     {
@@ -235,13 +235,10 @@ public class dotnetappApplicationTests
 
         var resort = new
         {
-            ResortName = "Test Resort",
-            ResortImageUrl = "test-image-url",
-            ResortLocation = "Test Location",
-            ResortAvailableStatus = "Available",
-            Price = 100,
-            Capacity = 50,
-            Description = "Test Description"
+            CourseName = "Test course",
+            Description = "Test Description",
+            Duration = "Test Duration",
+            Amount = 1000
         };
 
         string requestBody = JsonConvert.SerializeObject(resort);
