@@ -14,13 +14,13 @@ public class Enquiry
     public string EmailID { get; set; }
     public string EnquiryType { get; set; }
     
-    // Foreign key for the related course
     public int CourseID { get; set; }
-    // Navigation property for the related course
     [ForeignKey(nameof(CourseID))]
     public Course? Course { get; set; }
+
+
     public long UserId { get; set; }
-    // Navigation property for the related course
+
     [ForeignKey(nameof(UserId))]
     public User? User { get; set; }
 }
