@@ -1,15 +1,15 @@
 using dotnetapp.Models;
-using dotnetapp.Repositories;
+using dotnetapp.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace dotnetapp.Services
+namespace dotnetapp.Service
 {
     public class CourseServiceImpl : CourseService
     {
-        private readonly ICourseRepo _courseRepository;
+        private readonly CourseRepo _courseRepository;
 
-        public CourseService(ICourseRepo courseRepository)
+        public CourseService(CourseRepo courseRepository)
         {
             _courseRepository = courseRepository;
         }

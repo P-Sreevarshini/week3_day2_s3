@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace dotnetapp.Repositories
+namespace dotnetapp.Repository
 {
-    public class CourseRepo : ICourseRepo
+    public class CourseRepo
     {
         private readonly ApplicationDbContext _context;
 

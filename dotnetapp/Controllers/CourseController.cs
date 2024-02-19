@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
-using dotnetapp.Services;
+using dotnetapp.Service;
+using dotnetapp.Repository;
 using System;
 using System.Threading.Tasks;
 
@@ -10,9 +11,9 @@ namespace dotnetapp.Controllers
     [Route("api/[controller]")]
     public class CourseController : ControllerBase
     {
-        private readonly ICourseService _courseService;
+        private readonly CourseService _courseService;
 
-        public CourseController(ICourseService courseService)
+        public CourseController(CourseService courseService)
         {
             _courseService = courseService;
         }

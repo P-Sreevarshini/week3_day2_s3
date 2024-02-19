@@ -2,7 +2,7 @@ using dotnetapp.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace dotnetapp.Services
+namespace dotnetapp.Service
 {
     public interface CourseService
     {
