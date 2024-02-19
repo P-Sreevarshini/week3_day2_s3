@@ -49,7 +49,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Register services and repositories
 builder.Services.AddScoped<UserService, UserServiceImpl>(); 
-builder.Services.AddScoped<UserRepo>();
+builder.Services.AddScoped<IUserRepo,UserRepo>();
 // builder.Services.AddScoped<ResortService, ResortServiceImpl>();
 // builder.Services.AddScoped<ResortRepo>();
 // builder.Services.AddScoped<ReviewService, ReviewServiceImpl>();
