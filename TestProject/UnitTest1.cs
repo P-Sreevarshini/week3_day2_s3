@@ -316,7 +316,7 @@ public async Task Backend_TestPutCourse()
     }
 }
  [Test] //..........Check for GET course 
-    public async Task Backend_TestGetAllBooking()
+    public async Task Backend_TestGetAllCourse()
     {
         string uniqueId = Guid.NewGuid().ToString();
         string uniqueUsername = $"abcd_{uniqueId}";
@@ -337,7 +337,7 @@ public async Task Backend_TestPutCourse()
 
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
 
-        HttpResponseMessage getBookingsResponse = await _httpClient.GetAsync("/api/booking");
+        HttpResponseMessage getBookingsResponse = await _httpClient.GetAsync("/api/Course");
         
         Assert.AreEqual(HttpStatusCode.OK, getBookingsResponse.StatusCode);
     }
