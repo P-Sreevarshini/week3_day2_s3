@@ -458,10 +458,11 @@ public async Task Backend_TestDeleteCourse()
             UserId = 1 // Assuming the ID of the related user
         };
 
-
+    Console.WriteLine(enquiry);
         string requestBody = JsonConvert.SerializeObject(enquiry);
         HttpResponseMessage response = await _httpClient.PostAsync("/api/Enquiry", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-        
+            Console.WriteLine(enquiry);
+
         Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
     }
 
