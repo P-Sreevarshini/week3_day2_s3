@@ -9,7 +9,6 @@ public class Enquiry
     [Key]
     public int EnquiryID { get; set; }
     public DateTime EnquiryDate { get; set; }
-    public string UserId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public string EmailID { get; set; }
@@ -20,7 +19,7 @@ public class Enquiry
     // Navigation property for the related course
     [ForeignKey(nameof(CourseID))]
     public Course Course { get; set; }
-     public int CourseID { get; set; }
+    public string UserId { get; set; }
     // Navigation property for the related course
     [ForeignKey(nameof(UserId))]
     public User User { get; set; }
