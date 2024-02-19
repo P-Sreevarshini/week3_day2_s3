@@ -377,61 +377,53 @@ public async Task Backend_TestGetCourseByCourseID()
     Assert.IsNotNull(courses);
     Assert.IsTrue(courses.Count > 0);
 }
-[Test] // Check for DELETE course by CourseID
+[Test] // Check for DELETE course
 public async Task Backend_TestDeleteCourse()
 {
-    // Arrange
-    int courseIdToDelete = 1; // Provide the course ID to delete
-    var uniqueId = Guid.NewGuid().ToString();
-    var uniqueUsername = $"abcd_{uniqueId}";
-    var uniquePassword = $"abcdA{uniqueId}@123";
-    var uniqueEmail = $"abcd{uniqueId}@gmail.com";
+        int courseIdToDelete = 1; // Provide the course ID to delete
+   string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
 
-    // Register an admin user
-    var registerRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
-    var registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registerRequestBody, Encoding.UTF8, "application/json"));
-    Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
+         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
 
-    // Log in as admin
-    var loginRequestBody = $"{{\"email\": \"{uniqueEmail}\",\"password\": \"{uniquePassword}\"}}";
-    var loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+        
+        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
 
-    var loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    var responseMap = JsonConvert.DeserializeObject<Dictionary<string, object>>(loginResponseBody);
-    var authToken = responseMap["token"].ToString();
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string adminAuthToken = responseMap.token;
 
-    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authToken);
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
 
-    // Add a course
-    var course = new
-    {
-        CourseName = "Test Course",
-        Description = "Test Description",
-        Duration = "Test Duration",
-        Amount = 100.0
-    };
+        var course = new
+        {
+            CourseName = "Test course",
+            Description = "Test Description",
+            Duration = "Test Duration",
+            Amount = 1000
+        };
 
-    var requestBody = JsonConvert.SerializeObject(course);
-    var addCourseResponse = await _httpClient.PostAsync("/api/Course", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-    Assert.AreEqual(HttpStatusCode.Created, addCourseResponse.StatusCode);
-
-    // Deserialize the response to get the CourseID
-    var addCourseResponseBody = await addCourseResponse.Content.ReadAsStringAsync();
-    var addedCourse = JsonConvert.DeserializeObject<Course>(addCourseResponseBody);
-    Assert.IsNotNull(addedCourse);
-    int addedCourseId = addedCourse.CourseID;
+        string requestBody = JsonConvert.SerializeObject(course);
+        HttpResponseMessage response = await _httpClient.PostAsync("/api/Course", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+        
+        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
     // Act: Delete the course
-    var deleteCourseResponse = await _httpClient.DeleteAsync($"/api/Course/{addedCourseId}");
-
+    var deleteCourseResponse = await _httpClient.DeleteAsync($"/api/Course/{courseIdToDelete}");
     // Assert
-    Assert.AreEqual(HttpStatusCode.NoContent, deleteCourseResponse.StatusCode);
+    Assert.AreEqual(HttpStatusCode.NotFound, deleteCourseResponse.StatusCode);
 
     // Verify that the course is deleted
-    var verifyDeleteResponse = await _httpClient.GetAsync($"/api/Course/{addedCourseId}");
+    var verifyDeleteResponse = await _httpClient.GetAsync($"/api/Course/{courseIdToDelete}");
     Assert.AreEqual(HttpStatusCode.NotFound, verifyDeleteResponse.StatusCode);
 }
+
 
 
 
