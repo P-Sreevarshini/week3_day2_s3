@@ -1,4 +1,3 @@
-// PaymentRepo.cs
 using dotnetapp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -26,9 +25,18 @@ namespace dotnetapp.Repository
         }
 
         public async Task CreatePayment(Payment payment)
-        {
+        { 
             _context.Payments.Add(payment);
             await _context.SaveChangesAsync();
+            
+            // Load related entities if needed
+            await _context.Entry(payment)
+                .Reference(e => e.Course)
+                .LoadAsync();
+
+            await _context.Entry(payment)
+                .Reference(e => e.User)
+                .LoadAsync();
         }
 
         public async Task UpdatePayment(Payment payment)
