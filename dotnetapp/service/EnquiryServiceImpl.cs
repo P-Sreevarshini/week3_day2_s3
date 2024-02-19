@@ -19,9 +19,9 @@ namespace dotnetapp.Service
             return await _enquiryRepository.GetAllEnquiries();
         }
 
-        public async Task<Enquiry> GetEnquiryById(int EnquiryID)
+        public async Task<Enquiry> GetEnquiryById(int id)
         {
-            return await _enquiryRepository.GetEnquiryById(EnquiryID);
+            return await _enquiryRepository.GetEnquiryById(id);
         }
 
         public async Task CreateEnquiry(Enquiry enquiry)
