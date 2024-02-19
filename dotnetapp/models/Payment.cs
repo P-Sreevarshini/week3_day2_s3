@@ -17,10 +17,10 @@ public class Payment
     
     // Navigation property for the related user
     [ForeignKey(nameof(UserId))]
-    public User User { get; set; }
+    public User? User { get; set; }
 
     // Navigation property for the related course
     [ForeignKey(nameof(CourseID))]
-    public Course Course { get; set; }
+    public Course? Course { get; set; }
 }
 }

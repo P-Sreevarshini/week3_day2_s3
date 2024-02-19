@@ -545,7 +545,73 @@ public async Task Backend_TestDeleteEnquiry()
         
         Assert.AreEqual(HttpStatusCode.OK, getBookingsResponse.StatusCode);
     }
+    [Test] //..........Check for GET Payment 
+    public async Task Backend_TestGetAllPayment()
+    {
+        string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
 
+         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
+         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string adminAuthToken = responseMap.token;
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
+
+        HttpResponseMessage getBookingsResponse = await _httpClient.GetAsync("/api/Payment");
+        
+        Assert.AreEqual(HttpStatusCode.OK, getBookingsResponse.StatusCode);
+    }
+[Test] //......check for Enquiry resort authorized to Customer
+    public async Task Backend_TestPostPayment()
+    {
+        string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+
+         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Customer\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
+         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+        
+        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string adminAuthToken = responseMap.token;
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
+
+        var enquiry = new
+        {
+            EnquiryDate = DateTime.Now,
+            Title = "Test Enquiry",
+            Description = "Test Description",
+            EmailID = "test@example.com",
+            EnquiryType = "General",
+            CourseID = 3, // Assuming the ID of the related course
+            UserId = 1 // Assuming the ID of the related user
+        };
+
+    Console.WriteLine(enquiry);
+        string requestBody = JsonConvert.SerializeObject(enquiry);
+        HttpResponseMessage response = await _httpClient.PostAsync("/api/Enquiry", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            Console.WriteLine(enquiry);
+
+        Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+    }
     [TearDown]
     public void TearDown()
     {

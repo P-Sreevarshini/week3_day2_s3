@@ -48,6 +48,7 @@ public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
     return CreatedAtAction(nameof(GetEnquiryById), new { EnquiryID = enquiry.EnquiryID }, enquiry);
 }
 
+[Authorize(Roles="Customer")]
 
         [HttpPut("{EnquiryID}")]
         public async Task<IActionResult> UpdateEnquiry(int EnquiryID, Enquiry enquiry)
@@ -74,6 +75,7 @@ public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
 
             return NoContent();
         }
+
 [Authorize(Roles="Customer")]
 
        [HttpDelete("{EnquiryID}")]
