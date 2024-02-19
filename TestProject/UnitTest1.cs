@@ -618,8 +618,8 @@ public async Task Backend_TestPostPayment()
     // Assert the response status code
     Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 }
-[Test] // Check GET payment by user ID
-public async Task Backend_TestGetPaymentByUserId()
+[Test] // Check GET payment by payment ID
+public async Task Backend_TestGetPaymentByPaymentId()
 {
     // Register a customer user
     string uniqueId = Guid.NewGuid().ToString();
@@ -639,22 +639,21 @@ public async Task Backend_TestGetPaymentByUserId()
     // Extract user details and authentication token
     string responseString = await loginResponse.Content.ReadAsStringAsync();
     dynamic responseMap = JsonConvert.DeserializeObject(responseString);
-    int userId = (int)responseMap.userId; // Cast to int
     string customerAuthToken = responseMap.token;
 
     // Set authentication token in the HTTP client headers
     _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", customerAuthToken);
 
-    // Make a GET request to get payments by user ID
-    HttpResponseMessage getPaymentByUserIdResponse = await _httpClient.GetAsync($"/api/payment/user/{userId}");
-    Assert.AreEqual(HttpStatusCode.OK, getPaymentByUserIdResponse.StatusCode);
+    // Make a GET request to get a payment by its ID (assuming payment ID is available in responseMap)
+    HttpResponseMessage getPaymentByIdResponse = await _httpClient.GetAsync($"/api/payment/{paymentId}");
+    Assert.AreEqual(HttpStatusCode.OK, getPaymentByIdResponse.StatusCode);
 
-    // Deserialize the response content as a list of payments
-    string responseBody = await getPaymentByUserIdResponse.Content.ReadAsStringAsync();
-    var payments = JsonConvert.DeserializeObject<List<Payment>>(responseBody);
+    // Deserialize the response content as a payment object
+    string responseBody = await getPaymentByIdResponse.Content.ReadAsStringAsync();
+    var payment = JsonConvert.DeserializeObject<Payment>(responseBody);
 
-    // Assert that the returned payments list is not null and contains at least one payment
-    Assert.IsNotNull(payments);
+    // Assert that the returned payment is not null
+    Assert.IsNotNull(payment);
 }
 
 
