@@ -68,17 +68,13 @@ namespace dotnetapp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{EnquiryID}")]
+       [HttpDelete("{EnquiryID}")]
         public async Task<IActionResult> DeleteEnquiry(int EnquiryID)
         {
-            var enquiry = await _enquiryService.GetEnquiryById(EnquiryID);
-            if (enquiry == null)
-            {
-                return NotFound();
-            }
-
-            await _enquiryService.DeleteEnquiry(enquiry);
+            await _enquiryService.DeleteEnquiry(EnquiryID);
             return NoContent();
         }
+
+
     }
 }

@@ -10,6 +10,6 @@ namespace dotnetapp.Service
         Task<Enquiry> GetEnquiryById(int id);
         Task CreateEnquiry(Enquiry enquiry);
         Task UpdateEnquiry(Enquiry enquiry);
-        Task DeleteEnquiry(int id);
+        Task DeleteEnquiry(int EnquiryID);
     }
 }

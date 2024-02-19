@@ -36,10 +36,16 @@ namespace dotnetapp.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteEnquiry(Enquiry enquiry)
+        // EnquiryRepo.cs
+        public async Task DeleteEnquiry(int id)
         {
-            _context.Enquiries.Remove(enquiry);
-            await _context.SaveChangesAsync();
+            var enquiry = await _context.Enquiries.FindAsync(id);
+            if (enquiry != null)
+            {
+                _context.Enquiries.Remove(enquiry);
+                await _context.SaveChangesAsync();
+            }
         }
+
     }
 }

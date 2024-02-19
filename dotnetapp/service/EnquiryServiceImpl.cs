@@ -34,9 +34,10 @@ namespace dotnetapp.Service
             await _enquiryRepository.UpdateEnquiry(enquiry);
         }
 
-        public async Task DeleteEnquiry(int id)
-        {
-            await _enquiryRepository.DeleteEnquiry(id);
-        }
+       public async Task DeleteEnquiry(int EnquiryID)
+{
+    await _enquiryRepository.DeleteEnquiry(EnquiryID);
+}
+
     }
 }
