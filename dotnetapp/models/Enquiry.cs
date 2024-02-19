@@ -6,6 +6,7 @@ namespace dotnetapp.Models
 {
 public class Enquiry
 {
+    [Key]
     public int EnquiryID { get; set; }
     public DateTime EnquiryDate { get; set; }
     public string UserId { get; set; }

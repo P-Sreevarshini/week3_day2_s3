@@ -8,7 +8,7 @@ namespace dotnetapp.Models
         {
         }
 
-        public DbSet<User> Users { get; set; }
+       public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Enquiry> Enquiries { get; set; }
         public DbSet<Payment> Payments { get; set; }

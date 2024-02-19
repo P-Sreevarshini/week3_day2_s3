@@ -6,8 +6,9 @@ namespace dotnetapp.Models
 {
 public class Payment
 {
+    [Key]
     public int PaymentID { get; set; }
-    public string UserId { get; set; }
+    public long UserId { get; set; }
     public int CourseID { get; set; }
     public decimal AmountPaid { get; set; }
     public DateTime PaymentDate { get; set; }
