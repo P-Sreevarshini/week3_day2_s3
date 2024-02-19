@@ -52,6 +52,8 @@ builder.Services.AddScoped<UserService, UserServiceImpl>();
 builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<CourseService, CourseServiceImpl>(); 
 builder.Services.AddScoped<CourseRepo>();
+builder.Services.AddScoped<EnquiryService, EnquiryServiceImpl>(); 
+builder.Services.AddScoped<EnquiryRepo>();
 
 var app = builder.Build();
 
