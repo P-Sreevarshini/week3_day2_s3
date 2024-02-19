@@ -39,14 +39,14 @@ namespace dotnetapp.Controllers
             }
             return Ok(enquiry);
         }
-[Authorize(Roles="Customer")]
 
-       [HttpPost]
+   [Authorize(Roles="Customer")]
+[HttpPost]
 public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
-        {
-            await _enquiryService.CreateEnquiry(enquiry);
-            return CreatedAtAction(nameof(GetEnquiryById), new { id = enquiry.EnquiryID }, enquiry);
-        }
+{
+    await _enquiryService.CreateEnquiry(enquiry);
+    return CreatedAtAction(nameof(GetEnquiryById), new { EnquiryID = enquiry.EnquiryID }, enquiry);
+}
 
 
         [HttpPut("{EnquiryID}")]

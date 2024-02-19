@@ -16,8 +16,12 @@ namespace dotnetapp.Repository
 
         public async Task<IEnumerable<Enquiry>> GetAllEnquiries()
         {
-            return await _context.Enquiries.ToListAsync();
-        }
+
+                             return await _context.Enquiries
+                         .Include(b => b.User) 
+                         .Include(c => c.Course) 
+                         .ToListAsync();       
+        }             
 
         public async Task<Enquiry> GetEnquiryById(int id)
         {
