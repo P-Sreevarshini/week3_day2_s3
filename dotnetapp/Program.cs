@@ -7,9 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using dotnetapp.Models;
 using dotnetapp.Repository;
 using dotnetapp.Service;
+using dotnetapp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +28,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
-builder.services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection")));
 
 // Add authentication services
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
