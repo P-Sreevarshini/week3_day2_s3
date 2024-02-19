@@ -366,16 +366,16 @@ public async Task Backend_TestGetCourseByCourseID()
     _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", customerAuthToken);
 
     // Make a GET request to get a course by CourseID
-    int courseId = 1; // Assuming CourseID 1 is available
-    HttpResponseMessage getCourseByCourseIdResponse = await _httpClient.GetAsync($"/api/Course/{courseId}");
+    HttpResponseMessage getCourseByCourseIdResponse = await _httpClient.GetAsync($"/api/Course/{responseMap.courseId}");
     Assert.AreEqual(HttpStatusCode.OK, getCourseByCourseIdResponse.StatusCode);
 
-    // Deserialize the response content as a course object
+    // Deserialize the response content as a list of Course objects
     string responseBody = await getCourseByCourseIdResponse.Content.ReadAsStringAsync();
-    var course = JsonConvert.DeserializeObject<Course>(responseBody);
+    var courses = JsonConvert.DeserializeObject<List<Course>>(responseBody);
 
-    // Assert that the returned course is not null
-    Assert.IsNotNull(course);
+    // Assert that the returned list of courses is not null and contains at least one course
+    Assert.IsNotNull(courses);
+    Assert.IsTrue(courses.Count > 0);
 }
 
 
