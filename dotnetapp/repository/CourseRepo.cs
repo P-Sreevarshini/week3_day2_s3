@@ -14,7 +14,7 @@ namespace dotnetapp.Repository
             _context = context;
         }
 
-        public IEnumerable<Course> GetAllCourses()
+        public async Task<IEnumerable<Course>> GetAllCourses()
         {
             return _context.Courses;
         }
