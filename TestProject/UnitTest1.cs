@@ -596,14 +596,20 @@ public async Task Backend_TestDeleteEnquiry()
 
         var payment = new
         {
-            EnquiryDate = DateTime.Now,
-            Title = "Test Enquiry",
-            Description = "Test Description",
-            EmailID = "test@example.com",
-            EnquiryType = "General",
-            CourseID = 3, // Assuming the ID of the related course
-            UserId = 1 // Assuming the ID of the related user
-        };
+           
+            EnquiryDate: "2024-02-19T12:53:59.441Z",
+            Title: "Test Enquiry",
+            Description: "Test Description",
+            EmailID: "test@example.com",
+            EnquiryType: "General",
+            CourseID: 3,
+            UserId: 1,
+            AmountPaid: 0,
+            PaymentDate: "2024-02-19T12:53:59.441Z",
+            PaymentMethod: "cash",
+            TransactionID: "abc"
+            }
+
 
         string requestBody = JsonConvert.SerializeObject(payment);
         HttpResponseMessage response = await _httpClient.PostAsync("/api/Payment", new StringContent(requestBody, Encoding.UTF8, "application/json"));
