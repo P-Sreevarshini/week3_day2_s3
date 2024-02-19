@@ -50,6 +50,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Register services and repositories
 builder.Services.AddScoped<UserService, UserServiceImpl>(); 
 builder.Services.AddScoped<UserRepo>();
+builder.Services.AddScoped<UserService, UserServiceImpl>(); 
+builder.Services.AddScoped<UserRepo>();
 
 var app = builder.Build();
 
