@@ -519,7 +519,32 @@ public async Task Backend_TestDeleteEnquiry()
     Assert.AreEqual(HttpStatusCode.NotFound, verifyDeleteResponse.StatusCode);
 }
 
+[Test] //..........Check for GET course 
+    public async Task Backend_TestGetAllEnquries()
+    {
+        string uniqueId = Guid.NewGuid().ToString();
+        string uniqueUsername = $"abcd_{uniqueId}";
+        string uniquePassword = $"abcdA{uniqueId}@123";
+        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
 
+         string RegisterrequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\", \"Username\": \"{uniqueUsername}\", \"UserRole\": \"Admin\"}}";
+        HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(RegisterrequestBody, Encoding.UTF8, "application/json"));
+         Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+        var adminLoginRequestBody = $"{{\"Email\": \"{uniqueEmail}\", \"Password\": \"{uniquePassword}\"}}";
+        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(adminLoginRequestBody, Encoding.UTF8, "application/json"));
+        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+        string responseString = await loginResponse.Content.ReadAsStringAsync();
+        dynamic responseMap = JsonConvert.DeserializeObject(responseString);
+        string adminAuthToken = responseMap.token;
+
+        _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", adminAuthToken);
+
+        HttpResponseMessage getBookingsResponse = await _httpClient.GetAsync("/api/Enquiry");
+        
+        Assert.AreEqual(HttpStatusCode.OK, getBookingsResponse.StatusCode);
+    }
 
     [TearDown]
     public void TearDown()
