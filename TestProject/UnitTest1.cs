@@ -285,22 +285,19 @@ public class dotnetappApplicationTests
 
     // Get the added course details
     string addCourseResponseBody = await addResortResponse.Content.ReadAsStringAsync();
-    dynamic addResortResponseMap = JsonConvert.DeserializeObject(addResortResponseBody);
+    dynamic addCourseResponseMap = JsonConvert.DeserializeObject(addCourseResponseBody);
 
-    int? resortId = addResortResponseMap?.resortId;
+    int? courseId = addCourseResponseMap?.courseId;
 
-    if (resortId.HasValue)
+    if (courseId.HasValue)
     {
         var updatedResortDetails = new
         {
-            ResortId = resortId, // Corrected variable name and added ResortId
-            ResortName = "Updated Resort Name",
-            ResortImageUrl = "updated-image-url",
-            ResortLocation = "Updated Location",
-            ResortAvailableStatus = "Updated Available Status",
-            Price = 200,
-            Capacity = 30,
-            Description = "Updated Description"
+            CourseId = courseId, // Corrected variable name and added courseId
+            CourseName = "Test course",
+            Description = "Test Description",
+            Duration = "Test Duration",
+            Amount = 1000
         };
 
         string updateResortRequestBody = JsonConvert.SerializeObject(updatedResortDetails);
