@@ -1,9 +1,11 @@
-// PaymentController.cs
+using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
 using dotnetapp.Service;
-using Microsoft.AspNetCore.Mvc;
+using dotnetapp.Repository;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dotnetapp.Controllers
 {
@@ -17,6 +19,7 @@ namespace dotnetapp.Controllers
         {
             _paymentService = paymentService;
         }
+[Authorize(Roles="Admin,Customer")]
 
         [HttpGet]
         public async Task<IActionResult> GetAllPayments()
@@ -24,6 +27,7 @@ namespace dotnetapp.Controllers
             var payments = await _paymentService.GetAllPayments();
             return Ok(payments);
         }
+[Authorize(Roles="Admin,Customer")]
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPaymentById(int id)
@@ -35,6 +39,7 @@ namespace dotnetapp.Controllers
             }
             return Ok(payment);
         }
+[Authorize(Roles="Customer")]
 
         [HttpPost]
         public async Task<IActionResult> CreatePayment(Payment payment)
@@ -69,11 +74,11 @@ namespace dotnetapp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePayment(int id)
-        {
-            await _paymentService.DeletePayment(id);
-            return NoContent();
-        }
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeletePayment(int id)
+        // {
+        //     await _paymentService.DeletePayment(id);
+        //     return NoContent();
+        // }
     }
 }
