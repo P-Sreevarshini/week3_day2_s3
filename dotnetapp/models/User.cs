@@ -1,7 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
-using dotnetapp.Models;
-
 
 namespace dotnetapp.Models
 {
@@ -9,7 +7,7 @@ namespace dotnetapp.Models
 
     {
         [Key]
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
 
         public string? Email { get; set; }
 

@@ -22,120 +22,125 @@ namespace dotnetapp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("dotnetapp.Models.Course", b =>
+            modelBuilder.Entity("dotnetapp.Models.Booking", b =>
                 {
-                    b.Property<int>("CourseID")
+                    b.Property<long?>("BookingId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("BookingId"), 1L, 1);
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CourseName")
-                        .IsRequired()
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CourseID");
-
-                    b.ToTable("Courses");
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.Enquiry", b =>
-                {
-                    b.Property<int>("EnquiryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnquiryID"), 1L, 1);
-
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EnquiryDate")
+                    b.Property<DateTime?>("FromDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EnquiryType")
+                    b.Property<int?>("NoOfPersons")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("ResortId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("BookingId");
+
+                    b.HasIndex("ResortId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.Resort", b =>
+                {
+                    b.Property<long>("ResortId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ResortId"), 1L, 1);
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
+                    b.Property<long>("Price")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ResortAvailableStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResortImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResortLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResortName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ResortId");
+
+                    b.ToTable("Resorts");
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.Review", b =>
+                {
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"), 1L, 1);
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("EnquiryID");
-
-                    b.HasIndex("CourseID");
+                    b.HasKey("ReviewId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Enquiries");
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.Payment", b =>
-                {
-                    b.Property<int>("PaymentID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"), 1L, 1);
-
-                    b.Property<decimal>("AmountPaid")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransactionID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("PaymentID");
-
-                    b.HasIndex("CourseID");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Payments");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.User", b =>
                 {
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("UserId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("UserId"), 1L, 1);
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -157,47 +162,35 @@ namespace dotnetapp.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.Enquiry", b =>
+            modelBuilder.Entity("dotnetapp.Models.Booking", b =>
                 {
-                    b.HasOne("dotnetapp.Models.Course", "Course")
-                        .WithMany("Enquiries")
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("dotnetapp.Models.Resort", "Resort")
+                        .WithMany("Bookings")
+                        .HasForeignKey("ResortId");
 
+                    b.HasOne("dotnetapp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Resort");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.Review", b =>
+                {
                     b.HasOne("dotnetapp.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
-
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.Payment", b =>
+            modelBuilder.Entity("dotnetapp.Models.Resort", b =>
                 {
-                    b.HasOne("dotnetapp.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("dotnetapp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.Course", b =>
-                {
-                    b.Navigation("Enquiries");
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

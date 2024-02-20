@@ -8,9 +8,9 @@ namespace dotnetapp.Models
         {
         }
 
-       public DbSet<User> Users { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Enquiry> Enquiries { get; set; }
-        public DbSet<Payment> Payments { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Resort> Resorts { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

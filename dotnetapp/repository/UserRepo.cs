@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -5,7 +6,7 @@ using dotnetapp.Models;
 
 namespace dotnetapp.Repository
 {
-    public interface IUserRepo
+    public interface IUserRepository
     {
         Task<User> GetUserByEmailAsync(string email);
         Task<User> AddUserAsync(User user);
@@ -14,7 +15,7 @@ namespace dotnetapp.Repository
 
     }
 
-    public class UserRepo 
+    public class UserRepo : IUserRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -39,7 +40,7 @@ namespace dotnetapp.Repository
         {
             return await _context.Users.ToListAsync();
         }
-          public async Task<User> GetUserByIdAsync(long userId)
+        public async Task<User> GetUserByIdAsync(long userId)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
         }

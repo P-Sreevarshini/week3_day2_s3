@@ -14,5 +14,5 @@ namespace dotnetapp.Service
         Task<User> GetUserByIdAsync(long userId); 
 
 
-    } 
+    }
 }

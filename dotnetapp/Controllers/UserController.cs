@@ -52,11 +52,11 @@ public class UserController : ControllerBase
 
         return Ok(new { Token = token });
     }
-        [HttpGet("all")]
-    public async Task<IActionResult> GetAllUsers()
-    {
-        var users = await _userService.GetAllUsersAsync();
-        return Ok(users);
-    }
+    [HttpGet("all")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
 
-}
+    }

@@ -7,9 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using dotnetapp.Models;
 using dotnetapp.Repository;
 using dotnetapp.Service;
-using dotnetapp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:8080")
+            builder.WithOrigins("https://8081-fcebccfce309511144aaeaaecbccfdbone.premiumproject.examly.io")
                    .AllowAnyHeader()
                    .AllowAnyMethod();
         });
@@ -50,13 +50,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Register services and repositories
 builder.Services.AddScoped<UserService, UserServiceImpl>(); 
 builder.Services.AddScoped<UserRepo>();
-builder.Services.AddScoped<CourseService, CourseServiceImpl>(); 
-builder.Services.AddScoped<CourseRepo>();
-builder.Services.AddScoped<EnquiryService, EnquiryServiceImpl>(); 
-builder.Services.AddScoped<EnquiryRepo>();
-builder.Services.AddScoped<PaymentService, PaymentServiceImpl>(); 
-builder.Services.AddScoped<PaymentRepo>();
-
+builder.Services.AddScoped<ResortService, ResortServiceImpl>();
+builder.Services.AddScoped<ResortRepo>();
+builder.Services.AddScoped<ReviewService, ReviewServiceImpl>();
+builder.Services.AddScoped<ReviewRepo>();
+builder.Services.AddScoped<BookingService, BookingServiceImpl>();
+builder.Services.AddScoped<IBookingRepo, BookingRepo>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
