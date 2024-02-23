@@ -50,27 +50,26 @@ namespace dotnetapp.Controllers
             return Ok(enquiries);
         }
 
-[Authorize(Roles="Student")]
-[HttpPost("enquiry")]
-public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
-{
-    await _enquiryService.CreateEnquiry(enquiry);
-    return CreatedAtAction(nameof(GetEnquiriesByUserId), new { userId = enquiry.UserId }, enquiry);
-}
-
-
-
-[Authorize(Roles="Student")]
-
-        [HttpPut("enquiry/{id}")]
-        public async Task<IActionResult> UpdateEnquiry(int EnquiryID, Enquiry enquiry)
+        [Authorize(Roles="Student")]
+        [HttpPost("enquiry")]
+        public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
         {
-            if (EnquiryID != enquiry.EnquiryID)
+            await _enquiryService.CreateEnquiry(enquiry);
+            return CreatedAtAction(nameof(GetEnquiriesByUserId), new { userId = enquiry.UserId }, enquiry);
+        }
+
+
+
+         [Authorize(Roles="Student")]
+        [HttpPut("enquiry/{id}")]
+        public async Task<IActionResult> UpdateEnquiry(int id, Enquiry enquiry)
+        {
+            if (id != enquiry.EnquiryID)
             {
                 return BadRequest();
             }
 
-            var existingEnquiry = await _enquiryService.GetEnquiryById(EnquiryID);
+            var existingEnquiry = await _enquiryService.GetEnquiryById(id);
             if (existingEnquiry == null)
             {
                 return NotFound();
