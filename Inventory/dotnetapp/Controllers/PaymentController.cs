@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
             _paymentService = paymentService;
         }
         
-       [Authorize(Roles="Admin,Customer")]
+       [Authorize(Roles="Admin,Student")]
 
         [HttpGet]
         public async Task<IActionResult> GetAllPayments()
@@ -28,7 +28,7 @@ namespace dotnetapp.Controllers
             return Ok(payments);
         }
 
-        [Authorize(Roles="Admin,Customer")]
+        [Authorize(Roles="Admin,Student")]
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPaymentById(int id)
@@ -41,7 +41,7 @@ namespace dotnetapp.Controllers
             return Ok(payment);
         }
 
-       [Authorize(Roles="Customer")]
+       [Authorize(Roles="Student")]
 
         [HttpPost]
         public async Task<IActionResult> CreatePayment(Payment payment)

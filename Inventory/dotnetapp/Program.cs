@@ -30,7 +30,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<EnquiryService>();
 builder.Services.AddScoped<PaymentService>();
-builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<CourseService>();
 
 

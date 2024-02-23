@@ -22,6 +22,21 @@ namespace dotnetapp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.Property<int>("CoursesCourseID")
+                        .HasColumnType("int");
+
+                    b.Property<long>("StudentsStudentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CoursesCourseID", "StudentsStudentId");
+
+                    b.HasIndex("StudentsStudentId");
+
+                    b.ToTable("CourseStudent");
+                });
+
             modelBuilder.Entity("dotnetapp.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -119,31 +134,6 @@ namespace dotnetapp.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("dotnetapp.Models.Customer", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"), 1L, 1);
-
-                    b.Property<string>("CustomerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MobileNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CustomerId");
-
-                    b.ToTable("Customers");
-                });
-
             modelBuilder.Entity("dotnetapp.Models.Enquiry", b =>
                 {
                     b.Property<int>("EnquiryID")
@@ -170,6 +160,9 @@ namespace dotnetapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("StudentId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -180,6 +173,8 @@ namespace dotnetapp.Migrations
                     b.HasKey("EnquiryID");
 
                     b.HasIndex("CourseID");
+
+                    b.HasIndex("StudentId");
 
                     b.HasIndex("UserId");
 
@@ -207,6 +202,9 @@ namespace dotnetapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("StudentId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("TransactionID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -218,9 +216,37 @@ namespace dotnetapp.Migrations
 
                     b.HasIndex("CourseID");
 
+                    b.HasIndex("StudentId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.Student", b =>
+                {
+                    b.Property<long>("StudentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("StudentId"), 1L, 1);
+
+                    b.Property<string>("StudentMobileNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("StudentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.User", b =>
@@ -389,6 +415,21 @@ namespace dotnetapp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CourseStudent", b =>
+                {
+                    b.HasOne("dotnetapp.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesCourseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("dotnetapp.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("dotnetapp.Models.Enquiry", b =>
                 {
                     b.HasOne("dotnetapp.Models.Course", "Course")
@@ -396,6 +437,10 @@ namespace dotnetapp.Migrations
                         .HasForeignKey("CourseID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("dotnetapp.Models.Student", null)
+                        .WithMany("Enquiries")
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("dotnetapp.Models.User", "User")
                         .WithMany()
@@ -416,6 +461,12 @@ namespace dotnetapp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("dotnetapp.Models.Student", "Student")
+                        .WithMany("Payments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("dotnetapp.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -423,6 +474,19 @@ namespace dotnetapp.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.Student", b =>
+                {
+                    b.HasOne("dotnetapp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -481,6 +545,13 @@ namespace dotnetapp.Migrations
             modelBuilder.Entity("dotnetapp.Models.Course", b =>
                 {
                     b.Navigation("Enquiries");
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.Student", b =>
+                {
+                    b.Navigation("Enquiries");
+
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }

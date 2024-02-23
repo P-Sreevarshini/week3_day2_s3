@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
             _courseService = courseService;
         }
 
-        [Authorize(Roles="Admin,Customer")]
+        [Authorize(Roles="Admin,Student")]
         [HttpGet]
         public async Task<IActionResult> GetAllCourses()
         {
