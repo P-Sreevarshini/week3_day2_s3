@@ -17,15 +17,18 @@ namespace dotnetapp.Models
         // Foreign key properties
         public long UserId { get; set; }
         public int CourseID { get; set; }
+        public long StudentId { get; set; }
 
         // Navigation properties
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
         
-        [ForeignKey(nameof(CourseID))]
+        // [ForeignKey(nameof(CourseID))]
         public Course Course { get; set; }
         
         // Assuming you have a Student entity
+        [ForeignKey(nameof(StudentId))]
         public Student Student { get; set; }
+
     }
 }
