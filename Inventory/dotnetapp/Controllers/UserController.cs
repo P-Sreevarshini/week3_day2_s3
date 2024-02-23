@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using dotnetapp.Models;
 using dotnetapp.Services;
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dotnetapp.Controllers
 {
@@ -16,7 +18,7 @@ namespace dotnetapp.Controllers
         {
             _userService = userService;
         }
-
+        [Authorize(Roles="Admin,Student")]
         [HttpGet("{userId}")]
         public IActionResult GetUserById(long userId)
         {
@@ -27,14 +29,14 @@ namespace dotnetapp.Controllers
             }
             return Ok(user);
         }
-        [Autthorize(Roles="Admin,Student")]
+        [Authorize(Roles="Admin,Student")]
         [HttpPost("student")]
         public IActionResult CreateUser(User user)
         {
             _userService.CreateUser(user);
             return CreatedAtAction(nameof(GetUserById), new { userId = user.UserId }, user);
         }
-        [Autthorize(Roles="Student")]
+        [Authorize(Roles="Student")]
         [HttpPut("student/{id}")]
         public IActionResult UpdateUser(long studentId, User user)
         {
@@ -53,7 +55,7 @@ namespace dotnetapp.Controllers
 
             return NoContent();
         }
-        [Autthorize(Roles="Student")]
+        [Authorize(Roles="Student")]
         [HttpDelete("student/{id}")]
         public IActionResult DeleteUser(long studentId)
         {
@@ -67,7 +69,7 @@ namespace dotnetapp.Controllers
 
             return NoContent();
         }
-
+        [Authorize(Roles="Student")]
         [HttpPost("student/payment")]
         public IActionResult PostStudentPayment(long studentId, Payment payment)
         {
@@ -75,7 +77,7 @@ namespace dotnetapp.Controllers
             _userService.AddPaymentToStudent(payment);
             return CreatedAtAction(nameof(PostStudentPayment), new { studentId }, payment);
         }
-
+        [Authorize(Roles="Admin,Student")]
         [HttpGet("student/user/{userId}")]
         public IActionResult GetStudentByUserId(long userId)
         {

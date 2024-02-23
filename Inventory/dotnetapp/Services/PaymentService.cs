@@ -1,33 +1,34 @@
-using dotnetapp.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetapp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetapp.Services
 {
     public class PaymentService
     {
-        private readonly List<Payment> _payments;
+        private readonly ApplicationDbContext _context;
 
-        public PaymentService()
+        public PaymentService(ApplicationDbContext context)
         {
-            _payments = new List<Payment>();
+            _context = context;
         }
 
         public async Task<IEnumerable<Payment>> GetAllPayments()
         {
-            // Return all payments in the list
-            return _payments;
+            return await _context.Payments.ToListAsync();
         }
-
 
         public async Task CreatePayment(Payment payment)
         {
-            // Assign a new ID to the payment
-            payment.PaymentID = _payments.Count > 0 ? _payments.Max(p => p.PaymentID) + 1 : 1;
-            
-            // Add the new payment to the list
-            _payments.Add(payment);
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Payment> GetPaymentById(int id)
+        {
+            return await _context.Payments.FirstOrDefaultAsync(p => p.PaymentID == id);
         }
     }
 }

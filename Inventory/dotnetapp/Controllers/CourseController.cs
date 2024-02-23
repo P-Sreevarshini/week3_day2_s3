@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace dotnetapp.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/api/")]
     public class CourseController : ControllerBase
     {
         private readonly CourseService _courseService;
@@ -20,15 +20,15 @@ namespace dotnetapp.Controllers
         }
 
         [Authorize(Roles="Admin,Student")]
-        [HttpGet]
+        [HttpGet("course")]
         public async Task<IActionResult> GetAllCourses()
         {
             var courses = await _courseService.GetAllCourses();
             return Ok(courses);
         }
         
-        [Authorize(Roles="Admin")]
-        [HttpGet("{CourseId}")]
+        [Authorize(Roles="Admin,Student")]
+        [HttpGet("course/{id}")]
         public async Task<IActionResult> GetCourseById(int CourseId)
         {
             var course = await _courseService.GetCourseById(CourseId);
@@ -40,7 +40,7 @@ namespace dotnetapp.Controllers
         }
 
         [Authorize(Roles="Admin")]
-        [HttpPost]
+        [HttpPost("course")]
         public async Task<IActionResult> CreateCourse(Course course)
         {
             await _courseService.CreateCourse(course);
@@ -48,7 +48,7 @@ namespace dotnetapp.Controllers
         }
 
         [Authorize(Roles="Admin")]
-        [HttpPut("{CourseID}")]
+        [HttpPut("course/{iD}")]
         public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
         {
             if (CourseID != course.CourseID)
@@ -64,7 +64,6 @@ namespace dotnetapp.Controllers
 
             try
             {
-                // Update the existing course with the properties of the provided course
                 existingCourse.CourseName = course.CourseName;
                 existingCourse.Description = course.Description;
                 existingCourse.Duration = course.Duration;
@@ -76,13 +75,11 @@ namespace dotnetapp.Controllers
             {
                 return StatusCode(500);
             }
-
-            // Return the updated course
             return Ok(existingCourse);
         }
 
         [Authorize(Roles="Admin")]
-        [HttpDelete("{id}")]
+        [HttpDelete("course/{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
             await _courseService.DeleteCourse(id);
