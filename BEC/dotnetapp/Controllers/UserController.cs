@@ -1,6 +1,10 @@
 using dotnetapp.Models;
 using dotnetapp.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Threading.Tasks;
 
 namespace dotnetapp.Controllers
 {
@@ -8,13 +12,13 @@ namespace dotnetapp.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService userService;
+        private readonly UserService _userService;
         private readonly ILogger<UserController> _logger;
         private readonly ApplicationDbContext _context;
 
-        public UserController(IAuthService authService, ILogger<UserController> logger, ApplicationDbContext context)
+        public UserController(UserService userService, ILogger<UserController> logger, ApplicationDbContext context)
         {
-            userService = userService;
+            _userService = userService;
             _logger = logger;
             _context = context;
         }
@@ -22,13 +26,13 @@ namespace dotnetapp.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(Login model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid payload");
-                var (status, message) = await _authService.Login(model);
+                var (status, message) = await _userService.Login(model);
                 if (status == 0)
                     return BadRequest(message);
                 return Ok(message);
@@ -41,31 +45,29 @@ namespace dotnetapp.Controllers
         }
 
         [HttpPost]
-        [Route("registeration")]
-        public async Task<IActionResult> Register(RegistrationModel model)
+        [Route("registration")]
+        public async Task<IActionResult> Register(User model)
         {
             try
             {
-
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid payload");
-                if (model.Role == "Admin" || model.Role == "User")
+                if (model.UserRole == "Admin" || model.UserRole == "Customer") // Assuming UserRole is the correct property
                 {
-                    var (status, message) = await _authService.Registeration(model, model.Role);
+                    var (status, message) = await _userService.Register(model, model.UserRole); // Assuming Register is the correct method
                     if (status == 0)
                     {
                         return BadRequest(message);
                     }
                     var user = new User
                     {
-                        UserName = model.Username,
+                        Username = model.Username,
                         Password = model.Password,
                         Email = model.Email,
-                        Role = model.Role,
+                        UserRole = model.UserRole,
                     };
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
-                    // return CreatedAtAction(nameof(Register), model);
                     return Ok(message);
                 }
                 else

@@ -12,6 +12,8 @@ namespace dotnetapp.Service
         Task<User> GetUserByEmailAsync(string email);
         Task<List<User>> GetAllUsersAsync();
                 Task<User> GetUserByIdAsync(long userId); // Add GetUserByIdAsync method
+                        Task<(int, string)> Login(Login model);
+
 
 
     } 

@@ -65,5 +65,27 @@ namespace dotnetapp.Service
         {
             return await _userRepository.GetUserByIdAsync(userId);
         }
+        public async Task<(int, string)> Login(Login model)
+        {
+            var user = await userManager.GetUserByEmailAsync(model.Email);
+            if (user == null)
+                return (0, "Invalid Email");
+            if (!await userManager.CheckPasswordAsync(user, model.Password))
+                return (0, "Invalid password");
+
+            // var userRoles = await userManager.GetRolesAsync(user);
+            // var authClaims = new List<Claim>
+            // {
+            //    new Claim(ClaimTypes.Name, user.UserName),
+            //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            // };
+
+            // foreach (var userRole in userRoles)
+            // {
+            //     authClaims.Add(new Claim(ClaimTypes.UserRole, userRole));
+            // }
+            // string token = GenerateToken(authClaims);
+            // return (1, token);
+        }
     }
 }
