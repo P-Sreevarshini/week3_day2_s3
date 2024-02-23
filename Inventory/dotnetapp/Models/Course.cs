@@ -14,7 +14,6 @@ public class Course
     public string Duration { get; set; }
     public int Amount { get; set; }
     
-    // Navigation property for related enquiries
     [JsonIgnore]
 public List<Enquiry> Enquiries { get; set; }
     public ICollection<Student> Students { get; set; }
