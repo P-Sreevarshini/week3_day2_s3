@@ -32,10 +32,11 @@ namespace dotnetapp.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid payload");
-                var (status, message) = await _userService.Login(model);
-                if (status == 0)
-                    return BadRequest(message);
-                return Ok(message);
+
+                var loginResult = await _userService.Login(model);
+                if (loginResult.Item1 == 0)
+                    return BadRequest(loginResult.Item2);
+                return Ok(loginResult.Item2);
             }
             catch (Exception ex)
             {
@@ -54,20 +55,19 @@ namespace dotnetapp.Controllers
                     return BadRequest("Invalid payload");
                 if (model.UserRole == "Admin" || model.UserRole == "Customer")
                 {
-                    var (status, message) = await _userService.RegisterUserAsync(model);
-                    if (status == 0)
+                    var registrationResult = await _userService.RegisterUserAsync(model);
+                    if (registrationResult.Item1 == 0)
                     {
-                        return BadRequest(message);
+                        return BadRequest(registrationResult.Item2);
                     }
                     _context.Users.Add(model);
                     await _context.SaveChangesAsync();
-                    return Ok(message);
+                    return Ok(registrationResult.Item2);
                 }
                 else
                 {
                     return BadRequest("Invalid Role");
                 }
-
             }
             catch (Exception ex)
             {
@@ -75,5 +75,6 @@ namespace dotnetapp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
     }
 }

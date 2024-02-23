@@ -7,7 +7,7 @@ namespace dotnetapp.Service
 {
     public interface UserService
     {
-        Task<User> RegisterUserAsync(User user);
+  Task<(int, string)> RegisterUserAsync(User user);
         Task<string> GenerateJwtTokenAsync(User user);
         Task<User> GetUserByEmailAsync(string email);
         Task<List<User>> GetAllUsersAsync();
