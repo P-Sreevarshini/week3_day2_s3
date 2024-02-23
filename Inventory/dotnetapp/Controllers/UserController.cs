@@ -53,7 +53,7 @@ namespace dotnetapp.Controllers
 
             return NoContent();
         }
-
+        [Autthorize(Roles="Student")]
         [HttpDelete("student/{id}")]
         public IActionResult DeleteUser(long studentId)
         {
