@@ -88,11 +88,11 @@ namespace dotnetapp.Controllers
             }
             return Ok(student);
         }
-         [Authorize(Roles="Admin")]
+          [Authorize(Roles="Admin")]
         [HttpGet("admin/payment")]
         public async Task<IActionResult> GetAllPayments()
         {
-            var payments = await _paymentService.GetAllPayments();
+            var payments = await _userService.GetAllPayments();
             return Ok(payments);
         }
 

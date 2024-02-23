@@ -19,13 +19,13 @@ namespace dotnetapp.Controllers
             _paymentService = paymentService;
         }
         
-       [Authorize(Roles="Admin")]
-        [HttpGet("admin/payment")]
-        public async Task<IActionResult> GetAllPayments()
-        {
-            var payments = await _paymentService.GetAllPayments();
-            return Ok(payments);
-        }
+    //    [Authorize(Roles="Admin")]
+    //     [HttpGet("admin/payment")]
+    //     public async Task<IActionResult> GetAllPayments()
+    //     {
+    //         var payments = await _paymentService.GetAllPayments();
+    //         return Ok(payments);
+    //     }
 
     //    [Authorize(Roles="Student")]
     //     [HttpPost("student/payment")]
