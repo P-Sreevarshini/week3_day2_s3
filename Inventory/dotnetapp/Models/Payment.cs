@@ -16,8 +16,8 @@ namespace dotnetapp.Models
         public long UserId { get; set; }
         public int CourseID { get; set; }
         public long? StudentId { get; set; }
-        public User Users { get; set; }
-        public Course Courses { get; set; }
+        public User? Users { get; set; }
+        public Course? Courses { get; set; }
         public Student? Students { get; set; }
     }
 }

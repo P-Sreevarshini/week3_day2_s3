@@ -2,86 +2,60 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetapp.Services
 {
     public class UserService
     {
-        private readonly List<User> _users;
-        private readonly List<Student> _students;
-        private readonly List<Payment> _payments;
+        private readonly ApplicationDbContext _context;
 
-        public UserService()
+        public UserService(ApplicationDbContext context)
         {
-            _users = new List<User>();
-            _students = new List<Student>();
-            _payments = new List<Payment>();
+            _context = context;
         }
 
-        public User GetUserById(long userId)
+        public async Task<User> GetUserById(long userId)
         {
-            return _users.FirstOrDefault(u => u.UserId == userId);
+            return await _context.Users.FindAsync(userId);
         }
 
-       public void CreateUser(User user)
-{
-    _users.Add(user);
-    
-    if (user.UserRole == "student")
-    {
-        // Create a new student instance and populate its properties
-        var student = new Student
+        public async Task CreateUser(User user)
         {
-            // Populate student properties from user
-            StudentName = user.Username,
-            StudentMobileNumber = user.MobileNumber,
-            User = user // Associate user with student
-        };
-
-        // Add the student to the list of students
-        _students.Add(student);
-    }
-}
-
-
-        public void UpdateUser(User user)
-        {
-            var existingUser = _users.FirstOrDefault(u => u.UserId == user.UserId);
-            if (existingUser != null)
-            {
-                // Update user properties here
-                existingUser.Email = user.Email;
-                existingUser.Password = user.Password;
-                existingUser.Username = user.Username;
-                existingUser.MobileNumber = user.MobileNumber;
-                existingUser.UserRole = user.UserRole;
-            }
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteUser(long userId)
+        public async Task UpdateUser(User user)
         {
-            var userToRemove = _users.FirstOrDefault(u => u.UserId == userId);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUser(long userId)
+        {
+            var userToRemove = await _context.Users.FindAsync(userId);
             if (userToRemove != null)
             {
-                _users.Remove(userToRemove);
+                _context.Users.Remove(userToRemove);
+                await _context.SaveChangesAsync();
             }
         }
 
-        public void AddPaymentToStudent(Payment payment)
-        {
-            _payments.Add(payment);
-        }
-
-        public Student GetStudentByUserId(long userId)
-        {
-            return _students.FirstOrDefault(s => s.User.UserId == userId);
-        }
         public async Task<List<Payment>> GetAllPayments()
         {
-            // You can return the list of payments asynchronously using Task.FromResult
-            return await Task.FromResult(_payments);
+            return await _context.Payments.ToListAsync();
         }
 
+        public async Task<Student> GetStudentByUserId(long userId)
+        {
+            return await _context.Students.FirstOrDefaultAsync(s => s.User.UserId == userId);
+        }
 
+        public async Task AddPaymentToStudent(Payment payment)
+        {
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+        }
     }
 }

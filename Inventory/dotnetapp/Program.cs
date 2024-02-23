@@ -31,6 +31,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<EnquiryService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<CourseService>();
+builder.Services.AddScoped<UserService>(); 
+
 
 
 builder.Services.AddAuthentication(options =>
@@ -51,22 +53,7 @@ builder.Services.AddAuthentication(options =>
                     ClockSkew = TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
                 };
-                //options.Events = new JwtBearerEvents
-                //{
-                //    OnTokenValidated = context =>
-                //    {
-                //        var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
-                //        var user = userManager.GetUserAsync(context.Principal).Result;
-                //        var roles = userManager.GetRolesAsync(user).Result;
-
-                //        // Add role claims to the token
-                //        var roleClaims = roles.Select(role => new Claim(ClaimTypes.Role, role));
-                //        var appIdentity = new ClaimsIdentity(roleClaims);
-                //        context.Principal.AddIdentity(appIdentity);
-
-                //        return Task.CompletedTask;
-                //    }
-                //};
+              
             });
 
 builder.Services.AddCors(options =>
