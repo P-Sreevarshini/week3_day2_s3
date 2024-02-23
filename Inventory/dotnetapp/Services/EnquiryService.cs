@@ -1,73 +1,55 @@
-using dotnetapp.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetapp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetapp.Services
 {
     public class EnquiryService
     {
-        private readonly List<Enquiry> _enquiries;
+        private readonly ApplicationDbContext _context;
 
-        public EnquiryService()
+        public EnquiryService(ApplicationDbContext context)
         {
-            // Initialize an empty list of enquiries
-            _enquiries = new List<Enquiry>();
+            _context = context;
         }
 
         public async Task<IEnumerable<Enquiry>> GetAllEnquiries()
         {
-            // Return all enquiries in the list
-            return _enquiries;
+            return await _context.Enquiries.ToListAsync();
         }
 
         public async Task<Enquiry> GetEnquiryById(int enquiryId)
         {
-            // Find the enquiry with the provided ID in the list
-            return _enquiries.FirstOrDefault(e => e.EnquiryID == enquiryId);
+            return await _context.Enquiries.FindAsync(enquiryId);
         }
 
         public async Task CreateEnquiry(Enquiry enquiry)
         {
-            // Assign a new ID to the enquiry
-            enquiry.EnquiryID = _enquiries.Count > 0 ? _enquiries.Max(e => e.EnquiryID) + 1 : 1;
-            
-            // Add the new enquiry to the list
-            _enquiries.Add(enquiry);
+            _context.Enquiries.Add(enquiry);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateEnquiry(Enquiry enquiry)
         {
-            // Find the existing enquiry in the list
-            var existingEnquiry = _enquiries.FirstOrDefault(e => e.EnquiryID == enquiry.EnquiryID);
-            if (existingEnquiry != null)
-            {
-                // Update the existing enquiry's properties
-                existingEnquiry.EnquiryDate = enquiry.EnquiryDate;
-                existingEnquiry.Title = enquiry.Title;
-                existingEnquiry.Description = enquiry.Description;
-                existingEnquiry.EmailID = enquiry.EmailID;
-                existingEnquiry.EnquiryType = enquiry.EnquiryType;
-                existingEnquiry.CourseID = enquiry.CourseID;
-                existingEnquiry.UserId = enquiry.UserId;
-            }
+            _context.Enquiries.Update(enquiry);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteEnquiry(int enquiryId)
         {
-            // Find the enquiry with the provided ID in the list
-            var enquiryToRemove = _enquiries.FirstOrDefault(e => e.EnquiryID == enquiryId);
+            var enquiryToRemove = await _context.Enquiries.FindAsync(enquiryId);
             if (enquiryToRemove != null)
             {
-                // Remove the enquiry from the list
-                _enquiries.Remove(enquiryToRemove);
+                _context.Enquiries.Remove(enquiryToRemove);
+                await _context.SaveChangesAsync();
             }
         }
+
         public async Task<List<Enquiry>> GetEnquiriesByUserId(long userId)
         {
-            var enquiriesByUserId = _enquiries.Where(e => e.UserId == userId).ToList();
-            return enquiriesByUserId;
+            return await _context.Enquiries.Where(e => e.UserId == userId).ToListAsync();
         }
-
     }
 }

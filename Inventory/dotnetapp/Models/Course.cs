@@ -29,9 +29,9 @@ namespace dotnetapp.Models
         public int Amount { get; set; }
 
         [JsonIgnore]
-        public List<Enquiry> Enquiries { get; set; }
+        public List<Enquiry>? Enquiries { get; set; }
         
         // Assuming each course can have multiple students
-        public ICollection<Student> Students { get; set; }
+        public ICollection<Student>? Students { get; set; }
     }
 }

@@ -2,59 +2,54 @@ using dotnetapp.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore; // Import Entity Framework Core namespace
 
 namespace dotnetapp.Services
 {
     public class CourseService
     {
-        private readonly List<Course> _courses;
+        private readonly ApplicationDbContext _context; // Inject ApplicationDbContext
 
-        public CourseService()
+        public CourseService(ApplicationDbContext context)
         {
-            // Initialize an empty list of courses
-            _courses = new List<Course>();
+            _context = context;
         }
 
         public async Task<IEnumerable<Course>> GetAllCourses()
         {
-            // Return all courses in the list
-            return _courses;
+            // Return all courses from the database
+            return await _context.Courses.ToListAsync();
         }
 
         public async Task<Course> GetCourseById(int courseId)
         {
-            // Find the course with the provided ID in the list
-            return _courses.FirstOrDefault(c => c.CourseID == courseId);
+            // Find the course with the provided ID in the database
+            return await _context.Courses.FindAsync(courseId);
         }
 
         public async Task CreateCourse(Course course)
         {
-            // Add the new course to the list
-            _courses.Add(course);
+            // Add the new course to the database
+            _context.Courses.Add(course);
+            await _context.SaveChangesAsync(); // Save changes to the database
         }
 
         public async Task UpdateCourse(Course course)
         {
-            // Find the existing course in the list
-            var existingCourse = _courses.FirstOrDefault(c => c.CourseID == course.CourseID);
-            if (existingCourse != null)
-            {
-                // Update the existing course's properties
-                existingCourse.CourseName = course.CourseName;
-                existingCourse.Description = course.Description;
-                existingCourse.Duration = course.Duration;
-                existingCourse.Amount = course.Amount;
-            }
+            // Update the existing course in the database
+            _context.Entry(course).State = EntityState.Modified;
+            await _context.SaveChangesAsync(); // Save changes to the database
         }
 
         public async Task DeleteCourse(int courseId)
         {
-            // Find the course with the provided ID in the list
-            var courseToRemove = _courses.FirstOrDefault(c => c.CourseID == courseId);
+            // Find the course with the provided ID in the database
+            var courseToRemove = await _context.Courses.FindAsync(courseId);
             if (courseToRemove != null)
             {
-                // Remove the course from the list
-                _courses.Remove(courseToRemove);
+                // Remove the course from the database
+                _context.Courses.Remove(courseToRemove);
+                await _context.SaveChangesAsync(); // Save changes to the database
             }
         }
     }
