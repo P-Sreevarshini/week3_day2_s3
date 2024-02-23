@@ -5,6 +5,7 @@ public class Student
 {
 public long StudentId { get; set; }
 public string StudentName { get; set; }
+
 public string StudentMobileNumber { get; set; }
 public List<Enquiry> Enquiries { get; set; }
 public List<Course> Courses { get; set; }

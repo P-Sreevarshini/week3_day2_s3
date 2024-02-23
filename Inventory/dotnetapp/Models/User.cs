@@ -9,8 +9,5 @@
         public string MobileNumber { get; set; }
         public string UserRole { get; set; }
 
-        // Navigation Property: User can have multiple reviews
-        //public List<Review> Reviews { get; set; }
-
     }
 }
