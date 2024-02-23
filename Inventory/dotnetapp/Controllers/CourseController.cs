@@ -26,6 +26,7 @@ namespace dotnetapp.Controllers
             var courses = await _courseService.GetAllCourses();
             return Ok(courses);
         }
+        
         [Authorize(Roles="Admin")]
         [HttpGet("{CourseId}")]
         public async Task<IActionResult> GetCourseById(int CourseId)
@@ -39,61 +40,54 @@ namespace dotnetapp.Controllers
         }
 
         [Authorize(Roles="Admin")]
-       [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> CreateCourse(Course course)
         {
             await _courseService.CreateCourse(course);
             return CreatedAtAction(nameof(GetCourseById), new { CourseId = course.CourseID }, course);
         }
 
-[Authorize(Roles="Admin")]
-[HttpPut("{CourseID}")]
-public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
-{
-    if (CourseID != course.CourseID)
-    {
-        return BadRequest();
-    }
+        [Authorize(Roles="Admin")]
+        [HttpPut("{CourseID}")]
+        public async Task<IActionResult> UpdateCourse(int CourseID, Course course)
+        {
+            if (CourseID != course.CourseID)
+            {
+                return BadRequest();
+            }
 
-    var existingCourse = await _courseService.GetCourseById(CourseID);
-    if (existingCourse == null)
-    {
-        return NotFound();
-    }
+            var existingCourse = await _courseService.GetCourseById(CourseID);
+            if (existingCourse == null)
+            {
+                return NotFound();
+            }
 
-    try
-    {
-        // Update the existing course with the properties of the provided course
-        existingCourse.CourseName = course.CourseName;
-        existingCourse.Description = course.Description;
-        existingCourse.Duration = course.Duration;
-        existingCourse.Amount = course.Amount;
+            try
+            {
+                // Update the existing course with the properties of the provided course
+                existingCourse.CourseName = course.CourseName;
+                existingCourse.Description = course.Description;
+                existingCourse.Duration = course.Duration;
+                existingCourse.Amount = course.Amount;
 
-        await _courseService.UpdateCourse(existingCourse);
-    }
-    catch (Exception)
-    {
-        return StatusCode(500);
-    }
+                await _courseService.UpdateCourse(existingCourse);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
 
-    // Return the updated course
-    return Ok(existingCourse);
-}
+            // Return the updated course
+            return Ok(existingCourse);
+        }
 
-
-      [Authorize(Roles="Admin")]
-[HttpDelete("{id}")]
-public async Task<IActionResult> DeleteCourse(int id)
-{
-    var course = await _courseService.GetCourseById(id);
-    if (course == null)
-    {
-        return NotFound();
-    }
-
-    await _courseService.DeleteCourse(course);
-    return NoContent();
-}
+        [Authorize(Roles="Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCourse(int id)
+        {
+            await _courseService.DeleteCourse(id);
+            return NoContent();
+        }
 
     }
 }

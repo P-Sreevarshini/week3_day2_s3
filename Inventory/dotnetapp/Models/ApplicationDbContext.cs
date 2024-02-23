@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace dotnetapp.Models
 {
@@ -12,6 +14,8 @@ namespace dotnetapp.Models
         public DbSet<Course> Courses { get; set; }
         public DbSet<Enquiry> Enquiries { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Customer> Customers{ get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
