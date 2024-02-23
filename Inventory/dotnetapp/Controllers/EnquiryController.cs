@@ -45,7 +45,7 @@ namespace dotnetapp.Controllers
             var enquiries = await _enquiryService.GetEnquiriesByUserId(userId);
             if (enquiries == null || enquiries.Count == 0)
             {
-                return NotFound();
+            return NotFound("The Enquiry is not found");
             }
             return Ok(enquiries);
         }
@@ -72,7 +72,7 @@ public async Task<IActionResult> UpdateEnquiry(int id, Enquiry enquiry)
     var existingEnquiry = await _enquiryService.GetEnquiryById(id);
     if (existingEnquiry == null)
     {
-        return NotFound();
+            return NotFound("The Enquiry is not found");
     }
 
     try
@@ -86,23 +86,21 @@ public async Task<IActionResult> UpdateEnquiry(int id, Enquiry enquiry)
     }
 }
 
-[Authorize(Roles="Student")]
+    [Authorize(Roles="Student")]
 
-[HttpDelete("enquiry/{id}")]
-public async Task<IActionResult> DeleteEnquiry(int id)
-{
-    try
+    [HttpDelete("enquiry/{id}")]
+    public async Task<IActionResult> DeleteEnquiry(int id)
     {
+        var enquiry = await _enquiryService.GetEnquiryById(id);
+        if (enquiry == null)
+        {
+            return NotFound("The Enquiry is not found");
+        }
+
         await _enquiryService.DeleteEnquiry(id);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error deleting enquiry: {ex.Message}");
-        return StatusCode(500, "Error deleting enquiry. Please try again later.");
+        return Ok("Enquiry deleted successfully."); // Return a message confirming deletion
     }
 
-    return NoContent();
-}
 
 
     }
