@@ -11,7 +11,6 @@ namespace dotnetapp.Services
 
         public PaymentService()
         {
-            // Initialize an empty list of payments
             _payments = new List<Payment>();
         }
 
@@ -21,11 +20,6 @@ namespace dotnetapp.Services
             return _payments;
         }
 
-        public async Task<Payment> GetPaymentById(int paymentId)
-        {
-            // Find the payment with the provided ID in the list
-            return _payments.FirstOrDefault(p => p.PaymentID == paymentId);
-        }
 
         public async Task CreatePayment(Payment payment)
         {

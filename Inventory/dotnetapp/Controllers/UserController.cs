@@ -27,15 +27,15 @@ namespace dotnetapp.Controllers
             }
             return Ok(user);
         }
-
-        [HttpPost]
+        [Autthorize(Roles="Admin,Student")]
+        [HttpPost("student")]
         public IActionResult CreateUser(User user)
         {
             _userService.CreateUser(user);
             return CreatedAtAction(nameof(GetUserById), new { userId = user.UserId }, user);
         }
-
-        [HttpPut("{studentId}")]
+        [Autthorize(Roles="Student")]
+        [HttpPut("student/{id}")]
         public IActionResult UpdateUser(long studentId, User user)
         {
             if (studentId != user.UserId)
@@ -54,7 +54,7 @@ namespace dotnetapp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("student/{id}")]
         public IActionResult DeleteUser(long studentId)
         {
             var existingUser = _userService.GetUserById(studentId);
@@ -68,16 +68,15 @@ namespace dotnetapp.Controllers
             return NoContent();
         }
 
-        [HttpPost("{studentId}/payments")]
+        [HttpPost("student/payment")]
         public IActionResult PostStudentPayment(long studentId, Payment payment)
         {
-            // Here you can associate the payment with the student
             payment.StudentId = studentId;
             _userService.AddPaymentToStudent(payment);
             return CreatedAtAction(nameof(PostStudentPayment), new { studentId }, payment);
         }
 
-        [HttpGet("{userId}/student")]
+        [HttpGet("student/user/{userId}")]
         public IActionResult GetStudentByUserId(long userId)
         {
             var student = _userService.GetStudentByUserId(userId);

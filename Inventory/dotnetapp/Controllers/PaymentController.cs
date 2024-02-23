@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace dotnetapp.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/api/")]
     public class PaymentController : ControllerBase
     {
         private readonly PaymentService _paymentService;
@@ -19,31 +19,18 @@ namespace dotnetapp.Controllers
             _paymentService = paymentService;
         }
         
-       [Authorize(Roles="Admin,Student")]
+       [Authorize(Roles="Admin")]
 
-        [HttpGet]
+        [HttpGet("admin/payment")]
         public async Task<IActionResult> GetAllPayments()
         {
             var payments = await _paymentService.GetAllPayments();
             return Ok(payments);
         }
 
-        [Authorize(Roles="Admin,Student")]
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPaymentById(int id)
-        {
-            var payment = await _paymentService.GetPaymentById(id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
-            return Ok(payment);
-        }
-
        [Authorize(Roles="Student")]
 
-        [HttpPost]
+        [HttpPost("student/payment")]
         public async Task<IActionResult> CreatePayment(Payment payment)
         {
             await _paymentService.CreatePayment(payment);
