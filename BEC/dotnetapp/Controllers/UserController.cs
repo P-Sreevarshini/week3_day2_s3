@@ -1,4 +1,3 @@
-// UserController.cs
 using dotnetapp.Models;
 using dotnetapp.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +39,8 @@ namespace dotnetapp.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                _logger.LogError(ex, "An error occurred during login.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
             }
         }
 
@@ -53,28 +52,20 @@ namespace dotnetapp.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid payload");
-                if (model.UserRole == "Admin" || model.UserRole == "Customer")
-                {
-                    var registrationResult = await _userService.RegisterUserAsync(model);
-                    if (registrationResult.Item1 == 0)
-                    {
-                        return BadRequest(registrationResult.Item2);
-                    }
-                    _context.Users.Add(model);
-                    await _context.SaveChangesAsync();
-                    return Ok(registrationResult.Item2);
-                }
-                else
-                {
-                    return BadRequest("Invalid Role");
-                }
+
+                var registrationResult = await _userService.RegisterUserAsync(model);
+                if (registrationResult.Item1 == 0)
+                    return BadRequest(registrationResult.Item2);
+
+                _context.Users.Add(model);
+                await _context.SaveChangesAsync();
+                return Ok(registrationResult.Item2);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                _logger.LogError(ex, "An error occurred during registration.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
             }
         }
-
     }
 }

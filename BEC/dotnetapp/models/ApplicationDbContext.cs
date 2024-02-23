@@ -20,7 +20,7 @@ namespace dotnetapp.Models
             // Configure the relationship between Enquiry and User
             modelBuilder.Entity<Enquiry>()
                 .HasOne(e => e.User)
-                .WithMany()  // Adjust this if you have a specific navigation property on User referring back to Enquiries
+                .WithMany() 
                 .HasForeignKey(e => e.UserId)  // Foreign key in Enquiry
                 .HasPrincipalKey(u => u.UserId);  // Primary key in User
         }
