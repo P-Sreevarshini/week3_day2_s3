@@ -1,5 +1,4 @@
-﻿using dotnetapp.Data;
-using dotnetapp.Models;
+﻿using dotnetapp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
