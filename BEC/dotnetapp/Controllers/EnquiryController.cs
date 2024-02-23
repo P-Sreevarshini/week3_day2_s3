@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
         {
             _enquiryService = enquiryService;
         }
-//  [Authorize(Roles="Admin,Customer")]
+ [Authorize(Roles="Admin,Customer")]
 
         [HttpGet]
         public async Task<IActionResult> GetAllEnquiries()
@@ -27,7 +27,7 @@ namespace dotnetapp.Controllers
             var enquiries = await _enquiryService.GetAllEnquiries();
             return Ok(enquiries);
         }
-// [Authorize(Roles="Admin,Customer")]
+[Authorize(Roles="Admin,Customer")]
 
         [HttpGet("{EnquiryID}")]
         public async Task<IActionResult> GetEnquiryById(int EnquiryID)

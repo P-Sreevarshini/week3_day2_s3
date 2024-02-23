@@ -20,14 +20,14 @@ namespace dotnetapp.Controllers
             _courseService = courseService;
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles="Admin,Customer")]
         [HttpGet]
         public async Task<IActionResult> GetAllCourses()
         {
             var courses = await _courseService.GetAllCourses();
             return Ok(courses);
         }
-      [AllowAnonymous]
+        [Authorize(Roles="Admin,Customer")]
         [HttpGet("{CourseId}")]
         public async Task<IActionResult> GetCourseById(int CourseId)
         {
