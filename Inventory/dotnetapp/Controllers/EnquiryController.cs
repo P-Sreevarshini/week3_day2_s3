@@ -50,13 +50,14 @@ namespace dotnetapp.Controllers
             return Ok(enquiries);
         }
 
-  [Authorize(Roles="Student")]
+[Authorize(Roles="Student")]
 [HttpPost("enquiry")]
 public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
 {
     await _enquiryService.CreateEnquiry(enquiry);
-    return CreatedAtAction(nameof(GetEnquiryById), new { EnquiryID = enquiry.EnquiryID }, enquiry);
+    return CreatedAtAction(nameof(GetEnquiriesByUserId), new { userId = enquiry.UserId }, enquiry);
 }
+
 
 [Authorize(Roles="Student")]
 
