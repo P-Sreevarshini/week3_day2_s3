@@ -1,7 +1,7 @@
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,14 +15,11 @@ namespace dotnetapp.Service
     {
         private readonly UserRepo _userRepository;
         private readonly IConfiguration _configuration;
-        private readonly UserManager<User> _userManager; 
-
 
         public UserServiceImpl(UserRepo userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _configuration = configuration;
-            _userManager = userManager;
         }
 
         public async Task<User> RegisterUserAsync(User user)
@@ -64,31 +61,28 @@ namespace dotnetapp.Service
         {
             return await _userRepository.GetAllUsersAsync();
         }
-         public async Task<User> GetUserByIdAsync(long userId)
+        
+        public async Task<User> GetUserByIdAsync(long userId)
         {
             return await _userRepository.GetUserByIdAsync(userId);
         }
-        public async Task<(int, string)> Login(Login model)
+
+       public async Task<(int, string)> Login(Login model)
         {
-            var user = await userManager.GetUserByEmailAsync(model.Email);
+            // Retrieve the user from the database using the provided email
+            var user = await _userRepository.GetUserByEmailAsync(model.Email);
+            
+            // Check if the user exists
             if (user == null)
                 return (0, "Invalid Email");
-            if (!await userManager.CheckPasswordAsync(user, model.Password))
+
+            // Check if the provided password matches the user's password
+            if (user.Password != model.Password)
                 return (0, "Invalid password");
 
-            // var userRoles = await userManager.GetRolesAsync(user);
-            // var authClaims = new List<Claim>
-            // {
-            //    new Claim(ClaimTypes.Name, user.UserName),
-            //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            // };
-
-            // foreach (var userRole in userRoles)
-            // {
-            //     authClaims.Add(new Claim(ClaimTypes.UserRole, userRole));
-            // }
-            // string token = GenerateToken(authClaims);
-            // return (1, token);
+            // If both email and password are valid, return success
+            return (1, "Login successful");
         }
+
     }
 }
