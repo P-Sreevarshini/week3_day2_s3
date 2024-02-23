@@ -14,6 +14,8 @@ namespace dotnetapp.Models
     public List<Enquiry> Enquiries { get; set; }
     public List<Course> Courses { get; set; }
     public ICollection<Payment> Payments { get; set; }
+    public long UserId { get; set; }
+
     public User User { get; set; }
 }
 }

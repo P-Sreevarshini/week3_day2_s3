@@ -23,10 +23,26 @@ namespace dotnetapp.Services
             return _users.FirstOrDefault(u => u.UserId == userId);
         }
 
-        public void CreateUser(User user)
+       public void CreateUser(User user)
+{
+    _users.Add(user);
+    
+    if (user.UserRole == "student")
+    {
+        // Create a new student instance and populate its properties
+        var student = new Student
         {
-            _users.Add(user);
-        }
+            // Populate student properties from user
+            StudentName = user.Username,
+            StudentMobileNumber = user.MobileNumber,
+            User = user // Associate user with student
+        };
+
+        // Add the student to the list of students
+        _students.Add(student);
+    }
+}
+
 
         public void UpdateUser(User user)
         {
