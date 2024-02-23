@@ -21,5 +21,7 @@ public class Payment
 
     [ForeignKey(nameof(CourseID))]
     public Course? Course { get; set; }
+     public Student Student { get; set; }
+
 }
 }

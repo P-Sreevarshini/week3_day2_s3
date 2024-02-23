@@ -15,6 +15,7 @@ namespace dotnetapp.Models
         public DbSet<Enquiry> Enquiries { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Student> Students { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

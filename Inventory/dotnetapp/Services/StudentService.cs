@@ -2,11 +2,11 @@
 
 namespace dotnetapp.Services
 {
-    public class CustomerService
+    public class StudentService
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomerService(ApplicationDbContext context)
+        public StudentService(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -4,6 +4,6 @@
     {
         public const string Admin = "Admin";
 
-        public const string User = "InventoryManager";
+        public const string User = "Student";
     }
 }

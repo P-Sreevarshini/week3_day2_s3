@@ -16,6 +16,8 @@ public class Course
     
     // Navigation property for related enquiries
     [JsonIgnore]
-    public ICollection<Enquiry>? Enquiries { get; set; }
+public List<Enquiry> Enquiries { get; set; }
+    public HashSet<Student> Students { get; set; }
+
 }
 }
