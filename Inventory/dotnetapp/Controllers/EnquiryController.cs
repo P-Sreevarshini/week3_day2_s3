@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace dotnetapp.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("/api/")]
     public class EnquiryController : ControllerBase
     {
         private readonly EnquiryService _enquiryService;
@@ -18,9 +18,9 @@ namespace dotnetapp.Controllers
         {
             _enquiryService = enquiryService;
         }
- [Authorize(Roles="Admin,Student")]
+ [Authorize(Roles="Admin")]
 
-        [HttpGet]
+        [HttpGet("enquiry")]
         public async Task<IActionResult> GetAllEnquiries()
         {
             var enquiries = await _enquiryService.GetAllEnquiries();
@@ -28,19 +28,30 @@ namespace dotnetapp.Controllers
         }
 [Authorize(Roles="Admin,Student")]
 
-        [HttpGet("{EnquiryID}")]
-        public async Task<IActionResult> GetEnquiryById(int EnquiryID)
+        [HttpGet("enquiry/{id}")]
+        public async Task<IActionResult> GetEnquiryById(int id)
         {
-            var enquiry = await _enquiryService.GetEnquiryById(EnquiryID);
+            var enquiry = await _enquiryService.GetEnquiryById(id);
             if (enquiry == null)
             {
                 return NotFound();
             }
             return Ok(enquiry);
         }
+        [Authorize(Roles = "Admin,Student")]
+        [HttpGet("user/{userId}")] // New endpoint to get enquiries by user ID
+        public async Task<IActionResult> GetEnquiriesByUserId(long userId)
+        {
+            var enquiries = await _enquiryService.GetEnquiriesByUserId(userId);
+            if (enquiries == null || enquiries.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(enquiries);
+        }
 
   [Authorize(Roles="Student")]
-[HttpPost]
+[HttpPost("enquiry")]
 public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
 {
     await _enquiryService.CreateEnquiry(enquiry);
@@ -49,7 +60,7 @@ public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
 
 [Authorize(Roles="Student")]
 
-        [HttpPut("{EnquiryID}")]
+        [HttpPut("enquiry/{id}")]
         public async Task<IActionResult> UpdateEnquiry(int EnquiryID, Enquiry enquiry)
         {
             if (EnquiryID != enquiry.EnquiryID)
@@ -77,10 +88,10 @@ public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
 
 [Authorize(Roles="Student")]
 
-       [HttpDelete("{EnquiryID}")]
-        public async Task<IActionResult> DeleteEnquiry(int EnquiryID)
+       [HttpDelete("enquiry/{id}")]
+        public async Task<IActionResult> DeleteEnquiry(int id)
         {
-            await _enquiryService.DeleteEnquiry(EnquiryID);
+            await _enquiryService.DeleteEnquiry(id);
             return NoContent();
         }
 

@@ -60,5 +60,11 @@ namespace dotnetapp.Services
         {
             return _students.FirstOrDefault(s => s.User.UserId == userId);
         }
+        
+        public async Task<IEnumerable<Payment>> GetAllPayments()
+        {
+            return await _payments.Payments.ToListAsync();
+        }
+
     }
 }

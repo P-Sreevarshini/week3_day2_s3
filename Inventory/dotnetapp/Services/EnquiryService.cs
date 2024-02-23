@@ -63,5 +63,11 @@ namespace dotnetapp.Services
                 _enquiries.Remove(enquiryToRemove);
             }
         }
+        public async Task<List<Enquiry>> GetEnquiriesByUserId(long userId)
+        {
+            var enquiriesByUserId = _enquiries.Where(e => e.UserId == userId).ToList();
+            return enquiriesByUserId;
+        }
+
     }
 }

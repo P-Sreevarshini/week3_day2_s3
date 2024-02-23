@@ -27,14 +27,14 @@ namespace dotnetapp.Controllers
             return Ok(payments);
         }
 
-       [Authorize(Roles="Student")]
-        [HttpPost("student/payment")]
-        public async Task<IActionResult> CreatePayment(Payment payment)
-        {
-            await _paymentService.CreatePayment(payment);
-            // return CreatedAtAction(nameof(GetPaymentById), new { id = payment.PaymentID }, payment);
-            return Ok(payment); // Return the created payment directly
+    //    [Authorize(Roles="Student")]
+    //     [HttpPost("student/payment")]
+    //     public async Task<IActionResult> CreatePayment(Payment payment)
+    //     {
+    //         await _paymentService.CreatePayment(payment);
+    //         // return CreatedAtAction(nameof(GetPaymentById), new { id = payment.PaymentID }, payment);
+    //         return Ok(payment); // Return the created payment directly
 
-        }
+    //     }
     }
 }
