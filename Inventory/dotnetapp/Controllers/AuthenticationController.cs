@@ -1,6 +1,10 @@
 ﻿using dotnetapp.Models;
 using dotnetapp.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace dotnetapp.Controllers
 {
@@ -19,7 +23,6 @@ namespace dotnetapp.Controllers
             _context = context;
         }
 
-
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginModel model)
@@ -28,9 +31,12 @@ namespace dotnetapp.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
+                
                 var (status, message) = await _authService.Login(model);
+                
                 if (status == 0)
                     return BadRequest(new { Status = "Error", Message = message });
+                
                 return Ok(new { Status = "Success", token = message });
             }
             catch (Exception ex)
@@ -46,16 +52,18 @@ namespace dotnetapp.Controllers
         {
             try
             {
-
                 if (!ModelState.IsValid)
                     return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
+                
                 if (model.UserRole == "Admin" || model.UserRole == "Student")
                 {
                     var (status, message) = await _authService.Registeration(model, model.UserRole);
+                    
                     if (status == 0)
                     {
                         return BadRequest(new { Status = "Error", Message = message });
                     }
+                    
                     var user = new User
                     {
                         Username = model.Username,
@@ -64,15 +72,28 @@ namespace dotnetapp.Controllers
                         MobileNumber = model.MobileNumber,
                         UserRole = model.UserRole,
                     };
+                    
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
+
+                    if (model.UserRole == "Student")
+                    {
+                        var student = new Student
+                        {
+                            StudentName = model.Username,
+                            StudentMobileNumber = model.MobileNumber
+                        };
+                        
+                        _context.Students.Add(student);
+                        await _context.SaveChangesAsync();
+                    }
+
                     return Ok(new { Status = "Success", Message = message });
                 }
                 else
                 {
                     return BadRequest(new { Status = "Error", Message = "Invalid user role" });
                 }
-
             }
             catch (Exception ex)
             {

@@ -34,7 +34,6 @@ namespace dotnetapp.Services
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
-                //Name = model.Name
             };
             
 
