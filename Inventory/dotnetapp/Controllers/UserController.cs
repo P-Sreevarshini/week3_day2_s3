@@ -54,7 +54,7 @@ namespace dotnetapp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{studentId}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteUser(long studentId)
         {
             var existingUser = _userService.GetUserById(studentId);
