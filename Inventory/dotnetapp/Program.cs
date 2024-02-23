@@ -1,4 +1,3 @@
-using dotnetapp.Data;
 using dotnetapp.Models;
 using dotnetapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,8 +28,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders();
 // Adding Authentication  
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<NotificationService>();
-builder.Services.AddScoped<ProductService>();
+// builder.Services.AddScoped<NotificationService>();
+// builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CustomerService>();
 
 builder.Services.AddAuthentication(options =>
