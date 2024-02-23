@@ -79,17 +79,18 @@ public async Task<IActionResult> UpdateCourse(int courseId, Course course)
     return Ok(existingCourse);
 }
 
-       [Authorize(Roles="Admin")]
+      [Authorize(Roles="Admin")]
         [HttpDelete("course/{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            var deletedCourse = await _courseService.DeleteCourse(id);
-            if (deletedCourse == null)
+            var isDeleted = await _courseService.DeleteCourse(id);
+            if (!isDeleted)
             {
                 return NotFound("Course not found.");
             }
             return Ok("Course deleted successfully.");
         }
+
 
 
 

@@ -41,16 +41,17 @@ namespace dotnetapp.Services
             await _context.SaveChangesAsync(); // Save changes to the database
         }
 
-        public async Task DeleteCourse(int courseId)
-        {
-            // Find the course with the provided ID in the database
-            var courseToRemove = await _context.Courses.FindAsync(courseId);
-            if (courseToRemove != null)
-            {
-                // Remove the course from the database
-                _context.Courses.Remove(courseToRemove);
-                await _context.SaveChangesAsync(); // Save changes to the database
-            }
-        }
+        public async Task<bool> DeleteCourse(int courseId)
+{
+    var courseToRemove = await _context.Courses.FindAsync(courseId);
+    if (courseToRemove != null)
+    {
+        _context.Courses.Remove(courseToRemove);
+        await _context.SaveChangesAsync(); // Save changes to the database
+        return true; // Return true if deletion was successful
+    }
+    return false; // Return false if course was not found
+}
+
     }
 }
