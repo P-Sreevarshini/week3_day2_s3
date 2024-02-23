@@ -59,42 +59,50 @@ namespace dotnetapp.Controllers
         }
 
 
+[Authorize(Roles="Student")]
 
-         [Authorize(Roles="Student")]
-        [HttpPut("enquiry/{id}")]
-        public async Task<IActionResult> UpdateEnquiry(int id, Enquiry enquiry)
-        {
-            if (id != enquiry.EnquiryID)
-            {
-                return BadRequest();
-            }
+[HttpPut("enquiry/{id}")]
+public async Task<IActionResult> UpdateEnquiry(int id, Enquiry enquiry)
+{
+    if (id != enquiry.EnquiryID)
+    {
+        return BadRequest();
+    }
 
-            var existingEnquiry = await _enquiryService.GetEnquiryById(id);
-            if (existingEnquiry == null)
-            {
-                return NotFound();
-            }
+    var existingEnquiry = await _enquiryService.GetEnquiryById(id);
+    if (existingEnquiry == null)
+    {
+        return NotFound();
+    }
 
-            try
-            {
-                await _enquiryService.UpdateEnquiry(enquiry);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
-
-            return NoContent();
-        }
+    try
+    {
+        await _enquiryService.UpdateEnquiry(enquiry);
+        return Ok(enquiry); // Return the updated enquiry in the response
+    }
+    catch (Exception)
+    {
+        return StatusCode(500);
+    }
+}
 
 [Authorize(Roles="Student")]
 
-       [HttpDelete("enquiry/{id}")]
-        public async Task<IActionResult> DeleteEnquiry(int id)
-        {
-            await _enquiryService.DeleteEnquiry(id);
-            return NoContent();
-        }
+[HttpDelete("enquiry/{id}")]
+public async Task<IActionResult> DeleteEnquiry(int id)
+{
+    try
+    {
+        await _enquiryService.DeleteEnquiry(id);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error deleting enquiry: {ex.Message}");
+        return StatusCode(500, "Error deleting enquiry. Please try again later.");
+    }
+
+    return NoContent();
+}
 
 
     }
