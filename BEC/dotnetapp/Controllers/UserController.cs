@@ -1,62 +1,84 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
 using dotnetapp.Service;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-[Route("/api/")]
-[ApiController]
-public class UserController : ControllerBase
+namespace dotnetapp.Controllers
 {
-    private readonly UserService _userService;
-
-    public UserController(UserService userService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
     {
-        _userService = userService;
-    }
+        private readonly UserService userService;
+        private readonly ILogger<UserController> _logger;
+        private readonly ApplicationDbContext _context;
 
-    [AllowAnonymous]
-   [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] User user)
-    {
-        var existingUser = await _userService.GetUserByEmailAsync(user.Email);
-        if (existingUser != null)
+        public UserController(IAuthService authService, ILogger<UserController> logger, ApplicationDbContext context)
         {
-            return Conflict("User already exists.");
+            userService = userService;
+            _logger = logger;
+            _context = context;
         }
 
-        var registeredUser = await _userService.RegisterUserAsync(user);
-        return Ok(new { Message = "Registration successful", UserId = registeredUser.UserId });
-    }
 
-    [AllowAnonymous]
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] User model)
-    {
-        if (model == null)
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login(LoginModel model)
         {
-            return BadRequest("Invalid login request.");
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest("Invalid payload");
+                var (status, message) = await _authService.Login(model);
+                if (status == 0)
+                    return BadRequest(message);
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
-        var user = await _userService.GetUserByEmailAsync(model.Email);
-        if (user == null || user.Password != model.Password)
+        [HttpPost]
+        [Route("registeration")]
+        public async Task<IActionResult> Register(RegistrationModel model)
         {
-            return Unauthorized("Invalid email or password.");
+            try
+            {
+
+                if (!ModelState.IsValid)
+                    return BadRequest("Invalid payload");
+                if (model.Role == "Admin" || model.Role == "User")
+                {
+                    var (status, message) = await _authService.Registeration(model, model.Role);
+                    if (status == 0)
+                    {
+                        return BadRequest(message);
+                    }
+                    var user = new User
+                    {
+                        UserName = model.Username,
+                        Password = model.Password,
+                        Email = model.Email,
+                        Role = model.Role,
+                    };
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+                    // return CreatedAtAction(nameof(Register), model);
+                    return Ok(message);
+                }
+                else
+                {
+                    return BadRequest("Invalid Role");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
-
-        var token = await _userService.GenerateJwtTokenAsync(user);
-        if (token == null)
-        {   
-            return StatusCode(StatusCodes.Status500InternalServerError, "Failed to generate JWT token.");
-        }
-
-        return Ok(new { Token = token });
     }
-        [HttpGet("all")]
-    public async Task<IActionResult> GetAllUsers()
-    {
-        var users = await _userService.GetAllUsersAsync();
-        return Ok(users);
-    }
-
 }

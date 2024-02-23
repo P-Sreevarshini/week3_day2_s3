@@ -45,7 +45,7 @@ namespace dotnetapp.Service
                 _configuration["JWT:Issuer"],
                 _configuration["JWT:Audience"],
                 claims,
-                expires: DateTime.Now.AddDays(365), // Example: token expires after 7 days
+                expires: DateTime.Now.AddDays(365), 
                 signingCredentials: credentials
             );
 
@@ -63,7 +63,7 @@ namespace dotnetapp.Service
         }
          public async Task<User> GetUserByIdAsync(long userId)
         {
-            return await _userRepository.GetUserByIdAsync(userId); // Implement this method in UserRepository
+            return await _userRepository.GetUserByIdAsync(userId);
         }
     }
 }
