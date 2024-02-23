@@ -8,27 +8,27 @@ namespace dotnetapp.Controllers
 {
     [ApiController]
     [Route("api/customer")]
-    public class CustomerController : ControllerBase
+    public class StudentController : ControllerBase
     {
-        private readonly CustomerService _customerService;
+        private readonly StudentService _StudentService;
 
-        public CustomerController(CustomerService customerService)
+        public CustomerController(StudentService StudentService)
         {
-            _customerService = customerService;
+            _StudentService = StudentService;
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetAllCustomer()
+        public IActionResult GetAllStudent()
         {
-            var customer = _customerService.GetAllCustomers();
+            var customer = _StudentService.GetAllStudent();
             return Ok(customer);
         }
 
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult AddCustomer([FromBody] Customer customer)
+        public IActionResult AddStudent([FromBody] Customer customer)
         {
             if (customer == null)
             {
@@ -37,7 +37,7 @@ namespace dotnetapp.Controllers
 
             try
             {
-                _customerService.AddCustomer(customer);
+                _StudentService.AddCustomer(customer);
 
                 return Ok(new { Status = "Success", message = "Customer added successfully" });
             }
@@ -59,7 +59,7 @@ namespace dotnetapp.Controllers
             }
 
 
-            _customerService.UpdateCustomer(updatedCustomer, CustomerId);
+            _StudentService.UpdateCustomer(updatedCustomer, CustomerId);
 
             return Ok(new { Status = "Success", message = "Customer updated successfully" });
         }
@@ -68,7 +68,7 @@ namespace dotnetapp.Controllers
         [HttpDelete("{CustomerId}")]
         public IActionResult DeleteProduct(int CustomerId)
         {
-            _customerService.DeleteCustomer(CustomerId);
+            _StudentService.DeleteCustomer(CustomerId);
 
             return Ok(new { Status = "Success", message = "Customer deleted successfully" });
         }

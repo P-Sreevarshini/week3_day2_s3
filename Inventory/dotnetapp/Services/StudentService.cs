@@ -11,12 +11,12 @@ namespace dotnetapp.Services
             _context = context;
         }
 
-        public List<Customer> GetAllCustomers()
+        public List<Customer> GetAllStudent()
         {
             return _context.Customers.ToList();
         }
 
-        public void AddCustomer(Customer customer)
+        public void AddStudent(Student student)
         {
             bool emailExists = _context.Customers.Any(c => c.Email == customer.Email);
 
