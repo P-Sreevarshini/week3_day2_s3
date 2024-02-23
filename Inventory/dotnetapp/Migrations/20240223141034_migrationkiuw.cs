@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace dotnetapp.Migrations
 {
-    public partial class migrationkiu : Migration
+    public partial class migrationkiuw : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -12,8 +12,8 @@ using dotnetapp.Models;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240223133848_migrationkiu")]
-    partial class migrationkiu
+    [Migration("20240223141034_migrationkiuw")]
+    partial class migrationkiuw
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -457,29 +457,29 @@ namespace dotnetapp.Migrations
 
             modelBuilder.Entity("dotnetapp.Models.Payment", b =>
                 {
-                    b.HasOne("dotnetapp.Models.Course", "Course")
+                    b.HasOne("dotnetapp.Models.Course", "Courses")
                         .WithMany()
                         .HasForeignKey("CourseID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dotnetapp.Models.Student", "Student")
+                    b.HasOne("dotnetapp.Models.Student", "Students")
                         .WithMany("Payments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dotnetapp.Models.User", "User")
+                    b.HasOne("dotnetapp.Models.User", "Users")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
+                    b.Navigation("Courses");
 
-                    b.Navigation("Student");
+                    b.Navigation("Students");
 
-                    b.Navigation("User");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.Student", b =>
