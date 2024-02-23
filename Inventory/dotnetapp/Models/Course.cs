@@ -15,7 +15,7 @@ public class Course
     public int Amount { get; set; }
     
     [JsonIgnore]
-public List<Enquiry> Enquiries { get; set; }
+    public List<Enquiry> Enquiries { get; set; }
     public ICollection<Student> Students { get; set; }
 
 }
