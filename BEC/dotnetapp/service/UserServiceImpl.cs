@@ -15,11 +15,14 @@ namespace dotnetapp.Service
     {
         private readonly UserRepo _userRepository;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<User> _userManager; 
+
 
         public UserServiceImpl(UserRepo userRepository, IConfiguration configuration)
         {
             _userRepository = userRepository;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         public async Task<User> RegisterUserAsync(User user)

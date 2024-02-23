@@ -1,3 +1,4 @@
+// UserController.cs
 using dotnetapp.Models;
 using dotnetapp.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,6 @@ namespace dotnetapp.Controllers
             _logger = logger;
             _context = context;
         }
-
 
         [HttpPost]
         [Route("login")]
@@ -52,21 +52,14 @@ namespace dotnetapp.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid payload");
-                if (model.UserRole == "Admin" || model.UserRole == "Customer") // Assuming UserRole is the correct property
+                if (model.UserRole == "Admin" || model.UserRole == "Customer")
                 {
-                    var (status, message) = await _userService.Register(model, model.UserRole); // Assuming Register is the correct method
+                    var (status, message) = await _userService.RegisterUserAsync(model);
                     if (status == 0)
                     {
                         return BadRequest(message);
                     }
-                    var user = new User
-                    {
-                        Username = model.Username,
-                        Password = model.Password,
-                        Email = model.Email,
-                        UserRole = model.UserRole,
-                    };
-                    _context.Users.Add(user);
+                    _context.Users.Add(model);
                     await _context.SaveChangesAsync();
                     return Ok(message);
                 }
