@@ -202,7 +202,7 @@ namespace dotnetapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("StudentId")
+                    b.Property<long?>("StudentId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("TransactionID")
@@ -463,9 +463,7 @@ namespace dotnetapp.Migrations
 
                     b.HasOne("dotnetapp.Models.Student", "Students")
                         .WithMany("Payments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("dotnetapp.Models.User", "Users")
                         .WithMany()

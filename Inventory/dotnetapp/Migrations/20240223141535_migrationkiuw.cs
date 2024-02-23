@@ -282,7 +282,7 @@ namespace dotnetapp.Migrations
                     TransactionID = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     CourseID = table.Column<int>(type: "int", nullable: false),
-                    StudentId = table.Column<long>(type: "bigint", nullable: false)
+                    StudentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -297,8 +297,7 @@ namespace dotnetapp.Migrations
                         name: "FK_Payments_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
-                        principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "StudentId");
                     table.ForeignKey(
                         name: "FK_Payments_Users_UserId",
                         column: x => x.UserId,

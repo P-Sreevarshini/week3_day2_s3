@@ -12,7 +12,7 @@ using dotnetapp.Models;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240223141034_migrationkiuw")]
+    [Migration("20240223141535_migrationkiuw")]
     partial class migrationkiuw
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -204,7 +204,7 @@ namespace dotnetapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("StudentId")
+                    b.Property<long?>("StudentId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("TransactionID")
@@ -465,9 +465,7 @@ namespace dotnetapp.Migrations
 
                     b.HasOne("dotnetapp.Models.Student", "Students")
                         .WithMany("Payments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("dotnetapp.Models.User", "Users")
                         .WithMany()

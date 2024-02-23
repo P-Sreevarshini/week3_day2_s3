@@ -51,9 +51,9 @@ namespace dotnetapp.Models
         public string TransactionID { get; set; }
         public long UserId { get; set; }
         public int CourseID { get; set; }
-        public long StudentId { get; set; }
+        public long? StudentId { get; set; }
         public User Users { get; set; }
         public Course Courses { get; set; }
-        public Student Students { get; set; }
+        public Student? Students { get; set; }
     }
 }
