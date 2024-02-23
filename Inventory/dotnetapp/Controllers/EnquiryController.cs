@@ -24,6 +24,10 @@ namespace dotnetapp.Controllers
         public async Task<IActionResult> GetAllEnquiries()
         {
             var enquiries = await _enquiryService.GetAllEnquiries();
+             if (enquiries == null)
+            {
+            return NotFound("The Enquiry is not found");
+            }
             return Ok(enquiries);
         }
 [Authorize(Roles="Admin,Student")]
@@ -34,7 +38,7 @@ namespace dotnetapp.Controllers
             var enquiry = await _enquiryService.GetEnquiryById(id);
             if (enquiry == null)
             {
-                return NotFound();
+            return NotFound("The Enquiry is not found");
             }
             return Ok(enquiry);
         }
@@ -45,7 +49,7 @@ namespace dotnetapp.Controllers
             var enquiries = await _enquiryService.GetEnquiriesByUserId(userId);
             if (enquiries == null || enquiries.Count == 0)
             {
-            return NotFound("The Enquiry is not found");
+            return NotFound("The Enquiry is not found fot the UserId");
             }
             return Ok(enquiries);
         }
