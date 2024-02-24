@@ -25,12 +25,37 @@ namespace dotnetapp.Services
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
         }
-
-        public async Task CreateStudent(Student user)
+public async Task CreateStudent(Student student)
+{
+    // Check if the user already exists
+    var existingUser = await _context.Users.FindAsync(student.UserId);
+    if (existingUser == null)
+    {
+        // If the user doesn't exist, create a new user
+        var newUser = new User
         {
-            _context.Students.Add(user);
-            await _context.SaveChangesAsync();
-        }
+            // Populate user properties here
+            // For example:
+            Username = student.StudentName,
+            MobileNumber = student.StudentMobileNumber,
+            // Set other user properties as needed
+            UserRole = "student"
+        };
+
+        // Add the new user to the Users table
+        _context.Users.Add(newUser);
+        await _context.SaveChangesAsync(); // Save changes to generate UserId
+
+        // Assign the generated UserId to the student
+        student.UserId = newUser.UserId;
+    }
+
+    // Add the student to the Students table
+    _context.Students.Add(student);
+    await _context.SaveChangesAsync();
+}
+
+
 
         public async Task UpdateUser(User user)
         {

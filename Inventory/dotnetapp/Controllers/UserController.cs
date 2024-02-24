@@ -33,11 +33,12 @@ namespace dotnetapp.Controllers
       //  [Authorize(Roles="Admin,Student")]
 
         [HttpPost("student")]
-        public async Task<IActionResult> CreateStudent(Student user)
+        public async Task<IActionResult> CreateStudent(Student student)
         {
-            await _userService.CreateStudent(user);
-            return CreatedAtAction(nameof(GetUserById), new { userId = user.StudentId }, user);
+            await _userService.CreateStudent(student);
+            return CreatedAtAction(nameof(GetUserById), new { userId = student.UserId }, student);
         }
+        
         [Authorize(Roles="Student")]
 
         [HttpPut("student/{id}")]

@@ -15,7 +15,8 @@ namespace dotnetapp.Models
     public List<Course>? Courses { get; set; }
     public ICollection<Payment>? Payments { get; set; }
     public long UserId { get; set; }
+    [ForeignKey(nameof(UserId))]
 
-    public User User { get; set; }
+    public User? User { get; set; }
 }
 }
