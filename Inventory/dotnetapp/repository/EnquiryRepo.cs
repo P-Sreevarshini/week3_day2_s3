@@ -113,11 +113,30 @@ namespace dotnetapp.Repository
                 .LoadAsync();
         }
 
-        public async Task UpdateEnquiry(Enquiry enquiry)
+      public async Task UpdateEnquiry(Enquiry enquiry)
+{
+    try
+    {
+        // Retrieve the existing entity from the database
+        var existingEnquiry = await _context.Enquiries.FindAsync(enquiry.EnquiryID);
+        if (existingEnquiry == null)
         {
-            _context.Entry(enquiry).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            throw new Exception("Enquiry not found.");
         }
+
+        // Update the properties of the existing entity
+        _context.Entry(existingEnquiry).CurrentValues.SetValues(enquiry);
+
+        // Save the changes
+        await _context.SaveChangesAsync();
+    }
+    catch (Exception ex)
+    {
+        throw new Exception("Failed to update enquiry.", ex);
+    }
+}
+
+
 
         public async Task DeleteEnquiry(int id)
         {
