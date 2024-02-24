@@ -14,6 +14,7 @@ namespace dotnetapp.Controllers
     public class EnquiryController : ControllerBase
     {
         private readonly EnquiryService _enquiryService;
+        private readonly UserService _userService;
 
         public EnquiryController(EnquiryService enquiryService)
         {
@@ -47,6 +48,25 @@ namespace dotnetapp.Controllers
         await _enquiryService.CreateEnquiry(enquiry);
         return CreatedAtAction(nameof(GetEnquiryById), new { EnquiryID = enquiry.EnquiryID }, enquiry);
     }
+        // public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
+        // {
+        //     // Retrieve the user by email
+        //     var user = await _userService.GetUserByEmail(enquiry.EmailID);
+
+        //     // Check if the user exists
+        //     if (user == null)
+        //     {
+        //         return BadRequest("User with the provided email does not exist.");
+        //     }
+
+        //     // Associate the UserId with the Enquiry
+        //     enquiry.UserId = user.UserId;
+
+        //     // Create the enquiry
+        //     await _enquiryService.CreateEnquiry(enquiry);
+
+        //     return CreatedAtAction(nameof(GetEnquiryById), new { EnquiryID = enquiry.EnquiryID }, enquiry);
+        // }
 
         // [Authorize(Roles="Student")]
 

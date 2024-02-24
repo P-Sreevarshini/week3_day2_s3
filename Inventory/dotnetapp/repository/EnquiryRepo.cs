@@ -84,17 +84,26 @@ namespace dotnetapp.Repository
                 .ToListAsync();
         }
 
+        // public async Task<Enquiry> GetEnquiryById(int id)
+        // {
+        //         return await _context.Enquiries
+        //         .Include(b => b.User)
+        //         .Include(c => c.Course)
+        //         .FindAsync();        }
         public async Task<Enquiry> GetEnquiryById(int id)
         {
-            return await _context.Enquiries.FindAsync(id);
+            return await _context.Enquiries
+                .Include(b => b.User)
+                .Include(c => c.Course)
+                .FirstOrDefaultAsync(e => e.EnquiryID == id);
         }
+
 
         public async Task CreateEnquiry(Enquiry enquiry)
         {
             _context.Enquiries.Add(enquiry);
             await _context.SaveChangesAsync();
 
-            // Load related entities after saving
             await _context.Entry(enquiry)
                 .Reference(e => e.Course)
                 .LoadAsync();
