@@ -1,34 +1,16 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// PaymentService.cs
 using dotnetapp.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace dotnetapp.Services
+namespace dotnetapp.Service
 {
-    public class PaymentService
+    public interface PaymentService
     {
-        private readonly ApplicationDbContext _context;
-
-        public PaymentService(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<IEnumerable<Payment>> GetAllPayments()
-        {
-            return await _context.Payments.ToListAsync();
-        }
-
-        public async Task CreatePayment(Payment payment)
-        {
-            _context.Payments.Add(payment);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<Payment> GetPaymentById(int id)
-        {
-            return await _context.Payments.FirstOrDefaultAsync(p => p.PaymentID == id);
-        }
+        Task<IEnumerable<Payment>> GetAllPayments();
+        Task<Payment> GetPaymentById(int id);
+        Task CreatePayment(Payment payment);
+        Task UpdatePayment(Payment payment);
+        Task DeletePayment(int id);
     }
 }

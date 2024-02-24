@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
-using dotnetapp.Services;
+using dotnetapp.Service;
+using dotnetapp.Repository;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace dotnetapp.Controllers
 {
     [ApiController]
-    [Route("/api/")]
+    [Route("api/[controller]")]
     public class PaymentController : ControllerBase
     {
         private readonly PaymentService _paymentService;
@@ -19,22 +20,35 @@ namespace dotnetapp.Controllers
             _paymentService = paymentService;
         }
         
-    //    [Authorize(Roles="Admin")]
-    //     [HttpGet("admin/payment")]
-    //     public async Task<IActionResult> GetAllPayments()
-    //     {
-    //         var payments = await _paymentService.GetAllPayments();
-    //         return Ok(payments);
-    //     }
+       [Authorize(Roles="Admin,Student")]
 
-    //    [Authorize(Roles="Student")]
-    //     [HttpPost("student/payment")]
-    //     public async Task<IActionResult> CreatePayment(Payment payment)
-    //     {
-    //         await _paymentService.CreatePayment(payment);
-    //         // return CreatedAtAction(nameof(GetPaymentById), new { id = payment.PaymentID }, payment);
-    //         return Ok(payment); // Return the created payment directly
+        [HttpGet]
+        public async Task<IActionResult> GetAllPayments()
+        {
+            var payments = await _paymentService.GetAllPayments();
+            return Ok(payments);
+        }
 
-    //     }
+        [Authorize(Roles="Admin,Student")]
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPaymentById(int id)
+        {
+            var payment = await _paymentService.GetPaymentById(id);
+            if (payment == null)
+            {
+                return NotFound();
+            }
+            return Ok(payment);
+        }
+
+       [Authorize(Roles="Student")]
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePayment(Payment payment)
+        {
+            await _paymentService.CreatePayment(payment);
+            return CreatedAtAction(nameof(GetPaymentById), new { id = payment.PaymentID }, payment);
+        }
     }
 }

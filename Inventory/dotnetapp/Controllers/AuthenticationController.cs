@@ -47,64 +47,64 @@ namespace dotnetapp.Controllers
         }
 
         [HttpPost]
-[Route("register")]
-public async Task<IActionResult> Register(User model)
-{
-    try
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
-        
-        if (model.UserRole == "Admin" || model.UserRole == "Student")
+        [Route("register")]
+        public async Task<IActionResult> Register(User model)
         {
-            var (status, message) = await _authService.Registeration(model, model.UserRole);
-            
-            if (status == 0)
+            try
             {
-                return BadRequest(new { Status = "Error", Message = message });
-            }
-            
-            var user = new User
-            {
-                Username = model.Username,
-                Password = model.Password,
-                Email = model.Email,
-                MobileNumber = model.MobileNumber,
-                UserRole = model.UserRole,
-            };
-            
-            _context.Users.Add(user);
-            
-            // Save changes to ensure user record is created and UserId is generated
-            await _context.SaveChangesAsync();
-
-            if (model.UserRole == "Student")
-            {
-                var student = new Student
-                {
-                    StudentName = model.Username,
-                    StudentMobileNumber = model.MobileNumber,
-                    UserId = user.UserId // Assign the generated UserId to the Student's UserId
-                };
+                if (!ModelState.IsValid)
+                    return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
                 
-                _context.Students.Add(student);
+                if (model.UserRole == "Admin" || model.UserRole == "Student")
+                {
+                    var (status, message) = await _authService.Registeration(model, model.UserRole);
+                    
+                    if (status == 0)
+                    {
+                        return BadRequest(new { Status = "Error", Message = message });
+                    }
+                    
+                    var user = new User
+                    {
+                        Username = model.Username,
+                        Password = model.Password,
+                        Email = model.Email,
+                        MobileNumber = model.MobileNumber,
+                        UserRole = model.UserRole,
+                    };
+                    
+                    _context.Users.Add(user);
+                    
+                    // Save changes to ensure user record is created and UserId is generated
+                    await _context.SaveChangesAsync();
+
+                    if (model.UserRole == "Student")
+                    {
+                        var student = new Student
+                        {
+                            StudentName = model.Username,
+                            StudentMobileNumber = model.MobileNumber,
+                            UserId = user.UserId // Assign the generated UserId to the Student's UserId
+                        };
+                        
+                        _context.Students.Add(student);
+                    }
+
+                    await _context.SaveChangesAsync(); // Save changes to ensure student record is created
+
+                    return Ok(new { Status = "Success", Message = message });
+                }
+                else
+                {
+                    return BadRequest(new { Status = "Error", Message = "Invalid user role" });
+                }
             }
-
-            await _context.SaveChangesAsync(); // Save changes to ensure student record is created
-
-            return Ok(new { Status = "Success", Message = message });
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
-        else
-        {
-            return BadRequest(new { Status = "Error", Message = "Invalid user role" });
-        }
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex.Message);
-        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-    }
-}
 
     }
 }

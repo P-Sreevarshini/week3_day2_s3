@@ -28,9 +28,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders();
 // Adding Authentication  
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<EnquiryService>();
-builder.Services.AddScoped<PaymentService>();
-builder.Services.AddScoped<CourseService>();
+builder.Services.AddScoped<CourseService, CourseServiceImpl>(); 
+builder.Services.AddScoped<CourseRepo>();
+builder.Services.AddScoped<EnquiryService, EnquiryServiceImpl>(); 
+builder.Services.AddScoped<EnquiryRepo>();
+builder.Services.AddScoped<PaymentService, PaymentServiceImpl>(); 
+builder.Services.AddScoped<PaymentRepo>();
 builder.Services.AddScoped<UserService>(); 
 
 

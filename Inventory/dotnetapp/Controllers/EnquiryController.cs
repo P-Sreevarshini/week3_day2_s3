@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
-using dotnetapp.Services;
+using dotnetapp.Service;
+using dotnetapp.Repository;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace dotnetapp.Controllers
 {
     [ApiController]
-    [Route("/api/")]
+    [Route("api/[controller]")]
     public class EnquiryController : ControllerBase
     {
         private readonly EnquiryService _enquiryService;
@@ -18,93 +19,71 @@ namespace dotnetapp.Controllers
         {
             _enquiryService = enquiryService;
         }
- [Authorize(Roles="Admin")]
+ [Authorize(Roles="Admin,Student")]
 
-        [HttpGet("enquiry")]
+        [HttpGet]
         public async Task<IActionResult> GetAllEnquiries()
         {
             var enquiries = await _enquiryService.GetAllEnquiries();
-             if (enquiries == null)
-            {
-            return NotFound("The Enquiry is not found");
-            }
             return Ok(enquiries);
         }
 [Authorize(Roles="Admin,Student")]
 
-        [HttpGet("enquiry/{id}")]
-        public async Task<IActionResult> GetEnquiryById(int id)
+        [HttpGet("{EnquiryID}")]
+        public async Task<IActionResult> GetEnquiryById(int EnquiryID)
         {
-            var enquiry = await _enquiryService.GetEnquiryById(id);
+            var enquiry = await _enquiryService.GetEnquiryById(EnquiryID);
             if (enquiry == null)
             {
-            return NotFound("The Enquiry is not found");
+                return NotFound();
             }
             return Ok(enquiry);
         }
-        [Authorize(Roles = "Admin,Student")]
-        [HttpGet("user/{userId}")] // New endpoint to get enquiries by user ID
-        public async Task<IActionResult> GetEnquiriesByUserId(long userId)
+
+    [Authorize(Roles="Student")]
+    [HttpPost]
+    public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
+    {
+        await _enquiryService.CreateEnquiry(enquiry);
+        return CreatedAtAction(nameof(GetEnquiryById), new { EnquiryID = enquiry.EnquiryID }, enquiry);
+    }
+
+        [Authorize(Roles="Student")]
+
+        [HttpPut("{EnquiryID}")]
+        public async Task<IActionResult> UpdateEnquiry(int EnquiryID, Enquiry enquiry)
         {
-            var enquiries = await _enquiryService.GetEnquiriesByUserId(userId);
-            if (enquiries == null || enquiries.Count == 0)
+            if (EnquiryID != enquiry.EnquiryID)
             {
-            return NotFound("The Enquiry is not found fot the UserId");
+                return BadRequest();
             }
-            return Ok(enquiries);
+
+            var existingEnquiry = await _enquiryService.GetEnquiryById(EnquiryID);
+            if (existingEnquiry == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                await _enquiryService.UpdateEnquiry(enquiry);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+            return NoContent();
         }
 
         [Authorize(Roles="Student")]
-        [HttpPost("enquiry")]
-        public async Task<IActionResult> CreateEnquiry(Enquiry enquiry)
+
+       [HttpDelete("{EnquiryID}")]
+        public async Task<IActionResult> DeleteEnquiry(int EnquiryID)
         {
-            await _enquiryService.CreateEnquiry(enquiry);
-            return CreatedAtAction(nameof(GetEnquiriesByUserId), new { userId = enquiry.UserId }, enquiry);
+            await _enquiryService.DeleteEnquiry(EnquiryID);
+            return NoContent();
         }
-
-
-[Authorize(Roles="Student")]
-
-[HttpPut("enquiry/{id}")]
-public async Task<IActionResult> UpdateEnquiry(int id, Enquiry enquiry)
-{
-    if (id != enquiry.EnquiryID)
-    {
-        return BadRequest();
-    }
-
-    var existingEnquiry = await _enquiryService.GetEnquiryById(id);
-    if (existingEnquiry == null)
-    {
-            return NotFound("The Enquiry is not found");
-    }
-
-    try
-    {
-        await _enquiryService.UpdateEnquiry(enquiry);
-        return Ok(enquiry); // Return the updated enquiry in the response
-    }
-    catch (Exception)
-    {
-        return StatusCode(500);
-    }
-}
-
-    [Authorize(Roles="Student")]
-
-    [HttpDelete("enquiry/{id}")]
-    public async Task<IActionResult> DeleteEnquiry(int id)
-    {
-        var enquiry = await _enquiryService.GetEnquiryById(id);
-        if (enquiry == null)
-        {
-            return NotFound("The Enquiry is not found");
-        }
-
-        await _enquiryService.DeleteEnquiry(id);
-        return Ok("Enquiry deleted successfully."); // Return a message confirming deletion
-    }
-
 
 
     }
