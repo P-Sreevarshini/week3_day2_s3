@@ -26,6 +26,12 @@ namespace dotnetapp.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task CreateStudent(Student user)
+        {
+            _context.Students.Add(user);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateUser(User user)
         {
             _context.Users.Update(user);

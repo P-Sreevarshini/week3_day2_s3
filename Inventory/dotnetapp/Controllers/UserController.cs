@@ -30,13 +30,13 @@ namespace dotnetapp.Controllers
             return Ok(user);
         }
         
-        [Authorize(Roles="Admin,Student")]
+      //  [Authorize(Roles="Admin,Student")]
 
         [HttpPost("student")]
-        public async Task<IActionResult> CreateUser(User user)
+        public async Task<IActionResult> CreateStudent(Student user)
         {
-            await _userService.CreateUser(user);
-            return CreatedAtAction(nameof(GetUserById), new { userId = user.UserId }, user);
+            await _userService.CreateStudent(user);
+            return CreatedAtAction(nameof(GetUserById), new { userId = user.StudentId }, user);
         }
         [Authorize(Roles="Student")]
 
