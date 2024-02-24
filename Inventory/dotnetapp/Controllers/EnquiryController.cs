@@ -70,31 +70,59 @@ namespace dotnetapp.Controllers
 
         // [Authorize(Roles="Student")]
 
-        [HttpPut("{EnquiryID}")]
-        public async Task<IActionResult> UpdateEnquiry(int EnquiryID, Enquiry enquiry)
+        // [HttpPut("{EnquiryID}")]
+        // public async Task<IActionResult> UpdateEnquiry(int EnquiryID, Enquiry enquiry)
+        // {
+        //     if (EnquiryID != enquiry.EnquiryID)
+        //     {
+        //         return BadRequest();
+        //     }
+
+        //     var existingEnquiry = await _enquiryService.GetEnquiryById(EnquiryID);
+        //     if (existingEnquiry == null)
+        //     {
+        //         return NotFound("Enquiry is not found");
+        //     }
+
+        //     try
+        //     {
+        //         await _enquiryService.UpdateEnquiry(enquiry);
+        //     }
+        //     catch (Exception)
+        //     {
+        //         return StatusCode(500);
+        //     }
+
+        //     return NoContent();
+        // }
+[HttpPut("{EnquiryID}")]
+public async Task<IActionResult> UpdateEnquiry(int EnquiryID, Enquiry enquiry)
+{
+    if (EnquiryID != enquiry.EnquiryID)
+    {
+        return BadRequest("EnquiryID in the request body does not match the route parameter.");
+    }
+
+    try
+    {
+        var existingEnquiry = await _enquiryService.GetEnquiryById(EnquiryID);
+        if (existingEnquiry == null)
         {
-            if (EnquiryID != enquiry.EnquiryID)
-            {
-                return BadRequest();
-            }
-
-            var existingEnquiry = await _enquiryService.GetEnquiryById(EnquiryID);
-            if (existingEnquiry == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                await _enquiryService.UpdateEnquiry(enquiry);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500);
-            }
-
-            return NoContent();
+            return NotFound("Enquiry not found.");
         }
+
+        await _enquiryService.UpdateEnquiry(enquiry);
+
+        return NoContent();
+    }
+    catch (Exception ex)
+    {
+        // Log the exception
+        Console.WriteLine(ex);
+
+        return StatusCode(500, "An unexpected error occurred while updating the enquiry.");
+    }
+}
 
         // [Authorize(Roles="Student")]
 

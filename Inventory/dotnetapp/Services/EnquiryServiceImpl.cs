@@ -29,9 +29,17 @@ namespace dotnetapp.Services
             await _enquiryRepository.CreateEnquiry(enquiry);
         }
 
-        public async Task UpdateEnquiry(Enquiry enquiry)
+       public async Task UpdateEnquiry(Enquiry enquiry)
         {
-            await _enquiryRepository.UpdateEnquiry(enquiry);
+            try
+            {
+                _context.Entry(enquiry).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to update enquiry.", ex);
+            }
         }
 
        public async Task DeleteEnquiry(int EnquiryID)
