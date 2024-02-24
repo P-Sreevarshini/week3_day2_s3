@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
-using dotnetapp.Service;
+using dotnetapp.Services;
 using dotnetapp.Repository;
 using System;
 using System.Threading.Tasks;
