@@ -11,7 +11,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 })
 export class AddPaymentComponent implements OnInit {
   paymentData: any = {
-    userId: '', // Populate with the actual user ID
+    userName: '', // Populate with the actual user ID
     courseId: 0,
     totalAmount: 0,
     status:'PAID',

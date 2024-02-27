@@ -21,7 +21,8 @@
 
   <!-- <label for="paymentDate">Payment Date:</label>
   <input id="paymentDate" type="date" name="paymentDate" [(ngModel)]="paymentData.paymentDate" required> -->
-  <input type="date" id="enquiryDate" formControlName="enquiryDate"[min]="minEnquiryDate()"[max]="maxEnquiryDate()"required>
+
+  <input type="date" id="paymentDate"  [(ngModel)]="paymentData.paymentDate" name="paymentDate"[min]="minEnquiryDate()"[max]="maxEnquiryDate()"required>
   <button type="submit">Submit Payment</button>
 </form>
 
