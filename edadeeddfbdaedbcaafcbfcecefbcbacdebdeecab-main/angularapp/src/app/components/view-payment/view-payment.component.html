@@ -1,0 +1,22 @@
+<div class="paymentcontainer">
+    <!-- <button class="dashboard" (click)="goToDashboard()">Back to Dashboard</button> -->
+    <h2>Payment History</h2>
+  <table>
+    <tr>
+      <th>Payment ID</th>
+      <th>User ID</th>
+      <th>Status</th>
+      <th>Total Amount</th>
+      <th>Payment Date</th>
+      <th>Mode of Payment</th>
+    </tr>
+    <tr *ngFor="let payment of payments">
+      <td>{{ payment.paymentId }}</td>
+      <td>3</td>
+      <td>{{ payment.status }}</td>
+      <td>{{ payment.totalAmount }}</td>
+      <td>{{ payment.paymentDate | date }}</td>
+      <td>{{ payment.modeOfPayment }}</td>
+    </tr>
+  </table>
+  </div>

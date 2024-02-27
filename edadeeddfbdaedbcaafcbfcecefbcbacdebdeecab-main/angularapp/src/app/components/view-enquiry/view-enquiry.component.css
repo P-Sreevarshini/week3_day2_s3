@@ -1,0 +1,46 @@
+/* Apply some basic styles to the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  /* Style the table header */
+  thead {
+    background-color: #3498db; /* Header background color */
+    color: #fff; /* Header text color */
+  }
+  
+  /* Style the table cells */
+  td, th {
+    border: 1px solid #ddd; /* Border color for cells */
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* Style alternating rows for better readability */
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row background color */
+  }
+  
+  /* Style buttons */
+  button {
+    padding: 5px 10px;
+    margin: 2px;
+    cursor: pointer;
+    background-color: #4caf50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 3px;
+  }
+  
+  button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  /* Adjust styles based on user role */
+  button[disabled] {
+    background-color: #ccc; /* Gray out disabled buttons */
+    cursor: not-allowed;
+  }
+  
