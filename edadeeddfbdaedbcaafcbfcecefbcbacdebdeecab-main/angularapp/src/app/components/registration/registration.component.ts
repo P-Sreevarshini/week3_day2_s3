@@ -8,12 +8,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
-  username: string = "";
+  userName: string = "";
   password: string = "";
   confirmPassword: string = "";
   mobileNumber: string = "";
-  role: string = "";
-  email: string;
+  userRole: string = "";
+  emailID: string;
   passwordMismatch: boolean = false; // New property to track password mismatch
 
   constructor(private authService: AuthService, private router: Router) { }
