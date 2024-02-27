@@ -105,6 +105,8 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userRole');
     localStorage.removeItem('email');
+    localStorage.removeItem('userId');
+
     this.currentUserSubject.next(null);
   }
 
@@ -135,6 +137,9 @@ export class AuthService {
     }
     return false; // Return false if the token is not present or doesn't have 'admin' role
   }
+    getCurrentUserId(): string {
+      return localStorage.getItem('userId') || '';
+    }
 
   isStudent(): boolean {
     // Check if the user has the 'admin' role based on your token structure
@@ -190,5 +195,6 @@ export class AuthService {
     } catch (error) {
       return null;
     }
+    
   }
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Course } from 'src/app/models/course.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentService } from 'src/app/services/payment.service';
+import { CourseService } from 'src/app/services/course.service';
 
 @Component({
   selector: 'app-add-payment',
@@ -11,7 +12,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 })
 export class AddPaymentComponent implements OnInit {
   paymentData: any = {
-    userId: '', // Populate with the actual user ID
+    userId: 0, // Populate with the actual user ID
     courseId: 0,
     totalAmount: 0,
     status:'PENDING',
@@ -23,7 +24,9 @@ export class AddPaymentComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private courseService: CourseService
+
   ) {}
   showConfirmation: boolean = false;
 
