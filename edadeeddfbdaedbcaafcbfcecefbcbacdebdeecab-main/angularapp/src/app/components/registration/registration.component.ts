@@ -35,6 +35,10 @@ export class RegistrationComponent {
         console.log(user);
 
         console.log(this.role)
+        if(user.status=="Success") {
+          windows.alert('Registration Successful');
+          
+        }
         if (user == true && this.role === 'ADMIN') {
           this.router.navigate(['/login']);
         } else if ( user == true && this.role === 'STUDENT') {

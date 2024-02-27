@@ -55,7 +55,24 @@ export class AddPaymentComponent implements OnInit {
   closeConfirmation(): void {
     this.showConfirmation = false;
   }
+  minEnquiryDate(): string {
+    const now = new Date();
+    return this.formatDate(now);
+  }
 
+  maxEnquiryDate(): string {
+    const now = new Date();
+    now.setDate(now.getDate()); // Allow only up to the next day
+    return this.formatDate(now);
+  }
+
+  formatDate(date: Date): string {
+    const month = (date.getMonth()).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+  
+    return `${year}-${month}-${day}`;
+  }
   submitPayment() {
     this.paymentService.submitPayment(this.paymentData).subscribe(
       (response) => {
