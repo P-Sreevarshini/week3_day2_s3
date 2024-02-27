@@ -14,6 +14,10 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  goToRegistrationPage(): void {
+    this.router.navigate(['/signup']);
+  }
+  
   login(): void {
     this.authService.login(this.email, this.password).subscribe(
       (asd) => {
