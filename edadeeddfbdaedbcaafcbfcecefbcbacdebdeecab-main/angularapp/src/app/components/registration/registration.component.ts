@@ -35,20 +35,21 @@ export class RegistrationComponent {
         console.log(user);
 
         console.log(this.role)
-        if(user.status=="Success") {
-          windows.alert('Registration Successful');
-          
-        }
+        // if(user.status=="Success") {
+        //   window.alert('Registration Successful');
+        //   this.router.navigate(['/login']);
+        // }
         if (user == true && this.role === 'ADMIN') {
+          alert('Registration Successful');
           this.router.navigate(['/login']);
         } else if ( user == true && this.role === 'STUDENT') {
+          alert('Registration Successful');
           this.router.navigate(['/login']);
         }
       },
       (error) => {
         console.log(error);
 
-        // Handle registration error, display a message, etc.
       }
     );
   }

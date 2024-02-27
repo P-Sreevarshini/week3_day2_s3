@@ -78,6 +78,8 @@ export class AddPaymentComponent implements OnInit {
       (response) => {
         // Handle successful payment submission
         console.log('Payment submitted:', response);
+        alert('Registration Successful');
+
         // Optionally, you can redirect the user after successful payment
         this.router.navigate(['/student/dashboard']);
       },

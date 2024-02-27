@@ -19,8 +19,11 @@ export class LoginComponent {
       (asd) => {
         // Successful login
         if (this.authService.isAdmin()) {
+          alert('Login Successful');
+
           this.router.navigate(['/']); // Navigate to admin page
         } else {
+
           this.router.navigate(['/']); // Navigate to organizer page
         }
       },
