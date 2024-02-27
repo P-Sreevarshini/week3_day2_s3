@@ -6,7 +6,7 @@
 
   <!-- <label for="courseId">Course Id:</label>
   <input id="courseId" type="number" name="courseId" [(ngModel)]="paymentData.course.courseID" readonly> -->
-  <label for="courseId">Course Id:</label>
+  <label for="courseId" readonly [hidden]="!showCourseId">Course Id:</label>
   <input id="courseId" type="number" name="courseId" [(ngModel)]="paymentData.course.courseID" readonly [hidden]="!showCourseId">
   
 
