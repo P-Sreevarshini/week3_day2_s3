@@ -138,7 +138,9 @@ export class AuthService {
     return false; // Return false if the token is not present or doesn't have 'admin' role
   }
     getCurrentUserId(): string {
+      console.log(localStorage.getItem('userId'));
       return localStorage.getItem('userId') || '';
+
     }
 
   isStudent(): boolean {
