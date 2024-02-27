@@ -12,7 +12,7 @@ export class RegistrationComponent {
   password: string = "";
   confirmPassword: string = "";
   mobileNumber: string = "";
-  userRole: string = "";
+  role: string = "";
   emailID: string;
   passwordMismatch: boolean = false; // New property to track password mismatch
 
@@ -30,7 +30,7 @@ export class RegistrationComponent {
       return; // Password complexity check failed
     }
 
-    this.authService.register(this.username, this.password, this.role, this.email, this.mobileNumber).subscribe(
+    this.authService.register(this.userName, this.password, this.role, this.emailID, this.mobileNumber).subscribe(
       (user) => {
         console.log(user);
 

@@ -26,6 +26,7 @@ export class AddEnquiryComponent implements OnInit {
 
   addEnquiry(): void {
     this.enquiryService.addEnquiry(this.enquiry).subscribe(() => {
+      console.log(this.enquiry);
       console.log('Enquiry added successfully');
       this.enquiry = new Enquiry(); // clear the form
     });

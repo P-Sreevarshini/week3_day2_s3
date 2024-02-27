@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CourseService {
-  public apiUrl = 'http://localhost:8080';
+  public apiUrl = 'https://8080-edadeeddfbdaedbcaafcbfcecefbcbacdebdeecab.premiumproject.examly.io';
 
   constructor(private http: HttpClient, private jwtService: JwtService) {}
 
@@ -30,7 +30,7 @@ export class CourseService {
     if (role === 'ADMIN' || role === 'admin') {
       endpoint = `${this.apiUrl}/api/course`;
     } else if (role === 'STUDENT' || role === 'student') {
-      endpoint = `${this.apiUrl}/student/getAllcourses`;
+      endpoint = `${this.apiUrl}/api/student/course`;
     } else {
       console.error('Access denied. Invalid role.');
       return;

@@ -23,17 +23,8 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  // login(username: string, password: string): Observable<any> {
-  //   const body = { username, password };
-  //   console.log(body)
-  //   return this.http.post<any>(`${this.apiUrl}/auth/login`, body).pipe(
-  //     tap((user) => this.storeUserData(user)),
-  //     catchError(this.handleError<any>('login'))
-  //   );
-  // }
-
-  register(username: string, password: string, userRole: string, email: string, mobileNumber:string): Observable<any> {
-    const body = { username, password, userRole, email, mobileNumber };
+ register(userName: string, password: string, userRole: string, emailID: string, mobileNumber:string): Observable<any> {
+    const body = { userName, password, userRole, emailID, mobileNumber };
     console.log(body);
 
     return this.http.post<any>(`${this.apiUrl}/auth/register`, body).pipe(
@@ -83,8 +74,8 @@ export class AuthService {
     };
   }
 
-  login(email: string, password: string): Observable<any> {
-    const loginData = { email, password };
+  login(emailID: string, password: string): Observable<any> {
+    const loginData = { emailID, password };
     console.log(loginData);
     return this.http.post<any>(`${this.apiUrl}/auth/login`, loginData)
       .pipe(

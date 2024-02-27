@@ -8,12 +8,12 @@
     <div
        class="error-message1">*</div>
        </div>
-    <input type="text" id="username" [(ngModel)]="username" name="username" [ngModelOptions]="{standalone: true}" required
+    <input type="text" id="username" [(ngModel)]="userName" name="username" [ngModelOptions]="{standalone: true}" required
            #usernameNgModel="ngModel">
     <div *ngIf="usernameNgModel.invalid && (usernameNgModel.dirty || usernameNgModel.touched)"
          class="error-message">Username is required</div>
          <label for="email">Email:</label>
-         <input type="text" id="email" [(ngModel)]="email" name="email" [ngModelOptions]="{standalone: true}"
+         <input type="text" id="email" [(ngModel)]="emailID" name="email" [ngModelOptions]="{standalone: true}"
                 required email #emailNgModel="ngModel">
 
          <div *ngIf="emailNgModel.invalid && (emailNgModel.dirty || emailNgModel.touched)"
@@ -77,7 +77,7 @@
     <select id="role" [(ngModel)]="role" name="role" required #roleNgModel="ngModel">
       <option value="" disabled>Select a role</option>
       <option value="ADMIN">ADMIN</option>
-      <option value="APPLICANT">APPLICANT</option>
+      <option value="STUDENT">STUDENT</option>
     </select>
     <div *ngIf="roleNgModel.invalid && (roleNgModel.dirty || roleNgModel.touched)"
          class="error-message">Role is required</div>

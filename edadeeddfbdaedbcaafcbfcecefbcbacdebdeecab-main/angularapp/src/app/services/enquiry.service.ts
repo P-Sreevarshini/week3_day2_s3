@@ -65,7 +65,7 @@ export class EnquiryService {
 
     let endpoint;
     if (role === 'ADMIN' || role === 'admin') {
-      endpoint = `${this.apiUrl}/api/enquiries/getAllEnquires`;
+      endpoint = `${this.apiUrl}/api/enquiry`;
     } else if (role === 'STUDENT' || role === 'student') {
       endpoint = `${this.apiUrl}/student/getAllEnquires`;
     } else {
@@ -96,7 +96,7 @@ export class EnquiryService {
       console.error('Access denied. Only students can add enquiries.');
       return;
     }
-    const endpoint = `${this.apiUrl}/student/`;
+    const endpoint = `${this.apiUrl}/api/enquiry`;
     const authToken = localStorage.getItem('token');
     const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
     const options = { headers };
@@ -144,7 +144,7 @@ export class EnquiryService {
       console.error('Access denied. Only students can delete enquiries.');
       return;
     }
-    const endpoint = `${this.apiUrl}/student/${enquiry.enquiryID}`;
+    const endpoint = `${this.apiUrl}/api/enquiry${enquiry.enquiryID}`;
     const authToken = localStorage.getItem('token');
     const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
     const options = { headers };
