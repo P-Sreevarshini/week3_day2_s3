@@ -4,7 +4,7 @@
   <form (ngSubmit)="register()" #registrationForm="ngForm" novalidate>
     <div class="validation">
       <label for="username">Username<span class="asterisk">*</span>:</label>
-      <div class="error-message1">*</div>
+      <div class="error-message1"></div>
     </div>
     <input type="text" id="username" [(ngModel)]="userName" name="username" [ngModelOptions]="{standalone: true}" required
            #usernameNgModel="ngModel">
@@ -23,7 +23,7 @@
 
     <div class="validation">
       <label for="password">Password<span class="asterisk">*</span>:</label>
-      <div class="error-message1">*</div>
+      <div class="error-message1"></div>
     </div>
     <input type="password" id="password" [(ngModel)]="password" name="password" [ngModelOptions]="{standalone: true}" required
            #passwordNgModel="ngModel">
@@ -35,7 +35,7 @@
 
     <div class="validation">
       <label for="confirmPassword">Confirm Password<span class="asterisk">*</span>:</label>
-      <div class="error-message1">*</div>
+      <div class="error-message1"></div>
     </div>
     <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" [ngModelOptions]="{standalone: true}" required
            #confirmPasswordNgModel="ngModel">
@@ -57,7 +57,7 @@
 
     <div class="validation">
       <label for="role">Role<span class="asterisk">*</span>:</label>
-      <div class="error-message1">*</div>
+      <div class="error-message1"></div>
     </div>
     <select id="role" [(ngModel)]="role" name="role" required #roleNgModel="ngModel">
       <option value="" disabled>Select a role</option>
