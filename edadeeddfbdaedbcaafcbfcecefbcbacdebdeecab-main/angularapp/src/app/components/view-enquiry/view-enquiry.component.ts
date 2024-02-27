@@ -24,6 +24,21 @@ export class ViewEnquiryComponent implements OnInit {
     });
   }
 
+  changeStatus(newStatus: string, enquiry: any) {
+    const enquiryId = enquiry.enquiryID; // Assuming you have an 'id' field in your enquiry object
+    this.enquiryService.updateEnquiry(enquiryId, newStatus)
+        .subscribe(
+            () => {
+                console.log('Enquiry status updated successfully');
+                // Optionally, update the local copy of the enquiry with the updated status
+                enquiry.status = newStatus;
+            },
+            error => {
+                console.error('Error updating enquiry status:', error);
+            }
+        );
+}
+  
   deleteEnquiry(enquiry: Enquiry): void {
     if (this.userRole !== 'STUDENT') {
       console.error('Access denied. Only students can delete enquiries.');

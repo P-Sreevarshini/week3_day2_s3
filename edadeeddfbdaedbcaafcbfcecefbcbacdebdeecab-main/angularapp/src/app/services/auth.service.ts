@@ -23,8 +23,8 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
- register(userName: string, password: string, userRole: string, emailID: string, mobileNumber:string,userId: string): Observable<any> {
-    const body = { userName, password, userRole, emailID, mobileNumber,userId };
+ register(userName: string, password: string, userRole: string, emailID: string, mobileNumber:string): Observable<any> {
+    const body = { userName, password, userRole, emailID, mobileNumber };
     console.log(body);
 
     return this.http.post<any>(`${this.apiUrl}/auth/register`, body).pipe(
@@ -61,7 +61,8 @@ export class AuthService {
     // Save the user token and role in localStorage
     localStorage.setItem('userToken', user.token);
     localStorage.setItem('userRole', user.role);
-    localStorage.setItem('userId', user.userId);
+    localStorage.setItem('user', user.userId);
+    console.log('The userID'+localStorage.getItem('user'));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -88,7 +89,8 @@ export class AuthService {
           localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', response.username);
           localStorage.setItem('userRole', response.role);
-          localStorage.setItem('userId', response.userId);
+          localStorage.setItem('user', response.userId);
+          //console.log('The userID'+localStorage.getItem('currentUser'));
           
 
           this.userRoleSubject.next(response.role);
@@ -105,8 +107,6 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userRole');
     localStorage.removeItem('email');
-    localStorage.removeItem('userId');
-
     this.currentUserSubject.next(null);
   }
 
@@ -137,7 +137,6 @@ export class AuthService {
     }
     return false; // Return false if the token is not present or doesn't have 'admin' role
   }
-    
 
   isStudent(): boolean {
     // Check if the user has the 'admin' role based on your token structure
@@ -154,16 +153,10 @@ export class AuthService {
       const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
       // console.log("dummy"+decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
       if(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'student')
-      return false;
-      else  return true && uname;
+      return true;
+     // else  return true && uname;
     }
     return false; // Return false if the token is not present or doesn't have 'admin' role
-  }
-
-  getCurrentUserId(): string {
-    console.log(localStorage.getItem('userId'));
-    return localStorage.getItem('userId') || '';
-
   }
 
   // getCustomerName(): string {
@@ -199,6 +192,5 @@ export class AuthService {
     } catch (error) {
       return null;
     }
-    
   }
 }

@@ -44,7 +44,7 @@ export class PaymentService {
       return;
     }
 
-    const endpoint = `${this.apiUrl}/admin/course/payment`;
+    const endpoint = `${this.apiUrl}/api/course/payment`;
     const authToken = localStorage.getItem('token');
     const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
     const options = { headers };

@@ -226,7 +226,7 @@ namespace dotnetapp.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmailID = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EnquiryType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CourseName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StudentId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
@@ -246,7 +246,7 @@ namespace dotnetapp.Migrations
                     PaymentID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalAmount = table.Column<int>(type: "int", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),

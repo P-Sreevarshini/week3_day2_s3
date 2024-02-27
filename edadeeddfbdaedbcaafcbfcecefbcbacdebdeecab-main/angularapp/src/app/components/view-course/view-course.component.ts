@@ -11,26 +11,20 @@ import { Router } from '@angular/router';
 })
 export class ViewCourseComponent implements OnInit {
   courses: Course[];
-selectedCourse: Course;
-userRole: string;
-  constructor(private courseService: CourseService, private paymentService: PaymentService,private router: Router) { } 
+  selectedCourse: Course;
+  userRole: string;
+
+  constructor(private courseService: CourseService, private paymentService: PaymentService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAllCourses();
     this.userRole = localStorage.getItem('userRole'); // get the user's role from local storage
   }
 
-  // getAllCourses(): void {
-  //   this.courseService.getAllCourses().subscribe(courses => {
-  //     this.courses = courses;
-  //   });
-  // }
-
   getAllCourses(): void {
     this.courseService.getAllCourses().subscribe(courses => {
       this.courses = courses;
       console.log(courses);
-      
     });
   }
 
@@ -49,7 +43,7 @@ userRole: string;
       return;
     }
 
-    this.courseService.deleteCourseByAdmin(course).subscribe(() => {
+    this.courseService.deleteCourseByAdmin(course.courseID).subscribe(() => {
       this.getAllCourses(); // refresh the list after deleting
     });
   }
@@ -60,7 +54,7 @@ userRole: string;
       return;
     }
 
-    this.courseService.updateCourseByAdmin(course).subscribe(() => {
+    this.courseService.updateCourseByAdmin(course.courseID, course).subscribe(() => {
       this.getAllCourses(); // refresh the list after updating
       this.selectedCourse = null; // clear the selection
     });
@@ -71,9 +65,8 @@ userRole: string;
   }
 
   makePayment(course: Course): void {
-    this.router.navigate(['/payment/make'], { queryParams: {...course} });
+    this.router.navigate(['/payment/make'], { queryParams: { ...course } });
     console.log(course);
-    
   }
 
 }

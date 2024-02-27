@@ -16,11 +16,11 @@ export class NavbarComponent implements OnInit {
     this.authService.isAuthenticated$.subscribe((authenticated) => {
       this.isLoggedIn = authenticated;
       if (this.isLoggedIn) {
-        this.isAdmin = this.authService.isAdmin();
-        this.isStudent = this.authService.isStudent();
-        console.log(this.isAdmin);
-        console.log(this.isStudent);
-
+        // Wait for the role information before setting flags
+        this.authService.getUserRole().subscribe((role) => {
+          this.isAdmin = this.authService.isAdmin();
+          this.isStudent = this.authService.isStudent();
+        });
       } else {
         this.isAdmin = false;
         this.isStudent = false;
@@ -32,8 +32,11 @@ export class NavbarComponent implements OnInit {
     // Initialize the properties on component initialization
     this.isLoggedIn = this.authService.isAuthenticated();
     if (this.isLoggedIn) {
-      this.isAdmin = this.authService.isAdmin();
-      this.isStudent = this.authService.isStudent();
+      // Wait for the role information before setting flags
+      this.authService.getUserRole().subscribe((role) => {
+        this.isAdmin = this.authService.isAdmin();
+        this.isStudent = this.authService.isStudent();
+      });
     }
   }
 

@@ -14,7 +14,6 @@ export class RegistrationComponent {
   mobileNumber: string = "";
   role: string = "";
   emailID: string;
-  userId: "";
   passwordMismatch: boolean = false; // New property to track password mismatch
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -31,7 +30,7 @@ export class RegistrationComponent {
       return; // Password complexity check failed
     }
 
-    this.authService.register(this.userId,this.userName, this.password, this.role, this.emailID, this.mobileNumber).subscribe(
+    this.authService.register(this.userName, this.password, this.role, this.emailID, this.mobileNumber).subscribe(
       (user) => {
         console.log(user);
 

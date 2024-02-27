@@ -11,6 +11,6 @@ public class Enquiry
     public string Description  { get; set; }
     public string EmailID  { get; set; }
     public string EnquiryType  { get; set; }
-    public string? CourseName { get; set; }
+   public string Status { get; set; }
 
 }

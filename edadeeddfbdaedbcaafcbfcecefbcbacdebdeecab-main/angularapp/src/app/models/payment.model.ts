@@ -1,7 +1,7 @@
 export interface Payment {
     paymentId: number;
     courseId: number;
-    userId: number;
+    userName: string;
     status: string;
     totalAmount: number;
     paymentDate: Date;

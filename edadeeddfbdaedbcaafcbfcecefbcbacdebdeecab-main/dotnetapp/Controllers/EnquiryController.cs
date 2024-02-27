@@ -82,9 +82,24 @@ public async Task<ActionResult<IEnumerable<Enquiry>>> GetEnquiryByUserId(string 
             existingEnquiry.Description = updatedEnquiry.Description;
             existingEnquiry.EmailID = updatedEnquiry.EmailID;
             existingEnquiry.EnquiryType = updatedEnquiry.EnquiryType;
-            existingEnquiry.CourseName = updatedEnquiry.CourseName;
+           // existingEnquiry.CourseName = updatedEnquiry.CourseName;
 
             // Save the changes to the database
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        [HttpPut("{id}/status")]
+      //  [Authorize(Roles = "Admin")] // Restrict access to users with the "Admin" role
+        public async Task<IActionResult> UpdateEnquiryStatus(int id, string status)
+        {
+            var enquiry = await _context.Enquires.FindAsync(id);
+
+            if (enquiry == null)
+                return NotFound("Enquiry not found");
+
+            enquiry.Status = status;
+
             await _context.SaveChangesAsync();
 
             return NoContent();

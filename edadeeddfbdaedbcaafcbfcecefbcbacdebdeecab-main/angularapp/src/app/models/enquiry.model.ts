@@ -6,4 +6,5 @@ export class Enquiry {
   description: string;
   emailID: string;
   enquiryType: string;
+  status: string;
 }

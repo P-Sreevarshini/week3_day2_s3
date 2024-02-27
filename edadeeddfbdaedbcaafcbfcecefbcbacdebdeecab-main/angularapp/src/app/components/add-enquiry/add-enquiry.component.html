@@ -37,7 +37,8 @@
     <div class="error-message" *ngIf="email.errors?.required">*Email ID is required</div>
     <div class="error-message" *ngIf="email.errors?.email">*Invalid email format</div>
   </div>
-
+  <label for="enquiryDate">Enquiry Date:</label>
+  <span id="enquiryDate">{{ getCurrentDate() | date: 'mediumDate' }}</span>
   <!-- Enquiry Type Dropdown -->
   <label for="enquiryType">Enquiry Type:</label>
   <select id="enquiryType" name="enquiryType" [(ngModel)]="enquiry.enquiryType" required #enquiryType="ngModel">
