@@ -10,15 +10,14 @@
         <li><a routerLink="/login">Login</a></li>
       </ng-container>
       <ng-container *ngIf="isLoggedIn">
-        <li><a routerLink="/">Home</a></li>
-        <ng-container *ngIf="isAdmin">
-          <li><a routerLink="/admin/dashboard">Admin</a></li>
-        </ng-container>
-        <ng-container *ngIf="isStudent">
-          <li><a routerLink="/student/dashboard">Student</a></li>
-        </ng-container>
+      <li><a routerLink="/">Home</a></li>
+         <li><a routerLink="/admin/dashboard" *ngIf="isAdmin">Admin</a></li>
+        <li><a routerLink="/student/dashboard" *ngIf="isStudent">Student</a></li>
         <li><a id="logout" (click)="logout()">Logout</a></li>
       </ng-container>
     </ul>
   </div>
 </nav>
+
+
+
