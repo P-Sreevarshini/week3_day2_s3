@@ -130,7 +130,7 @@ export class EnquiryService {
       console.error('Access denied. Only students can delete enquiries.');
       return;
     }
-    const endpoint = `${this.apiUrl}/api/enquiry${enquiry.enquiryID}`;
+    const endpoint = `${this.apiUrl}/api/enquiry/${enquiry.enquiryID}`;
     const authToken = localStorage.getItem('token');
     const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
     const options = { headers };

@@ -21,9 +21,16 @@ export class AddCourseComponent  {
     duration: '',
     cost: 0
   };
+  showCourseId: boolean = true; // Flag to show/hide the courseID input field
 
   constructor(private courseService: CourseService, private jwtService: JwtService, private router: Router) {
     this.userRole = this.jwtService.getUserRole();
+    // Set the flag based on the user's role
+    if (this.userRole === 'ADMIN') {
+      this.showCourseId = true; // Show the courseID input field for admins
+    } else {
+      this.showCourseId = false; // Hide the courseID input field for other users
+    }
   }
  
   addCourse(form: NgForm): void {
@@ -44,6 +51,5 @@ export class AddCourseComponent  {
         }
       );
     }
-  
   }
 }

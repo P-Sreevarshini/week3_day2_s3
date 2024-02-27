@@ -4,8 +4,11 @@
   <label for="userName">User Name:</label>
   <input id="userName" type="text" name="userName" [(ngModel)]="paymentData.userName" readonly>
 
-  <label for="courseId">Course Name:</label>
-  <input id="courseId" type="number" name="courseId" [(ngModel)]="paymentData.course.courseID" readonly>
+  <!-- <label for="courseId">Course Id:</label>
+  <input id="courseId" type="number" name="courseId" [(ngModel)]="paymentData.course.courseID" readonly> -->
+  <label for="courseId">Course Id:</label>
+  <input id="courseId" type="number" name="courseId" [(ngModel)]="paymentData.course.courseID" readonly [hidden]="!showCourseId">
+  
 
   <label for="totalAmount">Total Amount:</label>
   <input id="totalAmount" type="number" name="totalAmount" [(ngModel)]="paymentData.totalAmount" readonly>
@@ -13,7 +16,7 @@
   <label for="paymentMode">Mode of Payment:</label>
   <select id="paymentMode" name="modeOfPayment" [(ngModel)]="paymentData.modeOfPayment" required>
     <option value="">Select a mode of payment</option>
-    <option value="Cash on Delivery">Cash on Delivery</option>
+    <option value="Cash">Cash</option>
     <option value="UPI">UPI</option>
     <option value="Card">Card</option>
     <option value="NetBanking">NetBanking</option>
