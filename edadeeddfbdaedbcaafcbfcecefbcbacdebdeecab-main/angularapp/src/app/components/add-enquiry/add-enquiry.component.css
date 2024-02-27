@@ -49,7 +49,9 @@ button:disabled {
   font-size: 12px;
   margin-top: 5px;
 }
-
+.asterisk{
+  color: #d9534f;
+}
 /* Table styles */
 table {
   width: 100%;
