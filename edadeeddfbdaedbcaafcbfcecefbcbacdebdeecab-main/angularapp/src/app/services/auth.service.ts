@@ -23,8 +23,8 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
- register(userName: string, password: string, userRole: string, emailID: string, mobileNumber:string): Observable<any> {
-    const body = { userName, password, userRole, emailID, mobileNumber };
+ register(userName: string, password: string, userRole: string, emailID: string, mobileNumber:string,userId: string): Observable<any> {
+    const body = { userName, password, userRole, emailID, mobileNumber,userId };
     console.log(body);
 
     return this.http.post<any>(`${this.apiUrl}/auth/register`, body).pipe(
@@ -61,7 +61,7 @@ export class AuthService {
     // Save the user token and role in localStorage
     localStorage.setItem('userToken', user.token);
     localStorage.setItem('userRole', user.role);
-    localStorage.setItem('user', user.userId);
+    localStorage.setItem('userId', user.userId);
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

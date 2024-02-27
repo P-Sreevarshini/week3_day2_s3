@@ -52,7 +52,7 @@ export class AddPaymentComponent implements OnInit {
       // this.paymentData.userId = params['userId']; // Populate with the actual user ID
       this.paymentData.userId = localStorage.getItem('userId');
       console.log(this.paymentData.userId); // Changed from userId to this.paymentData.userId
-  
+  // console.log(userId)
       this.paymentData.totalAmount = params['cost'];
   
       this.paymentData.courseId = params['courseID'];

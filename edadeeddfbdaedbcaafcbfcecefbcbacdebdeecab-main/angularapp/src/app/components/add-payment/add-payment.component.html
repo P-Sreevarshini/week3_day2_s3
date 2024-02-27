@@ -1,10 +1,15 @@
 <!-- userpayment.component.html -->
 <h2>Make Payment</h2>
 <form (ngSubmit)="openConfirmation()" #paymentForm="ngForm">
-  <label for="userId">User ID:</label>
-  <input id="userId" type="text" name="userId" [(ngModel)]="paymentData.userId" readonly>
   <!-- <label for="userId">User ID:</label>
-  <input id="userId" type="text" name="userId" [(ngModel)]="paymentData?.userId" readonly> -->
+  <input id="userId" type="text" name="userId" [(ngModel)]="paymentData.userId" readonly> -->
+  <div *ngIf="paymentData.userId !== null">
+    <label for="userId">User ID:</label>
+    <input id="userId" type="text" name="userId" [(ngModel)]="paymentData.userId" readonly>
+  </div>
+  <div *ngIf="paymentData.userId === null">
+    User ID is not available.
+  </div>
   
   <label for="courseId">Course ID:</label>
   <input id="courseId" type="number" name="courseId" [(ngModel)]="paymentData.course.courseID" readonly>
