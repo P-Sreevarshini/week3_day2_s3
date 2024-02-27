@@ -137,11 +137,7 @@ export class AuthService {
     }
     return false; // Return false if the token is not present or doesn't have 'admin' role
   }
-    getCurrentUserId(): string {
-      console.log(localStorage.getItem('userId'));
-      return localStorage.getItem('userId') || '';
-
-    }
+    
 
   isStudent(): boolean {
     // Check if the user has the 'admin' role based on your token structure
@@ -157,11 +153,17 @@ export class AuthService {
       const decodedToken = this.decodeToken(token);
       const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
       // console.log("dummy"+decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
-      if(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin')
+      if(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'student')
       return false;
       else  return true && uname;
     }
     return false; // Return false if the token is not present or doesn't have 'admin' role
+  }
+
+  getCurrentUserId(): string {
+    console.log(localStorage.getItem('userId'));
+    return localStorage.getItem('userId') || '';
+
   }
 
   // getCustomerName(): string {
