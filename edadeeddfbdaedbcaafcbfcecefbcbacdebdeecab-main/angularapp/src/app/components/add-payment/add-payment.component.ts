@@ -11,7 +11,7 @@ import { PaymentService } from 'src/app/services/payment.service';
 })
 export class AddPaymentComponent implements OnInit {
   paymentData: any = {
-    userId: '', // Populate with the actual user ID
+    userId: 0, // Populate with the actual user ID
     courseId: 0,
     totalAmount: 0,
     status:'PENDING',
@@ -30,8 +30,10 @@ export class AddPaymentComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       // this.paymentData.userId = params['userId']; // Populate with the actual user ID
-      this.paymentData.userId = localStorage.getItem('userId');
+      // this.paymentData.userId = localStorage.getItem('userId');
       this.paymentData.totalAmount = params['cost'];
+      this.paymentData.userId = params['userId'];
+
       this.paymentData.courseId = params['courseID'];
       this.paymentData.course = { ...params }; // Spread the query parameters into the course object
       console.log('Payment Data:', this.paymentData);

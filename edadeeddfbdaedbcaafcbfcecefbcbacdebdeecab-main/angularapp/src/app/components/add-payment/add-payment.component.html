@@ -2,7 +2,7 @@
 <h2>Make Payment</h2>
 <form (ngSubmit)="openConfirmation()" #paymentForm="ngForm">
   <label for="userId">User ID:</label>
-  <input id="userId" type="text" name="userId" [(ngModel)]="paymentData.userId" readonly>
+  <input id="userId" type="text" name="userId" [(ngModel)]="paymentData.user.userId" readonly>
 
   <label for="courseId">Course ID:</label>
   <input id="courseId" type="number" name="courseId" [(ngModel)]="paymentData.course.courseID" readonly>
