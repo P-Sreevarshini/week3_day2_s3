@@ -37,7 +37,6 @@ public async Task<bool> Register([FromBody] User user)
     {
         Console.WriteLine("Role: " + user.UserRole);
 
-       // var isRegistered = await _userService.RegisterAsync(user);
        var isRegistered = await _userService.RegisterAsync(user);
         Console.WriteLine("Registration status: " + isRegistered);
 

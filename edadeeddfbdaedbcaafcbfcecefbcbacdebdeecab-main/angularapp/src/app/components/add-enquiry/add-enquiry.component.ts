@@ -35,6 +35,10 @@ this.enquiry.status='Pending';
     this.enquiryService.addEnquiry(this.enquiry).subscribe(() => {
       console.log('Enquiry added successfully');
       this.enquiry = new Enquiry(); // clear the form
+      alert('Course added successfully!');
+      this.router.navigate([''])
+
+
     });
   }
   getCurrentDate(): Date {
