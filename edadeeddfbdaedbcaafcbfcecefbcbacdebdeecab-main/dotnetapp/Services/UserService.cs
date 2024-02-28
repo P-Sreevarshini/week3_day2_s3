@@ -26,11 +26,19 @@ namespace dotnetapp.Services
             _context = context;
         }
 
-       public async Task<bool> RegisterAsync(User user)
+public async Task<bool> RegisterAsync(User user)
 {
     try
     {
         Console.WriteLine("Register");
+        var userExists = await _userManager.FindByEmailAsync(user.EmailID);
+        
+        if (userExists != null)
+        {
+            Console.WriteLine("User with that Email already exists");
+            return false; // User with the same email already exists
+        }
+
         var identityUser = new IdentityUser
         {
             UserName = user.UserName,
@@ -64,29 +72,30 @@ namespace dotnetapp.Services
     }
 }
 
+
         public async Task<string> LoginAsync(string email, string password)
         {
             try
             {
                 var user = await _userManager.FindByEmailAsync(email);
                 if (user == null)
-{
-    Console.WriteLine($"User with email '{email}' not found.");
-    return null;
-}
+                {
+                    Console.WriteLine($"User with email '{email}' not found.");
+                    return null;
+                }
 
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
-if (!signInResult.Succeeded)
-{
-     Console.WriteLine("Password check failed.");
-    Console.WriteLine($"Error: {signInResult.ToString()}");
-    return null;
-}
+                if (!signInResult.Succeeded)
+                {
+                    Console.WriteLine("Password check failed.");
+                    Console.WriteLine($"Error: {signInResult.ToString()}");
+                    return null;
+                }
 
-                Console.WriteLine("Before generating token");
-var token = GenerateJwtToken(user);
-Console.WriteLine("After generating token");
-Console.WriteLine("Token: " + token);
+            Console.WriteLine("Before generating token");
+            var token = GenerateJwtToken(user);
+            Console.WriteLine("After generating token");
+            Console.WriteLine("Token: " + token);
 
                 Console.WriteLine("Token: " + token);
 
@@ -108,9 +117,9 @@ Console.WriteLine("Token: " + token);
                 new Claim(ClaimTypes.Name, user.UserName)
                 //new Claim(ClaimTypes.Email, user.Email),
             };
-Console.WriteLine("GenerateToken -"+user.UserName);
-Console.WriteLine("GenerateToken -"+user.Email);
-            var roles = _userManager.GetRolesAsync(user).Result;
+            Console.WriteLine("GenerateToken -"+user.UserName);
+            Console.WriteLine("GenerateToken -"+user.Email);
+                        var roles = _userManager.GetRolesAsync(user).Result;
 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
