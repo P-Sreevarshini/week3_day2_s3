@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
+import { AddFdComponent } from './components/add-fd/add-fd.component';
+import { ViewFdComponent } from './components/view-fd/view-fd.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { LoginComponent } from './components/login/login.component';
     AdminComponent,
     NavbarComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    AddFdComponent,
+    ViewFdComponent
   ],
   imports: [
     BrowserModule,
