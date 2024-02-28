@@ -49,6 +49,7 @@ export class RegistrationComponent {
         console.log(error);
         if (error.error === "User with that Email already exists") {
           this.emailExistsError = true; 
+          window.alert("User with that Email already exists");
         } 
       }
     );
