@@ -13,7 +13,7 @@ export class RegistrationComponent {
   confirmPassword: string = "";
   mobileNumber: string = "";
   role: string = "";
-  emailID: string;
+  email: string;
   passwordMismatch: boolean = false; // New property to track password mismatch
   emailExistsError: boolean = false; // Property to track email existence error
 
@@ -32,7 +32,7 @@ export class RegistrationComponent {
       return; // Password complexity check failed
     }
 
-    this.authService.register(this.userName, this.password, this.role, this.emailID, this.mobileNumber).subscribe(
+    this.authService.register(this.userName, this.password, this.role, this.email, this.mobileNumber).subscribe(
       (user) => {
         console.log(user);
 

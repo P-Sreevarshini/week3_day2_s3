@@ -11,7 +11,7 @@ import { throwError } from 'rxjs';
 export class AuthService {
   private currentUserSubject: BehaviorSubject<string | null>;
   public currentUser: Observable<string | null>;
-  public apiUrl = 'https://8080-edadeeddfbdaedbcaafcbfcecefbcbacdebdeecab.premiumproject.examly.io'; 
+  public apiUrl = 'http://localhost:8080'; 
   private userRoleSubject = new BehaviorSubject<string>('');
   userRole$: Observable<string> = this.userRoleSubject.asObservable();
   private isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isAuthenticated());
@@ -25,8 +25,8 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
- register(userName: string, password: string, userRole: string, emailID: string, mobileNumber:string): Observable<any> {
-    const body = { userName, password, userRole, emailID, mobileNumber };
+ register(userName: string, password: string, userRole: string, email: string, mobileNumber:string): Observable<any> {
+    const body = { userName, password, userRole, email, mobileNumber };
     console.log(body);
 
     return this.http.post<any>(`${this.apiUrl}/auth/register`, body).pipe(
@@ -79,8 +79,8 @@ export class AuthService {
     };
   }
 
-  login(emailID: string, password: string): Observable<any> {
-    const loginData = { emailID, password };
+  login(email: string, password: string): Observable<any> {
+    const loginData = { email, password };
     console.log(loginData);
     return this.http.post<any>(`${this.apiUrl}/auth/login`, loginData)
       .pipe(
