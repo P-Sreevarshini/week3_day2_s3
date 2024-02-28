@@ -18,6 +18,7 @@ namespace dotnetapp.Controllers
         {
             _reviewService = reviewService;
         }
+        [Authorize]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetAllReviews()
@@ -25,6 +26,8 @@ namespace dotnetapp.Controllers
             var reviews = await _reviewService.GetAllReviews();
             return Ok(reviews);
         }
+        [Authorize]
+
 
         [HttpGet("{reviewId}")]
         public async Task<ActionResult<Review>> GetReviewById(long reviewId)
@@ -38,6 +41,7 @@ namespace dotnetapp.Controllers
 
             return Ok(review);
         }
+        [Authorize(Roles = "Customer")]
 
         [HttpPost]
         public async Task<ActionResult> AddReview([FromBody] Review review)

@@ -18,6 +18,7 @@ namespace dotnetapp.Controllers
         {
             _fdRequestService = fdRequestService;
         }
+        [Authorize]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FDRequest>>> GetAllFDRequests()
@@ -25,6 +26,9 @@ namespace dotnetapp.Controllers
             var fdRequests = await _fdRequestService.GetAllFDRequests();
             return Ok(fdRequests);
         }
+
+
+        [Authorize]
 
         [HttpGet("{requestId}")]
         public async Task<ActionResult<FDRequest>> GetFDRequestById(long requestId)
@@ -38,6 +42,10 @@ namespace dotnetapp.Controllers
 
             return Ok(fdRequest);
         }
+
+
+        [Authorize(Roles = "Customer")]
+
 
         [HttpPost]
         public async Task<ActionResult> AddFDRequest([FromBody] FDRequest fdRequest)
@@ -60,6 +68,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [Authorize(Roles = "Admin")]
 
         [HttpPut("{requestId}")]
         public async Task<ActionResult> UpdateFDRequest(long requestId, [FromBody] FDRequest fdRequest)
@@ -82,6 +91,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [Authorize(Roles = "Customer")]
 
         [HttpDelete("{requestId}")]
         public async Task<ActionResult> DeleteFDRequest(long requestId)

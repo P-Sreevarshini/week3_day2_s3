@@ -18,6 +18,7 @@ namespace dotnetapp.Controllers
         {
             _fixedDepositService = fixedDepositService;
         }
+        [Authorize]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FixedDeposit>>> GetAllFixedDeposits()
@@ -25,6 +26,7 @@ namespace dotnetapp.Controllers
             var fixedDeposits = await _fixedDepositService.GetAllFixedDeposits();
             return Ok(fixedDeposits);
         }
+        [Authorize]
 
         [HttpGet("{FixedDepositId}")]
         public async Task<ActionResult<FixedDeposit>> GetFixedDepositById(long FixedDepositId)
@@ -38,6 +40,7 @@ namespace dotnetapp.Controllers
 
             return Ok(fixedDeposit);
         }
+        [Authorize(Roles = "Customer")]
 
         [HttpPost]
         public async Task<ActionResult> AddFixedDeposit([FromBody] FixedDeposit fixedDeposit)
@@ -60,6 +63,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [Authorize]
 
         [HttpPut("{FixedDepositId}")]
         public async Task<ActionResult> UpdateFixedDeposit(long FixedDepositId, [FromBody] FixedDeposit fixedDeposit)
@@ -82,6 +86,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        [Authorize(Roles = "Customer")]
 
         [HttpDelete("{FixedDepositId}")]
         public async Task<ActionResult> DeleteFixedDeposit(long FixedDepositId)
