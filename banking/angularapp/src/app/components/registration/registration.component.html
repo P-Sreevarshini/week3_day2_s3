@@ -62,7 +62,7 @@
     <select id="role" [(ngModel)]="role" name="role" required #roleNgModel="ngModel">
       <option value="" disabled>Select a role</option>
       <option value="ADMIN">ADMIN</option>
-      <option value="STUDENT">STUDENT</option>
+      <option value="CUSTOMER">CUSTOMER</option>
     </select>
     <div *ngIf="roleNgModel.invalid && (roleNgModel.dirty || roleNgModel.touched)"
          class="error-message">Role is required</div>

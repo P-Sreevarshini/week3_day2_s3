@@ -40,7 +40,7 @@ export class RegistrationComponent {
         if (user == true && this.role === 'ADMIN') {
           alert('Registration Successful');
           this.router.navigate(['/login']);
-        } else if ( user == true && this.role === 'STUDENT') {
+        } else if ( user == true && this.role === 'CUSTOMER') {
           alert('Registration Successful');
           this.router.navigate(['/login']);
         } else{

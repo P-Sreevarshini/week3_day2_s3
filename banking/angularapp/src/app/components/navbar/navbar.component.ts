@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
-  isStudent: boolean = false;
+  isCustomer: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {
     this.authService.isAuthenticated$.subscribe((authenticated) => {
@@ -19,11 +19,11 @@ export class NavbarComponent implements OnInit {
         // Wait for the role information before setting flags
         this.authService.getUserRole().subscribe((role) => {
           this.isAdmin = this.authService.isAdmin();
-          this.isStudent = this.authService.isStudent();
+          this.isCustomer = this.authService.isCustomer();
         });
       } else {
         this.isAdmin = false;
-        this.isStudent = false;
+        this.isCustomer = false;
       }
     });
   }
@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
       // Wait for the role information before setting flags
       this.authService.getUserRole().subscribe((role) => {
         this.isAdmin = this.authService.isAdmin();
-        this.isStudent = this.authService.isStudent();
+        this.isCustomer = this.authService.isCustomer();
       });
     }
   }
@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.isLoggedIn = false;
     this.isAdmin = false;
-    this.isStudent = false;
+    this.isCustomer = false;
     this.authService.logout();
     this.router.navigate(['/login']);
   }
