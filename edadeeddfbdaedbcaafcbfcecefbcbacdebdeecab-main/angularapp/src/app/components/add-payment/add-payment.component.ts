@@ -10,6 +10,8 @@ import { PaymentService } from 'src/app/services/payment.service';
   styleUrls: ['./add-payment.component.css']
 })
 export class AddPaymentComponent implements OnInit {
+  showCourseId: boolean = true; // Define showCourseId property
+
   paymentData: any = {
     userName: '', // Populate with the actual user ID
     courseId: 0,

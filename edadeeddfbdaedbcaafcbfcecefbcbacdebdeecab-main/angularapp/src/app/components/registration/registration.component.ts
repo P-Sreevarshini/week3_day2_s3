@@ -35,10 +35,6 @@ export class RegistrationComponent {
         console.log(user);
 
         console.log(this.role)
-        // if(user.status=="Success") {
-        //   window.alert('Registration Successful');
-        //   this.router.navigate(['/login']);
-        // }
         if (user == true && this.role === 'ADMIN') {
           alert('Registration Successful');
           this.router.navigate(['/login']);
