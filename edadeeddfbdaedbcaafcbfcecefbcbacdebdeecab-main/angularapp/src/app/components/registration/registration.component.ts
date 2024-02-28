@@ -50,10 +50,6 @@ export class RegistrationComponent {
       },
       (error) => {
         console.log(error);
-        // if (error.error === "false") {
-        //   this.emailExistsError = true; 
-        //   alert('User with that Email already exists');
-        // } 
       }
     );
   }
