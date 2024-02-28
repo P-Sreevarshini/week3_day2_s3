@@ -37,8 +37,8 @@ describe('AuthService', () => {
     req.flush(newUser);
   });
 
-  fit('Frontend_AuthService should send a POST request to register a Student', () => {
-    const newUser = {userId: 1, userName: 'testUser', password: 'testPassword@123', emailID: 'test@example.com', userRole: 'STUDENT',mobileNumber: '1234567890'};
+  fit('Frontend_AuthService should send a POST request to register a Customer', () => {
+    const newUser = {userId: 1, userName: 'testUser', password: 'testPassword@123', emailID: 'test@example.com', userRole: 'CUSTOMER',mobileNumber: '1234567890'};
 
     service['register'](newUser.userName,newUser.password,newUser.userRole,newUser.emailID,newUser.mobileNumber).subscribe((userResponse: any) => {
       expect(userResponse).toBeDefined();

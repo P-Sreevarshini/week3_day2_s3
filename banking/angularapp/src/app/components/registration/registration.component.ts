@@ -39,10 +39,10 @@ export class RegistrationComponent {
         console.log(this.role)
         if (user == true && this.role === 'ADMIN') {
           alert('Registration Successful');
-          this.router.navigate(['/login']);
+          this.router.navigate(['/api/login']);
         } else if ( user == true && this.role === 'CUSTOMER') {
           alert('Registration Successful');
-          this.router.navigate(['/login']);
+          this.router.navigate(['/api/login']);
         } else{
           alert('Registration failed. User with that Email already exists or an error occurred. Please try again.');
 
