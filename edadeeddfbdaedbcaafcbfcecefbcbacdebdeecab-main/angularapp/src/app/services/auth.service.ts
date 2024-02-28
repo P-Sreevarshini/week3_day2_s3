@@ -51,13 +51,6 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  // getUserRole(): string {
-  //   // Get the user role from localStorage
-  //   const role=localStorage.getItem('userRole') || '{}';
-  //   console.log("userrole"+role)
-  //   return role;
-  // }
-
   getUserRole(): Observable<string> {
     return this.userRole$;
   }

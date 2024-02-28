@@ -14,7 +14,7 @@
     <label for="email">Email<span class="asterisk">*</span>:</label>
     <input type="text" id="email" [(ngModel)]="emailID" name="email" [ngModelOptions]="{standalone: true}"
            required email #emailNgModel="ngModel">
-    <div *ngIf="emailExistsError" class="error-message">User with that email already exists</div>
+    <!-- <div *ngIf="emailExistsError" class="error-message">User with that email already exists</div> -->
     <div *ngIf="emailNgModel.invalid && (emailNgModel.dirty || emailNgModel.touched)"
          class="error-message">
       <div *ngIf="emailNgModel.errors.required">Email is required</div>
