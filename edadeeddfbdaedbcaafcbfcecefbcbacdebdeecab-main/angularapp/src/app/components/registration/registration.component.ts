@@ -15,6 +15,8 @@ export class RegistrationComponent {
   role: string = "";
   emailID: string;
   passwordMismatch: boolean = false; // New property to track password mismatch
+  emailExistsError: boolean = false; // Property to track email existence error
+
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -45,7 +47,9 @@ export class RegistrationComponent {
       },
       (error) => {
         console.log(error);
-
+        if (error.error === "User with that Email already exists") {
+          this.emailExistsError = true; 
+        } 
       }
     );
   }

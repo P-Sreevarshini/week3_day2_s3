@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +31,17 @@ export class AuthService {
 
     return this.http.post<any>(`${this.apiUrl}/auth/register`, body).pipe(
       tap((user) => this.storeUserData(user)),
-      catchError(this.handleError<any>('register'))
-    );
+    //   catchError(this.handleError<any>('register'))
+    // );
+    catchError(error => {
+      // If registration fails due to duplicate email, return the error message to the component
+      if (error.error === "User with that Email already exists") {
+        return of(error.error); // Return the error message
+      }
+      // Otherwise, handle other errors or rethrow the error
+      return throwError(error);
+    })
+  );
   }
 
   isLoggedIn(): boolean {
