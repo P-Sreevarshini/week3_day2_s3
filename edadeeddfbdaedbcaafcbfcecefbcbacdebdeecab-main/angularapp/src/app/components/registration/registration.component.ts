@@ -43,14 +43,17 @@ export class RegistrationComponent {
         } else if ( user == true && this.role === 'STUDENT') {
           alert('Registration Successful');
           this.router.navigate(['/login']);
+        } else{
+          alert('Registration failed. User with that Email already exists or an error occurred. Please try again.');
+
         }
       },
       (error) => {
         console.log(error);
-        if (error.error === "false") {
-          this.emailExistsError = true; 
-          alert('User with that Email already exists');
-        } 
+        // if (error.error === "false") {
+        //   this.emailExistsError = true; 
+        //   alert('User with that Email already exists');
+        // } 
       }
     );
   }
