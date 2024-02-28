@@ -11,7 +11,7 @@ import { throwError } from 'rxjs';
 export class AuthService {
   private currentUserSubject: BehaviorSubject<string | null>;
   public currentUser: Observable<string | null>;
-  public apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/'; 
+  public apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io'; 
   private userRoleSubject = new BehaviorSubject<string>('');
   userRole$: Observable<string> = this.userRoleSubject.asObservable();
   private isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isAuthenticated());
@@ -29,7 +29,7 @@ export class AuthService {
     const body = { userName, password, userRole, email, mobileNumber };
     console.log(body);
 
-    return this.http.post<any>(`${this.apiUrl}/auth/register`, body).pipe(
+    return this.http.post<any>(`${this.apiUrl}/api/register`, body).pipe(
       tap((user) => this.storeUserData(user)),
     catchError(error => {
       if (error.error === "User with that Email already exists") {
@@ -66,7 +66,7 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     const loginData = { email, password };
     console.log(loginData);
-    return this.http.post<any>(`${this.apiUrl}/auth/login`, loginData)
+    return this.http.post<any>(`${this.apiUrl}/api/login`, loginData)
       .pipe(
         tap(response => {
           console.log(response);
