@@ -63,6 +63,50 @@ public async Task<bool> Register([FromBody] User user)
     Console.WriteLine("Registration failed. Email may already exist.");
     return false; // Registration failed
 }
+// [HttpPost("register")]
+// public async Task<IActionResult> Register([FromBody] User user)
+// {
+//     if (user == null)
+//     {
+//         Console.WriteLine("Invalid user data");
+//         return BadRequest("Invalid user data");
+//     }
+
+//     if (user.UserRole == "ADMIN" || user.UserRole == "STUDENT")
+//     {
+//         Console.WriteLine("Role: " + user.UserRole);
+
+//         var (isRegistered, errorMessage) = await _userService.RegisterAsync(user);
+//         Console.WriteLine("Registration status: " + isRegistered);
+
+//         if (isRegistered)
+//         {
+//             var customUser = new User
+//             {
+//                 EmailID = user.EmailID,
+//                 Password = user.Password,
+//                 UserRole = user.UserRole.ToUpper(),
+//                 UserName = user.UserName,
+//                 MobileNumber = user.MobileNumber
+//             };
+
+//             // Add the customUser to the DbSet and save it
+//             _context.Users.Add(customUser);
+//             await _context.SaveChangesAsync();
+
+//             return Ok(); // Registration was successful
+//         }
+//         else
+//         {
+//             Console.WriteLine(errorMessage);
+//             return BadRequest(errorMessage); // Registration failed with error message
+//         }
+//     }
+
+//     Console.WriteLine("Invalid user role");
+//     return BadRequest("Invalid user role");
+// }
+
 
         [HttpPost("login")]
 public async Task<IActionResult> Login([FromBody] UserLoginRequest request)

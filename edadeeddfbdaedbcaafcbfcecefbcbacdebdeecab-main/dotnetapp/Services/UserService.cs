@@ -73,6 +73,51 @@ public async Task<bool> RegisterAsync(User user)
         return false;
     }
 }
+// public async Task<(bool, string)> RegisterAsync(User user)
+// {
+//     try
+//     {
+//         Console.WriteLine("Register");
+//         var userExists = await _userManager.FindByEmailAsync(user.EmailID);
+        
+//         if (userExists != null)
+//         {
+//             Console.WriteLine("User with that Email already exists");
+//             return (false, "User with that Email already exists");
+//         }
+
+//         var identityUser = new IdentityUser
+//         {
+//             UserName = user.UserName,
+//             Email = user.EmailID
+//         };
+
+//         var result = await _userManager.CreateAsync(identityUser, user.Password);
+
+//         if (result.Succeeded)
+//         {
+//             await _userManager.AddToRoleAsync(identityUser, user.UserRole);
+//             Console.WriteLine($"Registration successful for user with email '{user.EmailID}'.");
+//             return (true, ""); // Registration successful
+//         }
+//         else
+//         {
+//             Console.WriteLine($"Registration failed for user with email '{user.EmailID}'. Errors:");
+
+//             foreach (var error in result.Errors)
+//             {
+//                 Console.WriteLine($"- {error.Description}");
+//             }
+
+//             return (false, "Registration failed. Please try again."); // Registration failed
+//         }
+//     }
+//     catch (Exception ex)
+//     {
+//         Console.WriteLine($"Error during registration: {ex.Message}");
+//         return (false, "Error during registration. Please try again."); // Registration failed due to exception
+//     }
+// }
 
 
         public async Task<string> LoginAsync(string email, string password)
