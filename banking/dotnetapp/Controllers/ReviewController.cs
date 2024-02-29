@@ -30,18 +30,19 @@ namespace dotnetapp.Controllers
         // [Authorize]
 
 
-        [HttpGet("{reviewId}")]
-        public async Task<ActionResult<Review>> GetReviewById(long reviewId)
+       [HttpGet("byUser/{userId}")]
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviewsByUserId(long userId)
         {
-            var review = await _reviewService.GetReviewById(reviewId);
+            var reviews = await _reviewService.GetReviewsByUserId(userId);
 
-            if (review == null)
+            if (reviews == null || !reviews.Any())
             {
-                return NotFound(new { message = "Cannot find any review" });
+                return NotFound(new { message = "No reviews found for the user" });
             }
 
-            return Ok(review);
+            return Ok(reviews);
         }
+
         // [Authorize(Roles = "Customer")]
 
         [HttpPost]

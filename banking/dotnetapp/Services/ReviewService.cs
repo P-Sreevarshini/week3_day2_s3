@@ -18,13 +18,17 @@ namespace dotnetapp.Services
 
         public async Task<IEnumerable<Review>> GetAllReviews()
         {
-            return await _context.Reviews.ToListAsync();
+            return await _context.Reviews
+            .Include(review => review.User)
+            .ToListAsync();
         }
 
-        public async Task<Review> GetReviewById(long reviewId)
+      public async Task<IEnumerable<Review>> GetReviewsByUserId(long userId)
         {
             return await _context.Reviews
-                .FirstOrDefaultAsync(r => r.ReviewId == reviewId);
+                .Where(r => r.UserId == userId)
+                .Include(review => review.User)
+                .ToListAsync();
         }
 
         public async Task<bool> AddReview(Review review)
@@ -40,7 +44,5 @@ namespace dotnetapp.Services
                 return false;
             }
         }
-
-        // Implement other methods as needed
     }
 }

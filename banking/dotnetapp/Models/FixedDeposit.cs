@@ -12,7 +12,6 @@ namespace dotnetapp.Models
         public decimal InterestRate { get; set; }
         public DateTime StartDate { get; set; }
 
-        // Navigation property representing the user associated with this fixed deposit
         public User? User { get; set; }
     }
 }
