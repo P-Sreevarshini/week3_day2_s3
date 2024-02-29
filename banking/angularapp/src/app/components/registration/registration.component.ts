@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-const UserRoles = {
-  Admin: 'Admin',
-  User: 'Customer'
-};
+import { UserRoles } from 'src/app/models/userRole.model';
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -34,11 +32,17 @@ export class RegistrationComponent {
       return; // Password complexity check failed
     }
 
-    this.authService.register(this.userName, this.password, this.role, this.email, this.mobileNumber).subscribe(
+    this.authService.register(
+      this.userName, 
+      this.password, 
+      this.role.toUpperCase(), // Convert role value to uppercase
+      this.email, 
+      this.mobileNumber
+    ).subscribe(
       (user) => {
         console.log(user);
 
-        // Use role constants defined in C# code
+        // Use role constants defined in UserRoles class
         if (user == true && this.role === UserRoles.Admin) {
           alert('Registration Successful');
           this.router.navigate(['/api/login']);
