@@ -28,7 +28,7 @@
       <div *ngIf="emailNgModel.errors.required">Email is required</div>
       <div *ngIf="emailNgModel.errors.email">Invalid email format</div>
       <div *ngIf="emailExistsError">Email already taken</div>
-      <div *ngIf="role === UserRoles.Admin && !email.endsWith('@admin.com')">Admin email must end with '@admin.com'</div>
+      <div *ngIf="role === UserRoles.Admin && !email.endsWith('@admin.com')">Admin email invalid</div>
     </div>
 
     <div class="validation">

@@ -37,7 +37,7 @@ export class RegistrationComponent {
       (exists) => {
         if (exists) {
           this.emailExistsError = true; // Set emailExistsError to true if email already exists
-          return; // Return early to prevent further execution
+          alert('Registration failed. User already exists.');
         } else {
           // Proceed with registration if email doesn't exist
           this.authService.register(
@@ -66,7 +66,6 @@ export class RegistrationComponent {
       }
     );
   }
-
   isPasswordComplex(password: string): boolean {
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
@@ -75,4 +74,4 @@ export class RegistrationComponent {
 
     return hasUppercase && hasLowercase && hasDigit && hasSpecialChar;
   }
-}
+}  
