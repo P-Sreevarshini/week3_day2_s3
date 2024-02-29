@@ -130,32 +130,9 @@ export class AuthService {
     }
     return false; // Return false if the token is not present or doesn't have 'admin' role
   }
-
-  // getCustomerName(): string {
-  //   const token = localStorage.getItem('token');
-  //   if (token) {
-  //     const decodedToken = this.decodeToken(token);
-  //     const uname = localStorage.getItem('currentUser');
-  //     return uname; // Return the customer's name
-  //   }
-  //   return ''; // Return an empty string if the token is not present
-  // }
-
-
-
-
-
-
-
   private decodeToken(token: string): any {
-    // You can use a library like jwt-decode to decode JWT tokens
-    // Example: return jwt_decode(token);
-    // For simplicity, you can parse the token as JSON (not recommended for production)
     try {
-      // console.log("decode"+token);
       var decode = JSON.parse(atob(token.split('.')[1]));
-      // console.log(decode.sub);
-      // console.log();
       localStorage.setItem('email', decode.sub);
 
       console.log(decode['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);

@@ -15,6 +15,7 @@ import { AddReviewComponent } from './components/add-review/add-review.component
 import { ViewReviewComponent } from './components/view-review/view-review.component';
 import { AddAccountComponent } from './components/add-account/add-account.component';
 import { ViewAccountComponent } from './components/view-account/view-account.component';
+import { CustomerComponent } from './components/customer/customer.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ViewAccountComponent } from './components/view-account/view-account.com
     AddReviewComponent,
     ViewReviewComponent,
     AddAccountComponent,
-    ViewAccountComponent
+    ViewAccountComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
