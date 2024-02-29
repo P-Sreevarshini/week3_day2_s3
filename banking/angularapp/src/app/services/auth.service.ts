@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { decode } from 'punycode';
 
 
 @Injectable({
@@ -107,11 +108,21 @@ checkEmailExists(email: string): Observable<boolean> {
       if(role === 'Admin'){
         return true;
       }
+      // const decodedToken = this.decodeToken(token);
+      // return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';
+      var decode = JSON.parse(atob(token.split('.')[1]));
+
       const decodedToken = this.decodeToken(token);
-      return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';
+      const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+      // if(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin')
+      if(decode.role === 'Admin')
+      console.log(decode.role); // This should log 'TestAdmin'
+
+      return true;
     }
     return false; 
   }
+
 
   isCustomer(): boolean {
     // Check if the user has the 'admin' role based on your token structure
@@ -123,25 +134,21 @@ checkEmailExists(email: string): Observable<boolean> {
         return true;
       }
 
-      // Decode the token and check if it contains the 'admin' role
       const decodedToken = this.decodeToken(token);
       const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-      // console.log("dummy"+decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
       if(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'customer')
       return true;
-     // else  return true && uname;
     }
-    return false; // Return false if the token is not present or doesn't have 'admin' role
+    return false; 
   }
   private decodeToken(token: string): any {
     try {
       var decode = JSON.parse(atob(token.split('.')[1]));
       localStorage.setItem('email', decode.sub);
-      // console.log('Decoded Token:', decode);
-
-      console.log(decode['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
       console.log('Decoded Token:', decode);
-      console.log(decode.name); // This should log 'TestAdmin'
+
+      console.log(decode['http://schemas.microsoft.com/ws/2008/06/identity/claims/name']);
+      console.log('Decoded Token name:', decode.name);
 
 
 
