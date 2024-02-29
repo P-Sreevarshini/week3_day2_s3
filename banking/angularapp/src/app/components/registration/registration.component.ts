@@ -39,7 +39,7 @@ export class RegistrationComponent {
           this.emailExistsError = true; 
           alert('Registration failed. User already exists.');
           return; 
-        } else if (this.email.endsWith('@admin.com')) {
+        } else if (this.email.endsWith('@admin.com') && this.role === UserRoles.User) {
           alert('Registration failed. Customer cannot register with email ending with \'@admin.com\'.');
           return;
         }
@@ -55,7 +55,7 @@ export class RegistrationComponent {
             (success) => {
               if (success) {
                 alert('Registration Successful');
-                this.router.navigate(['/api/login']);
+                this.router.navigate(['login']);
               } else {
                 alert('Registration failed. An error occurred. Please try again.');
               }

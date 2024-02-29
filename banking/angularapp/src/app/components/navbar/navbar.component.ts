@@ -16,7 +16,6 @@ export class NavbarComponent implements OnInit {
     this.authService.isAuthenticated$.subscribe((authenticated) => {
       this.isLoggedIn = authenticated;
       if (this.isLoggedIn) {
-        // Wait for the role information before setting flags
         this.authService.getUserRole().subscribe((role) => {
           this.isAdmin = this.authService.isAdmin();
           this.isCustomer = this.authService.isCustomer();
@@ -29,10 +28,8 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Initialize the properties on component initialization
     this.isLoggedIn = this.authService.isAuthenticated();
     if (this.isLoggedIn) {
-      // Wait for the role information before setting flags
       this.authService.getUserRole().subscribe((role) => {
         this.isAdmin = this.authService.isAdmin();
         this.isCustomer = this.authService.isCustomer();

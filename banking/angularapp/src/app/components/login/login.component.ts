@@ -17,13 +17,10 @@ export class LoginComponent {
   login(): void {
     this.authService.login(this.email, this.password).subscribe(
       (asd) => {
-        // Successful login
         if (this.authService.isAdmin()) {
           alert('Login Successful');
-
           this.router.navigate(['/']); // Navigate to admin page
         } else {
-
           this.router.navigate(['/']); // Navigate to organizer page
         }
       },
