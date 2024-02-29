@@ -11,7 +11,7 @@
       </ng-container>
       <ng-container *ngIf="isLoggedIn">
         <li><a routerLink="/">Home</a></li>
-        <li><a routerLink="/admin/dashboard" *ngIf="isAdmin()">Admin</a></li>
+        <li><a routerLink="/admin/dashboard" *ngIf="isAdmin">Admin</a></li>
         <li><a routerLink="/customer/dashboard" *ngIf="isCustomer">Customer</a></li>
         <li><a id="logout" (click)="logout()">Logout</a></li>
       </ng-container>
