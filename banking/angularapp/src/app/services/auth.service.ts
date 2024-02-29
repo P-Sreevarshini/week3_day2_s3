@@ -25,7 +25,8 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-register(userName: string, password: string, userRole: string, email: string, mobileNumber: string): Observable<any> {
+register(userName: string, password: string, userRole: string, email: string, mobileNumber: string): Observable<any>
+ {
   const body = { userName, password, userRole, email, mobileNumber };
   return this.http.post<any>(`${this.apiUrl}/api/register`, body);
 }
