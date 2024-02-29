@@ -8,6 +8,8 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { CustomerComponent } from './components/customer/customer.component';
 import { ViewAccountComponent } from './components/view-account/view-account.component';
 import { AddAccountComponent } from './components/add-account/add-account.component';
+import { AddFdComponent } from './components/add-fd/add-fd.component';
+import { ViewFdComponent } from './components/view-fd/view-fd.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,6 +19,10 @@ const routes: Routes = [
   { path: 'customer/dashboard', component: CustomerComponent },
   { path: 'view/acount', component: ViewAccountComponent },
   { path: 'add/account', component: AddAccountComponent },
+  { path: 'add/FD', component: AddFdComponent },
+  { path: 'view/FD', component: ViewFdComponent },
+
+
 
   {
     path: 'error',
