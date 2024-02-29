@@ -11,6 +11,6 @@ namespace dotnetapp.Models
         public string AccountType {get;set;}
         
         // Navigation property representing the user associated with this account
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

@@ -20,12 +20,15 @@ namespace dotnetapp.Services
 
         public async Task<IEnumerable<Account>> GetAllAccounts()
         {
-            return await _context.Accounts.ToListAsync();
+            return await _context.Accounts
+            .Include(account => account.User)
+            .ToListAsync();
         }
 
         public async Task<Account> GetAccountById(long accountId)
         {
             return await _context.Accounts
+                .Include(account => account.User)
                 .FirstOrDefaultAsync(a => a.AccountId == accountId);
         }
 
