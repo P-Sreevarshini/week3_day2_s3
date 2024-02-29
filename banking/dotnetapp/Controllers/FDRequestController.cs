@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
         {
             _fdRequestService = fdRequestService;
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FDRequest>>> GetAllFDRequests()
@@ -29,7 +29,7 @@ namespace dotnetapp.Controllers
         }
 
 
-        [Authorize]
+        // [Authorize]
 
         [HttpGet("{requestId}")]
         public async Task<ActionResult<FDRequest>> GetFDRequestById(long requestId)
@@ -45,7 +45,7 @@ namespace dotnetapp.Controllers
         }
 
 
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
 
 
         [HttpPost]
@@ -69,7 +69,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
 
         [HttpPut("{requestId}")]
         public async Task<ActionResult> UpdateFDRequest(long requestId, [FromBody] FDRequest fdRequest)

@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
         {
             _fixedDepositService = fixedDepositService;
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FixedDeposit>>> GetAllFixedDeposits()
@@ -27,7 +27,7 @@ namespace dotnetapp.Controllers
             var fixedDeposits = await _fixedDepositService.GetAllFixedDeposits();
             return Ok(fixedDeposits);
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpGet("{FixedDepositId}")]
         public async Task<ActionResult<FixedDeposit>> GetFixedDepositById(long FixedDepositId)
@@ -41,7 +41,7 @@ namespace dotnetapp.Controllers
 
             return Ok(fixedDeposit);
         }
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
 
         [HttpPost]
         public async Task<ActionResult> AddFixedDeposit([FromBody] FixedDeposit fixedDeposit)

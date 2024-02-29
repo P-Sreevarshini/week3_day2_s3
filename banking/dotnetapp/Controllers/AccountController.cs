@@ -18,14 +18,14 @@ namespace dotnetapp.Controllers
         {
             _accountService = accountService;
         }
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccounts();
             return Ok(accounts);
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpGet("{accountId}")]
         public async Task<ActionResult<Account>> GetAccountById(long accountId)
@@ -39,7 +39,7 @@ namespace dotnetapp.Controllers
 
             return Ok(account);
         }
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
 
         [HttpPost]
         public async Task<ActionResult> AddAccount([FromBody] Account account)

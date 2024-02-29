@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
         {
             _transactionService = transactionService;
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetAllTransactions()
@@ -27,7 +27,7 @@ namespace dotnetapp.Controllers
             var transactions = await _transactionService.GetAllTransactions();
             return Ok(transactions);
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpGet("{transactionId}")]
         public async Task<ActionResult<Transaction>> GetTransactionById(long transactionId)
@@ -41,7 +41,7 @@ namespace dotnetapp.Controllers
 
             return Ok(transaction);
         }
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
 
         [HttpPost]
         public async Task<ActionResult> AddTransaction([FromBody] Transaction transaction)
@@ -64,7 +64,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
 
         [HttpPut("{transactionId}")]
         public async Task<ActionResult> UpdateTransaction(long transactionId, [FromBody] Transaction transaction)
@@ -87,7 +87,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpDelete("{transactionId}")]
         public async Task<ActionResult> DeleteTransaction(long transactionId)

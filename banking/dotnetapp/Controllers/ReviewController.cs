@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
         {
             _reviewService = reviewService;
         }
-        [Authorize]
+        // [Authorize]
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetAllReviews()
@@ -27,7 +27,7 @@ namespace dotnetapp.Controllers
             var reviews = await _reviewService.GetAllReviews();
             return Ok(reviews);
         }
-        [Authorize]
+        // [Authorize]
 
 
         [HttpGet("{reviewId}")]
@@ -42,7 +42,7 @@ namespace dotnetapp.Controllers
 
             return Ok(review);
         }
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
 
         [HttpPost]
         public async Task<ActionResult> AddReview([FromBody] Review review)
@@ -66,6 +66,5 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // Implement other CRUD methods as needed
     }
 }
