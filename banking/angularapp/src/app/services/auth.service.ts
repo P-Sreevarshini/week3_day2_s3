@@ -99,7 +99,7 @@ export class AuthService {
     const role = localStorage.getItem('userRole');
 
     if (token) {
-      if(role === 'admin' || role === 'ADMIN'){
+      if(role === 'admin' || role === 'Admin'){
         return true;
       }
 

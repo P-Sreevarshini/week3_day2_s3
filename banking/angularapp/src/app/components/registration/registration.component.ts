@@ -35,7 +35,7 @@ export class RegistrationComponent {
     this.authService.register(
       this.userName, 
       this.password, 
-      this.role.toUpperCase(), // Convert role value to uppercase
+      this.role,
       this.email, 
       this.mobileNumber
     ).subscribe(
