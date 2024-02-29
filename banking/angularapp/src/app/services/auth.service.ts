@@ -30,7 +30,6 @@ register(userName: string, password: string, userRole: string, email: string, mo
   return this.http.post<any>(`${this.apiUrl}/api/register`, body);
 }
 
-// Method to check if the email already exists
 checkEmailExists(email: string): Observable<boolean> {
   return this.http.get<any>(`${this.apiUrl}/api/check-email/${email}`).pipe(
     catchError(error => {
@@ -102,14 +101,13 @@ checkEmailExists(email: string): Observable<boolean> {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
     if (token) {
-      // console.log("token:"+token);
       if(role === 'admin' || role === 'Admin'){
         return true;
       }
       const decodedToken = this.decodeToken(token);
       return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin';
     }
-    return false; // Return false if the token is not present or doesn't have 'admin' role
+    return false; 
   }
 
   isCustomer(): boolean {

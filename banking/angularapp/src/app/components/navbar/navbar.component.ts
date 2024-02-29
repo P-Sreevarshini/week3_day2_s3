@@ -42,6 +42,6 @@ export class NavbarComponent implements OnInit {
     this.isAdmin = false;
     this.isCustomer = false;
     this.authService.logout();
-    this.router.navigate(['/api/login']);
+    this.router.navigate(['login']);
   }
 }
