@@ -25,32 +25,40 @@ export class RegistrationComponent {
       this.passwordMismatch = true;
       return;
     }
-
+  
     this.passwordMismatch = false;
-
+  
     if (!this.isPasswordComplex(this.password)) {
       return; // Password complexity check failed
     }
-
-    this.authService.register(
-      this.userName, 
-      this.password, 
-      this.role,
-      this.email, 
-      this.mobileNumber
-    ).subscribe(
-      (user) => {
-        console.log(user);
-
-        // Use role constants defined in UserRoles class
-        if (user == true && this.role === UserRoles.Admin) {
-          alert('Registration Successful');
-          this.router.navigate(['/api/login']);
-        } else if (user == true && this.role === UserRoles.User) {
-          alert('Registration Successful');
-          this.router.navigate(['/api/login']);
+  
+    // Check if the email already exists
+    this.authService.checkEmailExists(this.email).subscribe(
+      (exists) => {
+        if (exists) {
+          this.emailExistsError = true; // Set emailExistsError to true if email already exists
+          return; // Return early to prevent further execution
         } else {
-          alert('Registration failed. User with that Email already exists or an error occurred. Please try again.');
+          // Proceed with registration if email doesn't exist
+          this.authService.register(
+            this.userName, 
+            this.password, 
+            this.role, 
+            this.email, 
+            this.mobileNumber
+          ).subscribe(
+            (success) => {
+              if (success) {
+                alert('Registration Successful');
+                this.router.navigate(['/api/login']);
+              } else {
+                alert('Registration failed. An error occurred. Please try again.');
+              }
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
         }
       },
       (error) => {

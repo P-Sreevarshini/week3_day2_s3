@@ -25,21 +25,39 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
- register(userName: string, password: string, userRole: string, email: string, mobileNumber:string): Observable<any> {
-    const body = { userName, password, userRole, email, mobileNumber };
-    console.log(body);
+//  register(userName: string, password: string, userRole: string, email: string, mobileNumber:string): Observable<any> {
+//     const body = { userName, password, userRole, email, mobileNumber };
+//     console.log(body);
 
-    return this.http.post<any>(`${this.apiUrl}/api/register`, body).pipe(
-      tap((user) => this.storeUserData(user)),
+//     return this.http.post<any>(`${this.apiUrl}/api/register`, body).pipe(
+//       tap((user) => this.storeUserData(user)),
+//     catchError(error => {
+//       if (error.error === "User with that Email already exists") {
+//         return of(error.error); // Return the error message
+//       }
+//       return throwError(error);
+//     })
+//   );
+//   }
+register(userName: string, password: string, userRole: string, email: string, mobileNumber: string): Observable<any> {
+  const body = { userName, password, userRole, email, mobileNumber };
+  return this.http.post<any>(`${this.apiUrl}/api/register`, body);
+}
+
+// Method to check if the email already exists
+checkEmailExists(email: string): Observable<boolean> {
+  return this.http.get<any>(`${this.apiUrl}/api/check-email/${email}`).pipe(
     catchError(error => {
-      if (error.error === "User with that Email already exists") {
-        return of(error.error); // Return the error message
+      // If the error status is 404, it means the email doesn't exist
+      if (error.status === 404) {
+        return of(false);
+      } else {
+        // For other errors, re-throw the error
+        throw error;
       }
-      return throwError(error);
     })
   );
-  }
-
+}
   isLoggedIn(): boolean {
     console.log(localStorage.getItem('token'));
     return !!localStorage.getItem('token');
