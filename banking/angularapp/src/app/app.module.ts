@@ -11,6 +11,10 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { LoginComponent } from './components/login/login.component';
 import { AddFdComponent } from './components/add-fd/add-fd.component';
 import { ViewFdComponent } from './components/view-fd/view-fd.component';
+import { AddReviewComponent } from './components/add-review/add-review.component';
+import { ViewReviewComponent } from './components/view-review/view-review.component';
+import { AddAccountComponent } from './components/add-account/add-account.component';
+import { ViewAccountComponent } from './components/view-account/view-account.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +24,11 @@ import { ViewFdComponent } from './components/view-fd/view-fd.component';
     RegistrationComponent,
     LoginComponent,
     AddFdComponent,
-    ViewFdComponent
+    ViewFdComponent,
+    AddReviewComponent,
+    ViewReviewComponent,
+    AddAccountComponent,
+    ViewAccountComponent
   ],
   imports: [
     BrowserModule,

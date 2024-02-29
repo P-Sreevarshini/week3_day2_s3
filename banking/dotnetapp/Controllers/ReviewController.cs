@@ -30,7 +30,7 @@ namespace dotnetapp.Controllers
         // [Authorize]
 
 
-       [HttpGet("byUser/{userId}")]
+       [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviewsByUserId(long userId)
         {
             var reviews = await _reviewService.GetReviewsByUserId(userId);
