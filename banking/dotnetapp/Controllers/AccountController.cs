@@ -1,9 +1,9 @@
-// AccountController.cs (Controller)
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using Microsoft.AspNetCore.Authorization;
 using dotnetapp.Services;
 
 namespace dotnetapp.Controllers
