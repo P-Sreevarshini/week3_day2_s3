@@ -13,7 +13,7 @@ export class RegistrationComponent {
   password: string = "";
   confirmPassword: string = "";
   mobileNumber: string = "";
-  role: string = ""; // Use string constants instead of hardcoding role values
+  role: string = ""; 
   email: string;
   passwordMismatch: boolean = false;
   emailExistsError: boolean = false;
@@ -29,16 +29,21 @@ export class RegistrationComponent {
     this.passwordMismatch = false;
   
     if (!this.isPasswordComplex(this.password)) {
-      return; // Password complexity check failed
+      return; 
     }
   
     // Check if the email already exists
     this.authService.checkEmailExists(this.email).subscribe(
       (exists) => {
         if (exists) {
-          this.emailExistsError = true; // Set emailExistsError to true if email already exists
+          this.emailExistsError = true; 
           alert('Registration failed. User already exists.');
-        } else {
+          return; 
+        } else if (this.email.endsWith('@admin.com')) {
+          alert('Registration failed. Customer cannot register with email ending with \'@admin.com\'.');
+          return;
+        }
+        else {
           // Proceed with registration if email doesn't exist
           this.authService.register(
             this.userName, 
@@ -57,6 +62,11 @@ export class RegistrationComponent {
             },
             (error) => {
               console.log(error);
+              if (error.error && error.error.Message) {
+                alert(error.error.Message); // Display backend error message as alert
+              } else {
+                alert('Registration failed. An error occurred. Please try again.');
+              }
             }
           );
         }
@@ -66,6 +76,7 @@ export class RegistrationComponent {
       }
     );
   }
+
   isPasswordComplex(password: string): boolean {
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
@@ -74,4 +85,4 @@ export class RegistrationComponent {
 
     return hasUppercase && hasLowercase && hasDigit && hasSpecialChar;
   }
-}  
+}
