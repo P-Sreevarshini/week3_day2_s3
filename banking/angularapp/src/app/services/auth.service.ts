@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 
@@ -14,9 +14,12 @@ export class AuthService {
   public apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io'; 
   private userRoleSubject = new BehaviorSubject<string>('');
   userRole$: Observable<string> = this.userRoleSubject.asObservable();
+
+  isAdmin$: Observable<boolean> = this.userRole$.pipe(map(role => role === 'Admin'));
+  isCustomer$: Observable<boolean> = this.userRole$.pipe(map(role => role === 'customer'));
+
   private isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isAuthenticated());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-
 
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<string | null>(
@@ -24,7 +27,6 @@ export class AuthService {
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
-
 register(userName: string, password: string, userRole: string, email: string, mobileNumber: string): Observable<any>
  {
   const body = { userName, password, userRole, email, mobileNumber };
@@ -102,11 +104,11 @@ checkEmailExists(email: string): Observable<boolean> {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
     if (token) {
-      if(role === 'admin' || role === 'Admin'){
+      if(role === 'Admin'){
         return true;
       }
       const decodedToken = this.decodeToken(token);
-      return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin';
+      return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';
     }
     return false; 
   }
@@ -135,8 +137,13 @@ checkEmailExists(email: string): Observable<boolean> {
     try {
       var decode = JSON.parse(atob(token.split('.')[1]));
       localStorage.setItem('email', decode.sub);
+      // console.log('Decoded Token:', decode);
 
       console.log(decode['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']);
+      console.log('Decoded Token:', decode);
+      console.log(decode.name); // This should log 'TestAdmin'
+
+
 
       return decode
     } catch (error) {
