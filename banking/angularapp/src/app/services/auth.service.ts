@@ -25,20 +25,6 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-//  register(userName: string, password: string, userRole: string, email: string, mobileNumber:string): Observable<any> {
-//     const body = { userName, password, userRole, email, mobileNumber };
-//     console.log(body);
-
-//     return this.http.post<any>(`${this.apiUrl}/api/register`, body).pipe(
-//       tap((user) => this.storeUserData(user)),
-//     catchError(error => {
-//       if (error.error === "User with that Email already exists") {
-//         return of(error.error); // Return the error message
-//       }
-//       return throwError(error);
-//     })
-//   );
-//   }
 register(userName: string, password: string, userRole: string, email: string, mobileNumber: string): Observable<any> {
   const body = { userName, password, userRole, email, mobileNumber };
   return this.http.post<any>(`${this.apiUrl}/api/register`, body);
@@ -115,13 +101,11 @@ checkEmailExists(email: string): Observable<boolean> {
   isAdmin(): boolean {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
-
     if (token) {
+      // console.log("token:"+token);
       if(role === 'admin' || role === 'Admin'){
         return true;
       }
-
-      // Decode the token and check if it contains the 'admin' role
       const decodedToken = this.decodeToken(token);
       return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin';
     }
