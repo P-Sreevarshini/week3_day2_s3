@@ -4,7 +4,7 @@
   <input id="amount" [(ngModel)]="newFd.amount" type="number" name="amount" required placeholder="Enter FD Amount"
     #amount="ngModel">
   <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="error-message">
-    <div *ngIf="amount.errors.required">*FD Amount is required.</div>
+    <div *ngIf="courseName.errors.required">*FD Amount is required.</div>
   </div>
  
   <label for="tenureMonths">Tenure Months<span class="asterisk">*</span>:</label>
@@ -15,12 +15,14 @@
   </div>
  
   <label for="interestRate">Interest Rate<span class="asterisk">*</span>:</label>
-  <input id="interestRate" [(ngModel)]="newFd.interestRate" name="interestRate" type="number" required placeholder="Enter Interest Rate"
+  <input id="interestRate" [(ngModel)]="newFd.interestRate" name="cost" type="number" required placeholder="Enter Cost"
     #interestRate="ngModel">
   <div *ngIf="interestRate.invalid && (interestRate.dirty || interestRate.touched)" class="error-message">
-    <div *ngIf="interestRate.errors.required">*Interest Rate is required.</div>
-    <div *ngIf="interestRate.errors.min">*Interest Rate cannot be negative.</div>
+    <div *ngIf="interestRate.errors.required">*Cost is required.</div>
+    <div *ngIf="interestRate.errors.min">*Cost cannot be negative.</div>
   </div>
  
+  <!-- <button type="submit" class="add-course">Add Course</button> -->
   <button type="submit" class="add-fd">Create Fixed Deposit</button>
+
 </form>

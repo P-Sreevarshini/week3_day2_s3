@@ -23,7 +23,7 @@ export class AddFdComponent {
 
   constructor(private fdService: FixedDepositService, private jwtService: JwtService, private router: Router) {
     this.userRole = this.jwtService.getUserRole();
-    if (this.userRole === 'ADMIN') {
+    if (this.userRole === 'Admin') {
       this.showFdId = true; 
     } else {
       this.showFdId = false; 

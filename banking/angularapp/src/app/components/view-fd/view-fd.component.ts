@@ -104,38 +104,20 @@ export class ViewFdComponent implements OnInit {
       }
     }
   }
-
-  // updateFd(fd: FixedDeposit): void {
-  //   if (this.userRole !== 'Admin') {
-  //     console.error('Access denied. Only admins can update FDs.');
-  //     return;
-  //   }
-  //   this.fdService.updateFdByAdmin(fd.fixedDepositId, fd).subscribe(() => {
-  //     this.getAllFd();
-  //     this.selectedFd = null; 
-  //   });
-  // }
-
-  // updateFd(fd: FixedDeposit): void {
-  //   if (this.userRole !== 'Admin') {
-  //     console.error('Access denied. Only admins can update FDs.');
-  //     return;
-  //   }
-  //     const updatedData: Partial<FixedDeposit> = {
-  //     amount: fd.amount,
-  //     tenureMonths: fd.tenureMonths,
-  //     interestRate: fd.interestRate
-  //   };
-    
-  // }
   updateFd(fd: FixedDeposit): void {
+    if (!fd.fixedDepositId) {
+      console.error('Fixed deposit ID is undefined.');
+          console.log('FD Object:', fd); // Log the fd object to inspect its structure
+
+      return;
+    }
     if (this.userRole !== 'Admin') {
       console.error('Access denied. Only admins can update FDs.');
       return;
     }
     
     const updatedData: FixedDeposit = { ...fd };
-    updatedData.fixedDepositId = fd.fixedDepositId; // Ensure that fixedDepositId is set correctly
+    // updatedData.fixedDepositId = fd.fixedDepositId; // Ensure that fixedDepositId is set correctly
   
     updatedData.amount = fd.amount;
     updatedData.tenureMonths = fd.tenureMonths;
