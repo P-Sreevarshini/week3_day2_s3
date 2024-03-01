@@ -18,7 +18,6 @@ export class AddFdComponent {
     amount: 0,
     tenureMonths: 0,
     interestRate: 0,
-    startDate: new Date()
   };
   showFdId: boolean = true; 
 
@@ -38,7 +37,7 @@ export class AddFdComponent {
       this.fdService.saveFdByAdmin(this.newFd).subscribe(
         (fd) => {
           this.fds.push(fd);
-          this.newFd = { fixedDepositId: 0, amount: 0, tenureMonths: 0, interestRate: 0, startDate: new Date() };
+          this.newFd = { fixedDepositId: 0, amount: 0, tenureMonths: 0, interestRate: 0 };
           alert('Fixed deposit added successfully!');
           this.router.navigate(['/view/FD'])
         },
