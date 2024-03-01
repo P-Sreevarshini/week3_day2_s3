@@ -48,6 +48,8 @@ export class FixedDepositService {
     );
   }
 
+  // this.fdService.updateFdByAdmin(fd.fixedDepositId, updatedData).subscribe(
+
   updateFdByAdmin(fixedDepositId: number, updatedFdData: FixedDeposit): Observable<FixedDeposit> {
     const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; 
     const headers = this.getHeaders();
