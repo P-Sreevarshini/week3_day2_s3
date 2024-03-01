@@ -142,17 +142,13 @@ checkEmailExists(email: string): Observable<boolean> {
     }
     return false; 
   }
-  private decodeToken(token: string): any {
+  decodeToken(token: string): any {
     try {
       var decode = JSON.parse(atob(token.split('.')[1]));
       localStorage.setItem('email', decode.sub);
       console.log('Decoded Token:', decode);
-
-      console.log(decode['http://schemas.microsoft.com/ws/2008/06/identity/claims/name']);
       console.log('Decoded Token name:', decode.name);
-
-
-
+      console.log('Decoded Role name:', decode.role);
       return decode
     } catch (error) {
       return null;
