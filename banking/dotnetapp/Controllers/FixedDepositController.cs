@@ -87,7 +87,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        [Authorize(Roles = "Customer")]
+        [Authorize]
 
         [HttpDelete("{FixedDepositId}")]
         public async Task<ActionResult> DeleteFixedDeposit(long FixedDepositId)

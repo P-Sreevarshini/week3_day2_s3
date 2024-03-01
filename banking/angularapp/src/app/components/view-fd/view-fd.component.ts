@@ -105,16 +105,6 @@ export class ViewFdComponent implements OnInit {
     }
   }
 
-  // updateFd(fd: FixedDeposit): void {
-  //   if (this.userRole !== 'Admin') {
-  //     console.error('Access denied. Only admins can update FDs.');
-  //     return;
-  //   }
-  //   this.fdService.updateFdByAdmin(fd.fixedDepositId, fd).subscribe(() => {
-  //     this.getAllFd();
-  //     this.selectedFd = null; 
-  //   });
-  // }
   updateFd(fd: FixedDeposit): void {
     if (this.userRole !== 'Admin') {
       console.error('Access denied. Only admins can update FDs.');
@@ -125,13 +115,6 @@ export class ViewFdComponent implements OnInit {
       tenureMonths: fd.tenureMonths,
       interestRate: fd.interestRate
     };
-    console.log(updatedData);
-
-  
-  //   this.fdService.updateFdByAdmin(fd.fixedDepositId, updatedData).subscribe(() => {
-  //     this.getAllFd();
-  //     this.selectedFd = null; 
-  //   });
   }
   toggleEditMode(fd: FixedDeposit): void {
     this.selectedFd = this.selectedFd === fd ? null : fd;
