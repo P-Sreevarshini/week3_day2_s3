@@ -4,7 +4,6 @@
         <th>Amount</th>
         <th>Tenure (Months)</th>
         <th>Interest Rate</th>
-        <th>Start Date</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -14,7 +13,6 @@
           <td>{{ fd.amount }}</td>
           <td>{{ fd.tenureMonths }}</td>
           <td>{{ fd.interestRate }}</td>
-          <td>{{ fd.startDate | date }}</td>
           <td>
             <ng-container *ngIf="userRole === 'ADMIN'">
               <button (click)="editFd(fd)" class="edit-btn">Edit</button>
@@ -29,7 +27,6 @@
           <td><input type="number" [(ngModel)]="fd.amount"></td>
           <td><input type="number" [(ngModel)]="fd.tenureMonths"></td>
           <td><input type="number" [(ngModel)]="fd.interestRate"></td>
-          <td><input type="date" [(ngModel)]="fd.startDate"></td>
           <td>
             <button (click)="updateFd(fd)" class="save-btn">Save</button>
             <button (click)="cancelEdit()" class="cancel-btn">Cancel</button>

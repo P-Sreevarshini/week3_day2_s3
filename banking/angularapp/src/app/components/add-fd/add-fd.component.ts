@@ -24,9 +24,9 @@ export class AddFdComponent {
   constructor(private fdService: FixedDepositService, private jwtService: JwtService, private router: Router) {
     this.userRole = this.jwtService.getUserRole();
     if (this.userRole === 'ADMIN') {
-      this.showFdId = true; // Show the fixedDepositId input field for admins
+      this.showFdId = true; 
     } else {
-      this.showFdId = false; // Hide the fixedDepositId input field for other users
+      this.showFdId = false; 
     }
   }
  

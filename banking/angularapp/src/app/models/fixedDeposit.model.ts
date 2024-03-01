@@ -1,8 +1,8 @@
 import { User } from "./user.model";
 
 export class FixedDeposit {
-    fixedDepositId: number;
-    amount: number;
+    FixedDepositId: number;
+    Amount: number;
     tenureMonths: number;
     interestRate: number;
     user?: User; 
