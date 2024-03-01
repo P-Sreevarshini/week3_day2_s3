@@ -20,10 +20,15 @@ export class ViewFdComponent implements OnInit {
   }
 
   getAllFd(): void {
-    this.fdService.getAllFdByAdmin().subscribe(fds => {
-      this.fds = fds;
-      console.log(fds);
-    });
+    this.fdService.getAllFdByAdmin().subscribe(
+      (fds: FixedDeposit[]) => {
+        this.fds = fds;
+        console.log('Fetched fixed deposits:', this.fds);
+      },
+      (error) => {
+        console.error('Error fetching fixed deposits:', error);
+      }
+    );
   }
 
   editFd(fd: FixedDeposit): void {

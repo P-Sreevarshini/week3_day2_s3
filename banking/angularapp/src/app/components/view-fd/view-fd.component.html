@@ -1,38 +1,24 @@
 <table>
-    <thead>
-      <tr>
-        <th>Amount</th>
-        <th>Tenure (Months)</th>
-        <th>Interest Rate</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let fd of fds">
-        <ng-container *ngIf="selectedFd !== fd; else editMode">
-          <td>{{ fd.amount }}</td>
-          <td>{{ fd.tenureMonths }}</td>
-          <td>{{ fd.interestRate }}</td>
-          <td>
-            <ng-container *ngIf="userRole === 'ADMIN'">
-              <button (click)="editFd(fd)" class="edit-btn">Edit</button>
-              <button (click)="deleteFd(fd)" class="delete-btn">Delete</button>
-            </ng-container>
-            <ng-container *ngIf="userRole === 'CUSTOMER'">
-              <!-- Add customer-specific actions here -->
-            </ng-container>
-          </td>
-        </ng-container>
-        <ng-template #editMode>
-          <td><input type="number" [(ngModel)]="fd.amount"></td>
-          <td><input type="number" [(ngModel)]="fd.tenureMonths"></td>
-          <td><input type="number" [(ngModel)]="fd.interestRate"></td>
-          <td>
-            <button (click)="updateFd(fd)" class="save-btn">Save</button>
-            <button (click)="cancelEdit()" class="cancel-btn">Cancel</button>
-          </td>
-        </ng-template>
-      </tr>
-    </tbody>
-  </table>
-  
+  <thead>
+    <tr>
+      <th>Fixed Deposit ID</th>
+      <th>Amount</th>
+      <th>Tenure (Months)</th>
+      <th>Interest Rate</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let fd of fds">
+      <td>{{ fd.fixedDepositId }}</td>
+      <td>{{ fd.amount }}</td>
+      <td>{{ fd.tenureMonths }}</td>
+      <td>{{ fd.interestRate }}</td>
+      <td>
+        <!-- Add buttons for actions here -->
+        <button (click)="editFd(fd)">Edit</button>
+        <button (click)="deleteFd(fd)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
