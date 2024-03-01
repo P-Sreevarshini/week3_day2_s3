@@ -53,7 +53,7 @@
 //       return;
 //     }
 
-//     this.fdService.deleteFdByAdmin(fd.fixedDepositId).subscribe(() => {
+//     this.fdService.deleteFdByAdmin(fd.FixedDepositId).subscribe(() => {
 //       this.getAllFd(); // refresh the list after deleting
 //     });
 //   }
@@ -64,7 +64,7 @@
 //   //     return;
 //   //   }
 
-//   //   this.fdService.updateFdByAdmin(fd.fixedDepositId, fd).subscribe(() => {
+//   //   this.fdService.updateFdByAdmin(fd.FixedDepositId, fd).subscribe(() => {
 //   //     this.getAllFd(); // refresh the list after updating
 //   //     this.selectedFd = null; // clear the selection
 //   //   });
@@ -95,7 +95,7 @@ export class ViewFdComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllFd();
-    this.userRole = localStorage.getItem('userRole'); // get the user's role from local storage
+    this.userRole = localStorage.getItem('userRole');
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = this.authService.decodeToken(token);
@@ -105,7 +105,7 @@ export class ViewFdComponent implements OnInit {
     }
   }
   updateFd(fd: FixedDeposit): void {
-    if (!fd.fixedDepositId) {
+    if (!fd.FixedDepositId) {
       console.error('Fixed deposit ID is undefined.');
           console.log('FD Object:', fd); // Log the fd object to inspect its structure
 
@@ -117,13 +117,13 @@ export class ViewFdComponent implements OnInit {
     }
     
     const updatedData: FixedDeposit = { ...fd };
-    // updatedData.fixedDepositId = fd.fixedDepositId; // Ensure that fixedDepositId is set correctly
+    // updatedData.FixedDepositId = fd.FixedDepositId; // Ensure that FixedDepositId is set correctly
   
     updatedData.amount = fd.amount;
     updatedData.tenureMonths = fd.tenureMonths;
     updatedData.interestRate = fd.interestRate;
   
-    this.fdService.updateFdByAdmin(fd.fixedDepositId, updatedData).subscribe(
+    this.fdService.updateFdByAdmin(fd.FixedDepositId, updatedData).subscribe(
       () => {
         console.log('Fixed deposit updated successfully.');
         this.getAllFd();
@@ -142,7 +142,7 @@ export class ViewFdComponent implements OnInit {
   getAllFd(): void {
     this.fdService.getAllFd().subscribe(fds => {
       this.fds = fds;
-      fds.forEach(fd => this.editModeMap[fd.fixedDepositId] = false);
+      fds.forEach(fd => this.editModeMap[fd.FixedDepositId] = false);
     });
   }
 
@@ -153,25 +153,25 @@ export class ViewFdComponent implements OnInit {
       console.error('Access denied. Only admins can edit FDs.');
       return;
     }
-    this.editModeMap[fd.fixedDepositId] = !this.editModeMap[fd.fixedDepositId];
+    this.editModeMap[fd.FixedDepositId] = !this.editModeMap[fd.FixedDepositId];
 
     this.selectedFd = fd;
   }
   deleteFd(fd: FixedDeposit): void {
     console.log('Deleting fixed deposit:', fd);
-  
+
     if (this.fdService.deleteFdByAdmin) {
+
       this.fdService.deleteFdByAdmin(fd.FixedDepositId).subscribe(() => {
-        this.getAllFd(); // Refresh the list after deleting
+        this.getAllFd();
       });
     } else {
       console.error('deleteFdByAdmin method not found in FixedDepositService');
     }
   }
-  
 
   cancelEdit(): void {
-    this.editModeMap[this.selectedFd.fixedDepositId] = false;
+    this.editModeMap[this.selectedFd.FixedDepositId] = false;
     this.selectedFd = null; 
   }
 }

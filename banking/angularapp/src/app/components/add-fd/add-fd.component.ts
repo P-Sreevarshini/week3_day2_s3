@@ -14,7 +14,7 @@ export class AddFdComponent {
   userRole: string;
   fds: FixedDeposit[] = [];
   newFd: FixedDeposit = {
-    fixedDepositId: 0,
+    FixedDepositId: 0,
     amount: 0,
     tenureMonths: 0,
     interestRate: 0,
@@ -24,9 +24,9 @@ export class AddFdComponent {
   constructor(private fdService: FixedDepositService, private jwtService: JwtService, private router: Router) {
     this.userRole = this.jwtService.getUserRole();
     if (this.userRole === 'ADMIN') {
-      this.showFdId = true; // Show the fixedDepositId input field for admins
+      this.showFdId = true; // Show the FixedDepositId input field for admins
     } else {
-      this.showFdId = false; // Hide the fixedDepositId input field for other users
+      this.showFdId = false; // Hide the FixedDepositId input field for other users
     }
   }
  
@@ -37,7 +37,7 @@ export class AddFdComponent {
       this.fdService.saveFdByAdmin(this.newFd).subscribe(
         (fd) => {
           this.fds.push(fd);
-          this.newFd = { fixedDepositId: 0, amount: 0, tenureMonths: 0, interestRate: 0 };
+          this.newFd = { FixedDepositId: 0, amount: 0, tenureMonths: 0, interestRate: 0 };
           alert('Fixed deposit added successfully!');
           this.router.navigate(['/view/FD'])
         },
