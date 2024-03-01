@@ -25,15 +25,16 @@ namespace dotnetapp.Services
 
         public async Task<FixedDeposit> GetFixedDepositById(long FixedDepositId)
         {
-            return await _context.FixedDeposits.Include(fd => fd.User)
-                .FirstOrDefaultAsync(fd => fd.FixedDepositId == FixedDepositId);
+            return await _context.FixedDeposits
+            .Include(fd => fd.User)
+            .FirstOrDefaultAsync(fd => fd.FixedDepositId == FixedDepositId);
         }
 
         public async Task<bool> AddFixedDeposit(FixedDeposit fixedDeposit)
         {
             try
             {
-                _context.FixedDeposits.Add(fixedDeposit);
+                _context.FixedDeposits.Add(fixedDeposit).Include(fd => fd.User);
                 await _context.SaveChangesAsync();
                 return true;
             }
