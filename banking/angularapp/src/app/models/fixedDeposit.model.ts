@@ -5,5 +5,4 @@ export class FixedDeposit {
     amount: number;
     tenureMonths: number;
     interestRate: number;
-    user?: User; 
   }

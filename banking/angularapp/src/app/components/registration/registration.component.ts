@@ -62,6 +62,8 @@ export class RegistrationComponent {
             },
             (error) => {
               console.log(error);
+              console.log("error");
+
               if (error.error && error.error.Message) {
                 alert(error.error.Message); // Display backend error message as alert
               } else {

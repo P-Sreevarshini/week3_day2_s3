@@ -32,7 +32,7 @@ export class ViewFdComponent implements OnInit {
   }
 
   editFd(fd: FixedDeposit): void {
-    if (this.userRole !== 'ADMIN') {
+    if (this.userRole != 'Admin') {
       console.error('Access denied. Only admins can edit FDs.');
       return;
     }
