@@ -37,17 +37,6 @@ export class ViewFdComponent implements OnInit {
     });
   }
 
-
-//   editFd(fd: FixedDeposit): void {
-//     console.log('User Role:', this.userRole);
-//     console.log('User Id:', this.userId);
-
-//     if (this.userRole !== UserRoles.Admin) {
-//       console.error('Access denied. Only admins can edit FDs.');
-//       return;
-//     }
-//     this.selectedFd = fd;
-// }
 editFd(fd: FixedDeposit): void {
   console.log('User Role:', this.userRole);
 
