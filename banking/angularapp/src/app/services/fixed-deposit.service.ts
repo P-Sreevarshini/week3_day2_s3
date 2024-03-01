@@ -64,10 +64,24 @@ export class FixedDepositService {
     );
   }
 
+  // deleteFdByAdmin(fixedDepositId: number): Observable<void> {
+  //   const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; // Corrected URL
+  //   const headers = this.getHeaders();
+
+  //   return this.http.delete<void>(endpoint, { headers }).pipe(
+  //     catchError((error) => {
+  //       if (error.status === 401) {
+  //         console.error('Authentication error: Redirect to login page or handle accordingly.');
+  //       }
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
   deleteFdByAdmin(fixedDepositId: number): Observable<void> {
+    console.log('Deleting fixed deposit with ID:', fixedDepositId);
     const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; // Corrected URL
     const headers = this.getHeaders();
-
+  
     return this.http.delete<void>(endpoint, { headers }).pipe(
       catchError((error) => {
         if (error.status === 401) {
@@ -77,7 +91,7 @@ export class FixedDepositService {
       })
     );
   }
-
+  
   getCustomerFd(customerId: number): Observable<FixedDeposit[]> {
     const endpoint = `${this.apiUrl}/customers/${customerId}/fixed-deposits`;
     const headers = this.getHeaders();
