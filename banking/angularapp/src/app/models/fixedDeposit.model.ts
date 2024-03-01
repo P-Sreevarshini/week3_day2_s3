@@ -6,6 +6,6 @@ export class FixedDeposit {
     amount: number;
     tenureMonths: number;
     interestRate: number;
-    startDate: Date;
+    startDate?: Date;
     user?: User; 
   }

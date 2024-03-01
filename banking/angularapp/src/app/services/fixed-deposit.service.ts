@@ -8,7 +8,7 @@ import { FixedDeposit } from '../models/fixedDeposit.model';
   providedIn: 'root'
 })
 export class FixedDepositService {
-  apiUrl = 'https://example.com/api'; // Replace this with your API endpoint
+  apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io'; // Replace this with your API endpoint
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,7 @@ export class FixedDepositService {
   }
 
   getAllFdByAdmin(): Observable<FixedDeposit[]> {
-    const endpoint = `${this.apiUrl}/fixed-deposits`;
+    const endpoint = `${this.apiUrl}/api/fixeddeposit`;
     const headers = this.getHeaders();
 
     return this.http.get<FixedDeposit[]>(endpoint, { headers }).pipe(
@@ -34,7 +34,7 @@ export class FixedDepositService {
     );
   }
   saveFdByAdmin(fd: FixedDeposit): Observable<FixedDeposit> {
-    const endpoint = `${this.apiUrl}/fixed-deposits`;
+    const endpoint = `${this.apiUrl}/api/fixeddeposit`;
     const headers = this.getHeaders();
 
     return this.http.post<FixedDeposit>(endpoint, fd, { headers }).pipe(
@@ -47,45 +47,45 @@ export class FixedDepositService {
     );
   }
 
-  updateFdByAdmin(fdId: number, updatedFdData: FixedDeposit): Observable<FixedDeposit> {
-    const endpoint = `${this.apiUrl}/fixed-deposits/${fdId}`;
-    const headers = this.getHeaders();
+  // updateFdByAdmin(fdId: number, updatedFdData: FixedDeposit): Observable<FixedDeposit> {
+  //   const endpoint = `${this.apiUrl}/fixed-deposits/${fdId}`;
+  //   const headers = this.getHeaders();
 
-    return this.http.put<FixedDeposit>(endpoint, updatedFdData, { headers }).pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          console.error('Authentication error: Redirect to login page or handle accordingly.');
-        }
-        return throwError(error);
-      })
-    );
-  }
+  //   return this.http.put<FixedDeposit>(endpoint, updatedFdData, { headers }).pipe(
+  //     catchError((error) => {
+  //       if (error.status === 401) {
+  //         console.error('Authentication error: Redirect to login page or handle accordingly.');
+  //       }
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
 
-  deleteFdByAdmin(fdId: number): Observable<void> {
-    const endpoint = `${this.apiUrl}/fixed-deposits/${fdId}`;
-    const headers = this.getHeaders();
+  // deleteFdByAdmin(fdId: number): Observable<void> {
+  //   const endpoint = `${this.apiUrl}/fixed-deposits/${fdId}`;
+  //   const headers = this.getHeaders();
 
-    return this.http.delete<void>(endpoint, { headers }).pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          console.error('Authentication error: Redirect to login page or handle accordingly.');
-        }
-        return throwError(error);
-      })
-    );
-  }
+  //   return this.http.delete<void>(endpoint, { headers }).pipe(
+  //     catchError((error) => {
+  //       if (error.status === 401) {
+  //         console.error('Authentication error: Redirect to login page or handle accordingly.');
+  //       }
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
 
-  getCustomerFd(customerId: number): Observable<FixedDeposit[]> {
-    const endpoint = `${this.apiUrl}/customers/${customerId}/fixed-deposits`;
-    const headers = this.getHeaders();
+  // getCustomerFd(customerId: number): Observable<FixedDeposit[]> {
+  //   const endpoint = `${this.apiUrl}/customers/${customerId}/fixed-deposits`;
+  //   const headers = this.getHeaders();
 
-    return this.http.get<FixedDeposit[]>(endpoint, { headers }).pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          console.error('Authentication error: Redirect to login page or handle accordingly.');
-        }
-        return throwError(error);
-      })
-    );
-  }
+  //   return this.http.get<FixedDeposit[]>(endpoint, { headers }).pipe(
+  //     catchError((error) => {
+  //       if (error.status === 401) {
+  //         console.error('Authentication error: Redirect to login page or handle accordingly.');
+  //       }
+  //       return throwError(error);
+  //     })
+  //   );
+  // }
 }

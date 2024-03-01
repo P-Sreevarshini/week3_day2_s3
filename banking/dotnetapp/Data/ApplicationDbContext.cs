@@ -19,21 +19,14 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     modelBuilder.Entity<Schedule>()
-        //           .HasOne(s => s.Team1)
-        //           .WithMany()
-        //           .HasForeignKey(s => s.Team1Id)
-        //           .OnDelete(DeleteBehavior.Restrict); // Use Restrict for one and NoAction for others
+      protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    base.OnModelCreating(modelBuilder);
 
-        //     modelBuilder.Entity<Schedule>()
-        //         .HasOne(s => s.Team2)
-        //         .WithMany()
-        //         .HasForeignKey(s => s.Team2Id);    // Configure other relationships
-         
-        //     base.OnModelCreating(modelBuilder);
-        // }
+    modelBuilder.Entity<Transaction>()
+        .Property(t => t.Amount)
+        .HasColumnType("decimal(18, 2)"); // Adjust precision and scale as per your requirements
+}
 
 
 }
