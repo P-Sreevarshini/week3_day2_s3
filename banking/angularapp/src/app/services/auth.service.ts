@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { decode } from 'punycode';
+
 
 
 @Injectable({
@@ -83,6 +82,8 @@ checkEmailExists(email: string): Observable<boolean> {
           localStorage.setItem('user', response.userId);
           this.userRoleSubject.next(response.role);
           this.isAuthenticatedSubject.next(true); // Notify observers that the user is authenticated
+          this.storeUserData(response); // Call storeUserData to store user data in local storage
+
         })
       );
   }

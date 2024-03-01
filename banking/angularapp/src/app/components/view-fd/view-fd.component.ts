@@ -12,12 +12,15 @@ export class ViewFdComponent implements OnInit {
   fds: FixedDeposit[];
   selectedFd: FixedDeposit;
   userRole: string;
+  userId : number;
 
   constructor(private fdService: FixedDepositService) { }
 
   ngOnInit(): void {
     this.getAllFd();
     this.userRole = localStorage.getItem('userRole'); // get the user's role from local storage
+    console.log('User Role:', this.userRole); // Log the user role to check if it's retrieved correctly
+
   }
 
 
@@ -28,14 +31,11 @@ export class ViewFdComponent implements OnInit {
     });
   }
 
-  // editFd(fd: FixedDeposit): void {
-  //   if (this.userRole != 'Admin') {
-  //     console.error('Access denied. Only admins can edit FDs.');
-  //     return;
-  //   }
-  //   this.selectedFd = fd;
-  // }
+
   editFd(fd: FixedDeposit): void {
+    console.log('User Role:', this.userRole);
+    console.log('User Id:', this.userId);
+
     if (this.userRole !== UserRoles.Admin) {
       console.error('Access denied. Only admins can edit FDs.');
       return;
