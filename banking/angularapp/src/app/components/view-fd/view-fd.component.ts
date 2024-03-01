@@ -105,17 +105,41 @@ export class ViewFdComponent implements OnInit {
     }
   }
 
+  // updateFd(fd: FixedDeposit): void {
+  //   if (this.userRole !== 'Admin') {
+  //     console.error('Access denied. Only admins can update FDs.');
+  //     return;
+  //   }
+  //   this.fdService.updateFdByAdmin(fd.fixedDepositId, fd).subscribe(() => {
+  //     this.getAllFd();
+  //     this.selectedFd = null; 
+  //   });
+  // }
   updateFd(fd: FixedDeposit): void {
     if (this.userRole !== 'Admin') {
       console.error('Access denied. Only admins can update FDs.');
       return;
     }
-      const updatedData: Partial<FixedDeposit> = {
-      amount: fd.amount,
-      tenureMonths: fd.tenureMonths,
-      interestRate: fd.interestRate
-    };
+    
+    // Create a new object with all properties of FixedDeposit
+    const updatedData: FixedDeposit = { ...fd };
+  
+    // Update the properties that need to be updated
+    updatedData.amount = fd.amount;
+    updatedData.tenureMonths = fd.tenureMonths;
+    updatedData.interestRate = fd.interestRate;
+      this.fdService.updateFdByAdmin(fd.fixedDepositId, updatedData).subscribe(
+      () => {
+        console.log('Fixed deposit updated successfully.');
+        this.getAllFd();
+      },
+      (error) => {
+        console.error('Error updating fixed deposit:', error);
+        // Handle error appropriately, such as displaying an error message to the user
+      }
+    );
   }
+  
   toggleEditMode(fd: FixedDeposit): void {
     this.selectedFd = this.selectedFd === fd ? null : fd;
   }
