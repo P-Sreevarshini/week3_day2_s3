@@ -38,6 +38,7 @@ export class ViewFdComponent implements OnInit {
   }
 
 editFd(fd: FixedDeposit): void {
+  console.log(this.editFd);
   console.log('User Role:', this.userRole);
 
   if (this.userRole !== 'Admin') {
