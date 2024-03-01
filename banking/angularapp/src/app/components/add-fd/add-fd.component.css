@@ -1,61 +1,42 @@
-/* Styles for Add Fixed Deposit Form */
 h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
     text-align: center;
   }
-  
-  .form-container {
-    max-width: 600px;
-    margin: 0 auto;
+  .asterisk{
+    color: #d9534f;
   }
-  
-  .form-group {
-    margin-bottom: 30px;
+  form {
+    max-width: 400px;
+    margin: 0 auto;
   }
   
   label {
     display: block;
-    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   
-  .input-group {
-    margin-bottom: 20px;
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
   }
   
-  .input-group label {
-    display: inline-block;
-    width: 200px;
-    color: #333;
-  }
-  
-  .input-group input[type="number"],
-  .input-group input[type="date"] {
-    width: calc(100% - 210px);
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 18px;
-  }
-  
-  .asterisk {
-    color: red;
+  .error-message {
+    color: #ff0000;
   }
   
   .add-fd {
-    display: block;
-    width: 100%;
-    padding: 14px;
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
+    padding: 10px;
     border: none;
-    border-radius: 6px;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
   }
   
-  .add-fd:hover {
-    background-color: #45a049;
+  .add-fd:disabled {
+    background-color: #ddd;
+    color: #555;
+    cursor: not-allowed;
   }
   

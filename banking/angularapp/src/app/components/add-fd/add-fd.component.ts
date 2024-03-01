@@ -40,10 +40,10 @@ export class AddFdComponent {
           this.fds.push(fd);
           this.newFd = { fixedDepositId: 0, amount: 0, tenureMonths: 0, interestRate: 0, startDate: new Date() };
           alert('Fixed deposit added successfully!');
-          this.router.navigate(['view/FD'])
+          this.router.navigate(['/view/FD'])
         },
         (error) => {
-          console.error('Error adding fixed deposit:', error); // Log error
+          console.error('Error adding fixed deposit:', error);
         }
       );
     }
