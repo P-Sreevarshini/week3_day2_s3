@@ -104,21 +104,40 @@ export class ViewFdComponent implements OnInit {
       }
     }
   }
+
+  // updateFd(fd: FixedDeposit): void {
+  //   if (this.userRole !== 'Admin') {
+  //     console.error('Access denied. Only admins can update FDs.');
+  //     return;
+  //   }
+  //   this.fdService.updateFdByAdmin(fd.fixedDepositId, fd).subscribe(() => {
+  //     this.getAllFd();
+  //     this.selectedFd = null; 
+  //   });
+  // }
   updateFd(fd: FixedDeposit): void {
     if (this.userRole !== 'Admin') {
       console.error('Access denied. Only admins can update FDs.');
       return;
     }
-    this.fdService.updateFdByAdmin(fd.fixedDepositId, fd).subscribe(() => {
-      this.getAllFd();
-      this.selectedFd = null; 
-    });
+      const updatedData: Partial<FixedDeposit> = {
+      amount: fd.amount,
+      tenureMonths: fd.tenureMonths,
+      interestRate: fd.interestRate
+    };
+    console.log(updatedData);
+
+  
+  //   this.fdService.updateFdByAdmin(fd.fixedDepositId, updatedData).subscribe(() => {
+  //     this.getAllFd();
+  //     this.selectedFd = null; 
+  //   });
   }
+  
 
   getAllFd(): void {
     this.fdService.getAllFd().subscribe(fds => {
       this.fds = fds;
-      // Initialize edit mode for each FD
       fds.forEach(fd => this.editModeMap[fd.fixedDepositId] = false);
     });
   }

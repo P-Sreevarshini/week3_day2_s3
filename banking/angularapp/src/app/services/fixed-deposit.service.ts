@@ -49,7 +49,7 @@ export class FixedDepositService {
   }
 
   updateFdByAdmin(fixedDepositId: number, updatedFdData: FixedDeposit): Observable<FixedDeposit> {
-    const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; // Corrected URL
+    const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; 
     const headers = this.getHeaders();
 
     return this.http.put<FixedDeposit>(endpoint, updatedFdData, { headers }).pipe(
@@ -62,8 +62,8 @@ export class FixedDepositService {
     );
   }
 
-  deleteFdByAdmin(fdId: number): Observable<void> {
-    const endpoint = `${this.apiUrl}/api/fixeddeposit/${fdId}`; // Corrected URL
+  deleteFdByAdmin(fixedDepositId: number): Observable<void> {
+    const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; // Corrected URL
     const headers = this.getHeaders();
 
     return this.http.delete<void>(endpoint, { headers }).pipe(
