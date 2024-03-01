@@ -10,10 +10,10 @@
   </thead>
   <tbody>
     <tr *ngFor="let fd of fds">
-      <td>{{ fd.fixedDepositId }}</td>
-      <td>{{ fd.amount }}</td>
-      <td>{{ fd.tenureMonths }}</td>
-      <td>{{ fd.interestRate }}</td>
+      <td>{{ fd.FixedDepositId }}</td>
+      <td>{{ fd.Amount }}</td>
+      <td>{{ fd.TenureMonths }}</td>
+      <td>{{ fd.InterestRate }}</td>
       <td>
         <!-- Add buttons for actions here -->
         <button (click)="editFd(fd)">Edit</button>

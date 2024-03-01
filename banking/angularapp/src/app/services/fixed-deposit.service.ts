@@ -20,7 +20,7 @@ export class FixedDepositService {
     });
   }
 
-  getAllFdByAdmin(): Observable<FixedDeposit[]> {
+  getAllFd(): Observable<FixedDeposit[]> {
     const endpoint = `${this.apiUrl}/api/fixeddeposit`;
     const headers = this.getHeaders();
 

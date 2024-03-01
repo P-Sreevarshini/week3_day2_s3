@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FixedDepositService } from '../../services/fixed-deposit.service';
 import { FixedDeposit } from 'src/app/models/fixedDeposit.model';
+import { UserRoles } from 'src/app/models/userRole.model';
 
 @Component({
   selector: 'app-view-fd',
@@ -19,29 +20,31 @@ export class ViewFdComponent implements OnInit {
     this.userRole = localStorage.getItem('userRole'); // get the user's role from local storage
   }
 
+
   getAllFd(): void {
-    this.fdService.getAllFdByAdmin().subscribe(
-      (fds: FixedDeposit[]) => {
-        this.fds = fds;
-        console.log('Fetched fixed deposits:', this.fds);
-      },
-      (error) => {
-        console.error('Error fetching fixed deposits:', error);
-      }
-    );
+    this.fdService.getAllFd().subscribe(fds => {
+      this.fds = fds;
+      console.log(fds);
+    });
   }
 
+  // editFd(fd: FixedDeposit): void {
+  //   if (this.userRole != 'Admin') {
+  //     console.error('Access denied. Only admins can edit FDs.');
+  //     return;
+  //   }
+  //   this.selectedFd = fd;
+  // }
   editFd(fd: FixedDeposit): void {
-    if (this.userRole != 'Admin') {
+    if (this.userRole !== UserRoles.Admin) {
       console.error('Access denied. Only admins can edit FDs.');
       return;
     }
-
     this.selectedFd = fd;
-  }
+}
 
   deleteFd(fd: FixedDeposit): void {
-    if (this.userRole !== 'ADMIN') {
+    if (this.userRole !== 'Admin') {
       console.error('Access denied. Only admins can delete FDs.');
       return;
     }
@@ -52,7 +55,7 @@ export class ViewFdComponent implements OnInit {
   }
 
   updateFd(fd: FixedDeposit): void {
-    if (this.userRole !== 'ADMIN') {
+    if (this.userRole !== 'Admin') {
       console.error('Access denied. Only admins can update FDs.');
       return;
     }
@@ -64,6 +67,6 @@ export class ViewFdComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    this.selectedFd = null; // clear the selection
+    this.selectedFd = null; 
   }
 }
