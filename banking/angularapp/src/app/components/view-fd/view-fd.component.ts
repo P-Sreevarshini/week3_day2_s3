@@ -157,29 +157,18 @@ export class ViewFdComponent implements OnInit {
 
     this.selectedFd = fd;
   }
-
-  // deleteFd(fd: FixedDeposit): void {
-  //   if (this.userRole !== 'Admin') {
-  //     console.error('Access denied. Only admins can delete FDs.');
-  //     return;
-  //   }
-
-  //   this.fdService.deleteFdByAdmin(fd.fixedDepositId).subscribe(() => {
-  //     this.getAllFd(); // refresh the list after deleting
-  //   });
-  // }
   deleteFd(fd: FixedDeposit): void {
     console.log('Deleting fixed deposit:', fd);
-
+  
     if (this.fdService.deleteFdByAdmin) {
-
-      this.fdService.deleteFdByAdmin(fd.fixedDepositId).subscribe(() => {
+      this.fdService.deleteFdByAdmin(fd.FixedDepositId).subscribe(() => {
         this.getAllFd(); // Refresh the list after deleting
       });
     } else {
       console.error('deleteFdByAdmin method not found in FixedDepositService');
     }
   }
+  
 
   cancelEdit(): void {
     this.editModeMap[this.selectedFd.fixedDepositId] = false;

@@ -78,7 +78,7 @@ export class FixedDepositService {
   //   );
   // }
   deleteFdByAdmin(fixedDepositId: number): Observable<void> {
-    console.log('Deleting fixed deposit with ID:', fixedDepositId);
+    console.log('Fixed deposit ID:', fixedDepositId); // Log the fixedDepositId
     const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; // Corrected URL
     const headers = this.getHeaders();
   
