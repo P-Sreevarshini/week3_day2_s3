@@ -152,13 +152,10 @@ namespace dotnetapp.Migrations
                     b.Property<decimal>("InterestRate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("TenureMonths")
                         .HasColumnType("int");
 
-                    b.Property<long>("UserId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("FixedDepositId");
@@ -416,9 +413,7 @@ namespace dotnetapp.Migrations
                 {
                     b.HasOne("dotnetapp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
