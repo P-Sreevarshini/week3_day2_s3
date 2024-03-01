@@ -10,7 +10,7 @@ import { FixedDeposit } from 'src/app/models/fixedDeposit.model';
   templateUrl: './add-fd.component.html',
   styleUrls: ['./add-fd.component.css']
 })
-export class AddFdComponent  {
+export class AddFdComponent {
   userRole: string;
   fds: FixedDeposit[] = [];
   newFd: FixedDeposit = {
@@ -20,16 +20,15 @@ export class AddFdComponent  {
     interestRate: 0,
     startDate: new Date()
   };
-  showFdId: boolean = true; // Flag to show/hide the fixedDepositId input field
+  showFdId: boolean = true; 
 
   constructor(private fdService: FixedDepositService, private jwtService: JwtService, private router: Router) {
     this.userRole = this.jwtService.getUserRole();
-    if (this.userRole === 'Admin') {
+    if (this.userRole === 'ADMIN') {
       this.showFdId = true; // Show the fixedDepositId input field for admins
-    } 
-    // else {
-    //   this.showFdId = false; // Hide the fixedDepositId input field for other users
-    // }
+    } else {
+      this.showFdId = false; // Hide the fixedDepositId input field for other users
+    }
   }
  
   addFd(form: NgForm): void {
@@ -40,8 +39,6 @@ export class AddFdComponent  {
         (fd) => {
           this.fds.push(fd);
           this.newFd = { fixedDepositId: 0, amount: 0, tenureMonths: 0, interestRate: 0, startDate: new Date() };
-          
-          // Display alert message
           alert('Fixed deposit added successfully!');
           this.router.navigate(['view/FD'])
         },
