@@ -16,7 +16,6 @@ import { ViewReviewComponent } from './components/view-review/view-review.compon
 import { AddAccountComponent } from './components/add-account/add-account.component';
 import { ViewAccountComponent } from './components/view-account/view-account.component';
 import { CustomerComponent } from './components/customer/customer.component';
-import { EditFdComponent } from './components/edit-fd/edit-fd.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +30,8 @@ import { EditFdComponent } from './components/edit-fd/edit-fd.component';
     ViewReviewComponent,
     AddAccountComponent,
     ViewAccountComponent,
-    CustomerComponent,
-    EditFdComponent
-  ],
+    CustomerComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -133,6 +133,9 @@ export class ViewFdComponent implements OnInit {
   //     this.selectedFd = null; 
   //   });
   }
+  toggleEditMode(fd: FixedDeposit): void {
+    this.selectedFd = this.selectedFd === fd ? null : fd;
+  }
   
 
   getAllFd(): void {
