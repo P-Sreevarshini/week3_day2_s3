@@ -50,6 +50,21 @@ namespace dotnetapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FixedDeposits",
+                columns: table => new
+                {
+                    FixedDepositId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TenureMonths = table.Column<int>(type: "int", nullable: false),
+                    InterestRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FixedDeposits", x => x.FixedDepositId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -173,6 +188,26 @@ namespace dotnetapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FDRequests",
+                columns: table => new
+                {
+                    FDRequestId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FixedDepositId = table.Column<long>(type: "bigint", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FDRequests", x => x.FDRequestId);
+                    table.ForeignKey(
+                        name: "FK_FDRequests_FixedDeposits_FixedDepositId",
+                        column: x => x.FixedDepositId,
+                        principalTable: "FixedDeposits",
+                        principalColumn: "FixedDepositId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Accounts",
                 columns: table => new
                 {
@@ -191,27 +226,6 @@ namespace dotnetapp.Migrations
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FixedDeposits",
-                columns: table => new
-                {
-                    FixedDepositId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TenureMonths = table.Column<int>(type: "int", nullable: false),
-                    InterestRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FixedDeposits", x => x.FixedDepositId);
-                    table.ForeignKey(
-                        name: "FK_FixedDeposits_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -255,26 +269,6 @@ namespace dotnetapp.Migrations
                         column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "AccountId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FDRequests",
-                columns: table => new
-                {
-                    FDRequestId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FixedDepositId = table.Column<long>(type: "bigint", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FDRequests", x => x.FDRequestId);
-                    table.ForeignKey(
-                        name: "FK_FDRequests_FixedDeposits_FixedDepositId",
-                        column: x => x.FixedDepositId,
-                        principalTable: "FixedDeposits",
-                        principalColumn: "FixedDepositId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -326,11 +320,6 @@ namespace dotnetapp.Migrations
                 name: "IX_FDRequests_FixedDepositId",
                 table: "FDRequests",
                 column: "FixedDepositId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FixedDeposits_UserId",
-                table: "FixedDeposits",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_UserId",

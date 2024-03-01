@@ -12,7 +12,7 @@ using dotnetapp.Data;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240301060155_initial")]
+    [Migration("20240301080432_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -157,12 +157,7 @@ namespace dotnetapp.Migrations
                     b.Property<int>("TenureMonths")
                         .HasColumnType("int");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("FixedDepositId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("FixedDeposits");
                 });
@@ -409,15 +404,6 @@ namespace dotnetapp.Migrations
                         .IsRequired();
 
                     b.Navigation("FixedDeposit");
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.FixedDeposit", b =>
-                {
-                    b.HasOne("dotnetapp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.Review", b =>

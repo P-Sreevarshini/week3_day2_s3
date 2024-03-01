@@ -155,12 +155,7 @@ namespace dotnetapp.Migrations
                     b.Property<int>("TenureMonths")
                         .HasColumnType("int");
 
-                    b.Property<long?>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("FixedDepositId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("FixedDeposits");
                 });
@@ -407,15 +402,6 @@ namespace dotnetapp.Migrations
                         .IsRequired();
 
                     b.Navigation("FixedDeposit");
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.FixedDeposit", b =>
-                {
-                    b.HasOne("dotnetapp.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.Review", b =>

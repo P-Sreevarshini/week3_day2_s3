@@ -20,21 +20,20 @@ namespace dotnetapp.Services
 
         public async Task<IEnumerable<FixedDeposit>> GetAllFixedDeposits()
         {
-            return await _context.FixedDeposits.Include(fd => fd.User).ToListAsync();
+            return await _context.FixedDeposits.ToListAsync();
         }
 
         public async Task<FixedDeposit> GetFixedDepositById(long FixedDepositId)
         {
             return await _context.FixedDeposits
-            .Include(fd => fd.User)
-            .FirstOrDefaultAsync(fd => fd.FixedDepositId == FixedDepositId);
+                .FirstOrDefaultAsync(fd => fd.FixedDepositId == FixedDepositId);
         }
 
         public async Task<bool> AddFixedDeposit(FixedDeposit fixedDeposit)
         {
             try
             {
-                _context.FixedDeposits.Add(fixedDeposit).Include(fd => fd.User);
+                _context.FixedDeposits.Add(fixedDeposit);
                 await _context.SaveChangesAsync();
                 return true;
             }

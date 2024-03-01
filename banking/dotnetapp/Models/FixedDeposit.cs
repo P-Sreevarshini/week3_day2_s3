@@ -9,8 +9,6 @@ namespace dotnetapp.Models
         public decimal Amount { get; set; }
         public int TenureMonths { get; set; }
         public decimal InterestRate { get; set; }
-        public long AccountId { get; set; }
-        public Account? Account { get; set; }
 
     }
 }
