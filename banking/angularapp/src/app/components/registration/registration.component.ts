@@ -32,52 +32,38 @@ export class RegistrationComponent {
       return; 
     }
   
-    // Check if the email already exists
-    this.authService.checkEmailExists(this.email).subscribe(
-      (exists) => {
-        if (exists) {
-          this.emailExistsError = true; 
-          alert('Registration failed. User already exists.');
-          return; 
-        } else if (this.email.endsWith('@admin.com') && this.role === UserRoles.User) {
-          alert('Registration failed. Customer cannot register with email ending with \'@admin.com\'.');
-          return;
-        }
-        else {
-          // Proceed with registration if email doesn't exist
-          this.authService.register(
-            this.userName, 
-            this.password, 
-            this.role, 
-            this.email, 
-            this.mobileNumber
-          ).subscribe(
-            (success) => {
-              if (success) {
-                alert('Registration Successful');
-                this.router.navigate(['login']);
-              } else {
-                alert('Registration failed. An error occurred. Please try again.');
-              }
-            },
-            (error) => {
-              console.log(error);
-              console.log("error");
-
-              if (error.error && error.error.Message) {
-                alert(error.error.Message); // Display backend error message as alert
-              } else {
-                alert('Registration failed. An error occurred. Please try again.');
-              }
-            }
-          );
+    if (this.mobileNumber.length !== 10 || !/^\d+$/.test(this.mobileNumber)) {
+      alert('Registration failed. Phone number must have exactly 10 digits.');
+      return;
+    }
+  
+    // Proceed with registration
+    this.authService.register(
+      this.userName, 
+      this.password, 
+      this.role, 
+      this.email, 
+      this.mobileNumber
+    ).subscribe(
+      (success) => {
+        if (success) {
+          alert('Registration Successful');
+          this.router.navigate(['login']);
+        } else {
+          alert('Registration failed. An error occurred. Please try again.');
         }
       },
       (error) => {
         console.log(error);
+        if (error.status === 400 && error.error && error.error.Message === "User already exists") {
+          alert('Registration failed. User already exists.');
+        } else {
+          alert('Registration failed. An error occurred. Please try again.');
+        }
       }
     );
   }
+  
 
   isPasswordComplex(password: string): boolean {
     const hasUppercase = /[A-Z]/.test(password);

@@ -36,7 +36,6 @@ register(userName: string, password: string, userRole: string, email: string, mo
 checkEmailExists(email: string): Observable<boolean> {
   return this.http.get<any>(`${this.apiUrl}/api/check-email/${email}`).pipe(
     catchError(error => {
-      // If the error status is 404, it means the email doesn't exist
       if (error.status === 404) {
         return of(false);
       } else {
@@ -126,6 +125,7 @@ checkEmailExists(email: string): Observable<boolean> {
 
 
   isCustomer(): boolean {
+    // Check if the user has the 'admin' role based on your token structure
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
     if (token) {
