@@ -126,7 +126,6 @@ checkEmailExists(email: string): Observable<boolean> {
 
 
   isCustomer(): boolean {
-    // Check if the user has the 'admin' role based on your token structure
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
     if (token) {

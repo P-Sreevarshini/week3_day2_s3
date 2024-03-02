@@ -10,11 +10,13 @@ import { ViewAccountComponent } from './components/view-account/view-account.com
 import { AddAccountComponent } from './components/add-account/add-account.component';
 import { AddFdComponent } from './components/add-fd/add-fd.component';
 import { ViewFdComponent } from './components/view-fd/view-fd.component';
+import { AuthGuard } from './components/authguard/auth.guard';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: RegistrationComponent },
+  { path: 'signup', component: RegistrationComponent ,canActivate: [AuthGuard]},
   { path: 'admin/dashboard', component: AdminComponent },
   { path: 'customer/dashboard', component: CustomerComponent },
   { path: 'view/acount', component: ViewAccountComponent },
