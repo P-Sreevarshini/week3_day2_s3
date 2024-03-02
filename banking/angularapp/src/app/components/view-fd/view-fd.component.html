@@ -19,12 +19,13 @@
           <ng-container *ngIf="userRole === 'Admin'">
             <button (click)="editFd(fd)" class="edit-btn">Edit</button>
             <button (click)="deleteFd(fd)" class="delete-btn">Delete</button>
+            <ng-container *ngIf="userRole === 'Customer'">
+
           </ng-container>
         </td>
       </ng-container>
       <ng-template #editMode>
         <td><input [(ngModel)]="fd.FixedDepositId" readonly></td>
-
         <td><input [(ngModel)]="fd.Amount"></td>
         <td><input [(ngModel)]="fd.TenureMonths"></td>
         <td><input [(ngModel)]="fd.InterestRate"></td>
