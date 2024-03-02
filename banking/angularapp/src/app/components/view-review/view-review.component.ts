@@ -16,7 +16,7 @@ export class CustomerViewReviewComponent implements OnInit {
   }
 
   getReviewsByUserId() {
-    this.resortService.getReviewsByUserId(userId: number).subscribe(
+    getReviewsByUserId(userId: number): Observable<any> {
       (data: any) => {
         this.reviews = data;
         console.log(this.reviews)
