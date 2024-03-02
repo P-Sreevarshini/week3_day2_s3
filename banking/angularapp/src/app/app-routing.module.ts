@@ -11,7 +11,7 @@ import { AddAccountComponent } from './components/add-account/add-account.compon
 import { AddFdComponent } from './components/add-fd/add-fd.component';
 import { ViewFdComponent } from './components/view-fd/view-fd.component';
 import { AuthGuard } from './components/authguard/auth.guard';
-import { ReviewComponent } from './components/add-review/add-review.component';
+import { AddReviewComponent } from './components/add-review/add-review.component';
 import { ViewReviewComponent } from './components/view-review/view-review.component';
 
 
@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'add/account', component: AddAccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'add/FD', component: AddFdComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'view/FD', component: ViewFdComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
-  { path: 'add/review', component: ReviewComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  { path: 'add/review', component: AddReviewComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'view/review', component: ViewReviewComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
 
 

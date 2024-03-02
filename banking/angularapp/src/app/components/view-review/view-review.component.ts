@@ -2,21 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
-  selector: 'app-customer-view-review',
-  templateUrl: './customer-view-review.component.html',
-  styleUrls: ['./customer-view-review.component.css']
+  selector: 'app-view-review',
+  templateUrl: './view-review.component.html',
+  styleUrls: ['./view-review.component.css']
 })
-export class CustomerViewReviewComponent implements OnInit {
+export class ViewReviewComponent implements OnInit {
   reviews: any[] = [];
 
-  constructor( private resortService: ReviewService) { }
+  constructor( private reviewService: ReviewService) { }
 
   ngOnInit(): void {
     this.getReviewsByUserId();
   }
 
   getReviewsByUserId() {
-    getReviewsByUserId(userId: number): Observable<any> {
+    this.reviewService.getReviewsByUserId().subscribe(
       (data: any) => {
         this.reviews = data;
         console.log(this.reviews)
