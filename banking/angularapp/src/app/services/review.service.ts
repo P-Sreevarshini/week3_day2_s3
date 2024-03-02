@@ -11,7 +11,7 @@ export class ReviewService {
 
   constructor(private http: HttpClient) {}
 
-ddReview(review: any): Observable<any> {
+addReview(review: any): Observable<any> {
   const token = localStorage.getItem('token');
   // console.log(token)
   const headers = new HttpHeaders({
