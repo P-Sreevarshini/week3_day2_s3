@@ -28,15 +28,29 @@ export class NavbarComponent implements OnInit {
   }
 
 
+  // ngOnInit(): void {
+  //   this.isLoggedIn = this.authService.isAuthenticated();
+  //   if (this.isLoggedIn) {
+  //     this.authService.getUserRole().subscribe(() => {
+  //       this.isAdmin = this.authService.isAdmin(); // <-- Correct way to call the isAdmin method
+  //       this.isCustomer = this.authService.isCustomer();
+  //     });
+  //   }
+  // }
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isAuthenticated();
     if (this.isLoggedIn) {
       this.authService.getUserRole().subscribe(() => {
-        this.isAdmin = this.authService.isAdmin(); // <-- Correct way to call the isAdmin method
+        this.isAdmin = this.authService.isAdmin();
         this.isCustomer = this.authService.isCustomer();
       });
+    } else {
+      // If the user is not logged in, set isAdmin and isCustomer to false
+      this.isAdmin = false;
+      this.isCustomer = false;
     }
   }
+  
 
   logout(): void {
     this.isLoggedIn = false;

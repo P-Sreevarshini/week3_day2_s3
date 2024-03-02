@@ -101,46 +101,50 @@ checkEmailExists(email: string): Observable<boolean> {
     return !!token; // Return true if the token exists
   }
 
+  // isAdmin(): boolean {
+  //   const token = localStorage.getItem('token');
+  //   const role = localStorage.getItem('userRole');
+  //   if (token) {
+  //     if(role === 'Admin'){
+  //       return true;
+  //     }
+  //     var decode = JSON.parse(atob(token.split('.')[1]));
+
+  //     const decodedToken = this.decodeToken(token);
+  //     const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+  //     if(decode.role === 'Admin')
+  //     console.log(decode.role); 
+
+  //     return true;
+  //   }
+  //   return false; 
+  // }
+
+
+  // isCustomer(): boolean {
+  //   const token = localStorage.getItem('token');
+  //   const role = localStorage.getItem('userRole');
+  //   if (token) {
+  //     if(role === 'Customer'){
+  //       return true;
+  //     }
+  //     const decodedToken = this.decodeToken(token);
+  //     const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+  //     return true;
+  //   }
+  //   return false; 
+  // }
+  
   isAdmin(): boolean {
-    const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
-    if (token) {
-      if(role === 'Admin'){
-        return true;
-      }
-      // const decodedToken = this.decodeToken(token);
-      // return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin';
-      var decode = JSON.parse(atob(token.split('.')[1]));
-
-      const decodedToken = this.decodeToken(token);
-      const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-      // if(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'Admin')
-      if(decode.role === 'Admin')
-      console.log(decode.role); // This should log 'TestAdmin'
-
-      return true;
-    }
-    return false; 
+    return role === 'Admin';
   }
-
-
+  
   isCustomer(): boolean {
-    // Check if the user has the 'admin' role based on your token structure
-    const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
-    if (token) {
-      // console.log("token:asd"+token);
-      if(role === 'customer' || role === 'CUSTOMER'){
-        return true;
-      }
-
-      const decodedToken = this.decodeToken(token);
-      const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-      if(decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'customer')
-      return true;
-    }
-    return false; 
+    return role === 'Customer';
   }
+  
   decodeToken(token: string): any {
     try {
       var decode = JSON.parse(atob(token.split('.')[1]));

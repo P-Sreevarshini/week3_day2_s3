@@ -9,41 +9,41 @@ import { UserRoles } from 'src/app/models/userRole.model';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
-  userName: string = "";
-  password: string = "";
+  UserName: string = "";
+  Password: string = "";
   confirmPassword: string = "";
-  mobileNumber: string = "";
+  MobileNumber: string = "";
   role: string = ""; 
-  email: string;
+  Email: string;
   passwordMismatch: boolean = false;
   emailExistsError: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   register(): void {
-    if (this.password !== this.confirmPassword) {
+    if (this.Password !== this.confirmPassword) {
       this.passwordMismatch = true;
       return;
     }
   
     this.passwordMismatch = false;
   
-    if (!this.isPasswordComplex(this.password)) {
+    if (!this.isPasswordComplex(this.Password)) {
       return; 
     }
   
-    if (this.mobileNumber.length !== 10 || !/^\d+$/.test(this.mobileNumber)) {
+    if (this.MobileNumber.length !== 10 || !/^\d+$/.test(this.MobileNumber)) {
       alert('Registration failed. Phone number must have exactly 10 digits.');
       return;
     }
   
     // Proceed with registration
     this.authService.register(
-      this.userName, 
-      this.password, 
+      this.UserName, 
+      this.Password, 
       this.role, 
-      this.email, 
-      this.mobileNumber
+      this.Email, 
+      this.MobileNumber
     ).subscribe(
       (success) => {
         if (success) {
@@ -65,11 +65,11 @@ export class RegistrationComponent {
   }
   
 
-  isPasswordComplex(password: string): boolean {
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
-    const hasDigit = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*()_+{}\[\]:;<>,.?~\-]/.test(password);
+  isPasswordComplex(Password: string): boolean {
+    const hasUppercase = /[A-Z]/.test(Password);
+    const hasLowercase = /[a-z]/.test(Password);
+    const hasDigit = /\d/.test(Password);
+    const hasSpecialChar = /[!@#$%^&*()_+{}\[\]:;<>,.?~\-]/.test(Password);
 
     return hasUppercase && hasLowercase && hasDigit && hasSpecialChar;
   }

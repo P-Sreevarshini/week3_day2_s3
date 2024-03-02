@@ -8,8 +8,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  Email: string = '';
+  Password: string = '';
   error: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
