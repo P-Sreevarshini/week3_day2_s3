@@ -101,50 +101,39 @@ checkEmailExists(email: string): Observable<boolean> {
     return !!token; // Return true if the token exists
   }
 
-  // isAdmin(): boolean {
-  //   const token = localStorage.getItem('token');
-  //   const role = localStorage.getItem('userRole');
-  //   if (token) {
-  //     if(role === 'Admin'){
-  //       return true;
-  //     }
-  //     var decode = JSON.parse(atob(token.split('.')[1]));
-
-  //     const decodedToken = this.decodeToken(token);
-  //     const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-  //     if(decode.role === 'Admin')
-  //     console.log(decode.role); 
-
-  //     return true;
-  //   }
-  //   return false; 
-  // }
-
-
-  // isCustomer(): boolean {
-  //   const token = localStorage.getItem('token');
-  //   const role = localStorage.getItem('userRole');
-  //   if (token) {
-  //     if(role === 'Customer'){
-  //       return true;
-  //     }
-  //     const decodedToken = this.decodeToken(token);
-  //     const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-  //     return true;
-  //   }
-  //   return false; 
-  // }
-  
   isAdmin(): boolean {
+    const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
-    return role === 'Admin';
+    if (token) {
+      if(role === 'Admin'){
+        return true;
+      }
+      var decode = JSON.parse(atob(token.split('.')[1]));
+
+      const decodedToken = this.decodeToken(token);
+      const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+      if(decode.role === 'Admin')
+      console.log(decode.role); 
+
+      return true;
+    }
+    return false; 
   }
-  
+
+
   isCustomer(): boolean {
+    const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
-    return role === 'Customer';
+    if (token) {
+      if(role === 'Customer'){
+        return true;
+      }
+      const decodedToken = this.decodeToken(token);
+      const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+      return true;
+    }
+    return false; 
   }
-  
   decodeToken(token: string): any {
     try {
       var decode = JSON.parse(atob(token.split('.')[1]));

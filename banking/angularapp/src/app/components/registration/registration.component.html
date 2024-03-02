@@ -6,14 +6,14 @@
       <label for="username">Username<span class="asterisk">*</span>:</label>
       <div class="error-message1"></div>
     </div>
-    <input type="text" id="username" [(ngModel)]="UserName" name="username" [ngModelOptions]="{standalone: true}" required
+    <input type="text" id="username" [(ngModel)]="userName" name="username" [ngModelOptions]="{standalone: true}" required
            #usernameNgModel="ngModel">
     <div *ngIf="usernameNgModel.invalid && (usernameNgModel.dirty || usernameNgModel.touched)"
          class="error-message">Username is required</div>
 
-    <label for="Email">Email<span class="asterisk">*</span>:</label>
-    <input type="text" id="Email" [(ngModel)]="Email" name="Email" [ngModelOptions]="{standalone: true}"
-           required Email #emailNgModel="ngModel">
+    <label for="email">Email<span class="asterisk">*</span>:</label>
+    <input type="text" id="email" [(ngModel)]="email" name="email" [ngModelOptions]="{standalone: true}"
+           required email #emailNgModel="ngModel">
     <div *ngIf="emailNgModel.invalid && (emailNgModel.dirty || emailNgModel.touched)"
          class="error-message">
       <div *ngIf="emailNgModel.errors.required">Email is required</div>
@@ -21,14 +21,14 @@
     </div>
 
     <div class="validation">
-      <label for="Password">Password<span class="asterisk">*</span>:</label>
+      <label for="password">Password<span class="asterisk">*</span>:</label>
       <div class="error-message1"></div>
     </div>
-    <input type="password" id="Password" [(ngModel)]="Password" name="Password" [ngModelOptions]="{standalone: true}" required
+    <input type="password" id="password" [(ngModel)]="password" name="password" [ngModelOptions]="{standalone: true}" required
            #passwordNgModel="ngModel">
     <div *ngIf="passwordNgModel.invalid && (passwordNgModel.dirty || passwordNgModel.touched)"
          class="error-message">Password is required</div>
-    <div *ngIf="passwordNgModel.valid && !isPasswordComplex(Password)" class="error-message">
+    <div *ngIf="passwordNgModel.valid && !isPasswordComplex(password)" class="error-message">
       Password must include at least one uppercase letter, one lowercase letter, one digit, and one special character
     </div>
 
@@ -36,16 +36,16 @@
       <label for="confirmPassword">Confirm Password<span class="asterisk">*</span>:</label>
       <div class="error-message1"></div>
     </div>
-    <input type="Password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" [ngModelOptions]="{standalone: true}" required
+    <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" [ngModelOptions]="{standalone: true}" required
            #confirmPasswordNgModel="ngModel">
     <div *ngIf="confirmPasswordNgModel.invalid && (confirmPasswordNgModel.dirty || confirmPasswordNgModel.touched)"
          class="error-message">Confirm Password is required</div>
-    <div *ngIf="Password !== confirmPassword && !passwordMismatch" class="error-message">
+    <div *ngIf="password !== confirmPassword && !passwordMismatch" class="error-message">
       Passwords do not match
     </div>
 
     <label for="mobile">Mobile Number<span class="asterisk">*</span>:</label>
-    <input type="tel" id="mobile" [(ngModel)]="MobileNumber" name="mobile" [ngModelOptions]="{standalone: true}"
+    <input type="tel" id="mobile" [(ngModel)]="mobileNumber" name="mobile" [ngModelOptions]="{standalone: true}"
            required pattern="^\d{10}$" #mobileNgModel="ngModel">
    
     <div *ngIf="mobileNgModel.invalid && (mobileNgModel.dirty || mobileNgModel.touched)"
@@ -68,6 +68,6 @@
 
     <div *ngIf="passwordMismatch" class="error-message">Passwords do not match</div>
 
-    <button type="submit" [disabled]="registrationForm.invalid || Password !== confirmPassword">Register</button>
+    <button type="submit" [disabled]="registrationForm.invalid || password !== confirmPassword">Register</button>
   </form>
 </div>
