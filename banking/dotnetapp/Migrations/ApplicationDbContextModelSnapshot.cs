@@ -178,10 +178,6 @@ namespace dotnetapp.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 

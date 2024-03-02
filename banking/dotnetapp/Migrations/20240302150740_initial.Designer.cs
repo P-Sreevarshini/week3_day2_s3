@@ -12,7 +12,7 @@ using dotnetapp.Data;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240302143919_initial")]
+    [Migration("20240302150740_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,10 +179,6 @@ namespace dotnetapp.Migrations
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");

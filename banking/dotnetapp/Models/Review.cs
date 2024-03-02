@@ -14,8 +14,6 @@ namespace dotnetapp.Models
         public int ReviewId { get; set; } 
 
         public long UserId { get; set; }
-        public string Subject { get; set; }
-
         public string Body { get; set; }
 
         [Range(1, 5)] 
