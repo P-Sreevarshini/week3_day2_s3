@@ -1,6 +1,6 @@
 <div>
   <h2>Add Review</h2>
-  <form (submit)="addReview()" #reviewForm="ngForm">
+  <form (submit)="addReview(reviewForm)" #reviewForm="ngForm">
     <div>
       <label for="body">Body:</label>
       <textarea id="body" name="body" [(ngModel)]="newReview.Body" required minlength="10" maxlength="500"></textarea>

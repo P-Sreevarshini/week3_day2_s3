@@ -43,48 +43,6 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // [HttpPost]
-        // [Route("register")]
-        // public async Task<IActionResult> Register(RegistrationModel model)
-        // {
-        //     try
-        //     {
-
-        //         if (!ModelState.IsValid)
-        //             return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
-        //             Console.WriteLine("model",model);
-        //         if (model.UserRole == "Admin" || model.UserRole == "Customer")
-        //         {
-        //             var (status, message) = await _authService.Registeration(model, model.UserRole);
-        //             if (status == 0)
-        //             {
-        //                 return BadRequest(new { Status = "Error", Message = message });
-        //             }
-        //             var user = new User
-        //             {
-        //                 Username = model.Username,
-        //                 Password = model.Password,
-        //                 Email = model.Email,
-        //                 MobileNumber = model.MobileNumber,
-        //                 UserRole = model.UserRole,
-        //             };
-        //             _context.Users.Add(user);
-        //             await _context.SaveChangesAsync();
-        //             //return CreatedAtAction(nameof(Register), model);
-        //             return Ok(new { Status = "Success", Message = message });
-        //         }
-        //         else
-        //         {
-        //             return BadRequest(new { Status = "Error", Message = "Invalid user role" });
-        //         }
-
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         _logger.LogError(ex.Message);
-        //         return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        //     }
-        // }
         
         [HttpPost]
         [Route("register")]
