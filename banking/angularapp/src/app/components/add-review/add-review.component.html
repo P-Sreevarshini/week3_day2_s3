@@ -1,1 +1,38 @@
-<p>add-review works!</p>
+<div *ngIf="reviews && reviews.length > 0; else noReviews">
+    <h2>Reviews</h2>
+    <ul>
+      <li *ngFor="let review of reviews">
+        <h3>{{ review.Subject }}</h3>
+        <p>{{ review.Body }}</p>
+        <p>Rating: {{ review.Rating }}</p>
+        <p>Posted by: {{ review.User?.Username }}</p>
+        <p>Date: {{ review.DateCreated | date }}</p>
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #noReviews>
+    <p>No reviews found.</p>
+  </ng-template>
+  
+  <hr>
+  
+  <div>
+    <h2>Add a Review</h2>
+    <form (ngSubmit)="addReview()">
+      <div>
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" [(ngModel)]="newReview.Subject" required>
+      </div>
+      <div>
+        <label for="body">Body:</label>
+        <textarea id="body" name="body" [(ngModel)]="newReview.Body" required></textarea>
+      </div>
+      <div>
+        <label for="rating">Rating:</label>
+        <input type="number" id="rating" name="rating" [(ngModel)]="newReview.Rating" required min="1" max="5">
+      </div>
+      <button type="submit">Submit Review</button>
+    </form>
+  </div>
+  

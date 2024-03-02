@@ -109,5 +109,10 @@ namespace dotnetapp.Services
  
             return tokenHandler.WriteToken(token);
         }
+
+         public async Task<User> GetUserByIdAsync(long userId)
+        {
+            return await context.Users.FindAsync(userId);
+        }
     }
 }

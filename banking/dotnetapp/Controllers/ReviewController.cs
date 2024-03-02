@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
-using dotnetapp.Service;
+using dotnetapp.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,8 +14,8 @@ namespace dotnetapp.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly ReviewService _reviewService;
-        private readonly UserService _userService; // Inject UserService
-        public ReviewController(ReviewService reviewService, UserService userService)
+        private readonly AuthService _userService; // Inject UserService
+        public ReviewController(ReviewService reviewService, AuthService userService)
         {
             _reviewService = reviewService;
              _userService = userService; // Assign injected UserService

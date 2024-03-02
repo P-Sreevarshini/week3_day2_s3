@@ -1,8 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using dotnetapp.Data;
 using dotnetapp.Models;
 using Microsoft.EntityFrameworkCore;
-using dotnetapp.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace dotnetapp.Services
 {
@@ -15,14 +17,14 @@ namespace dotnetapp.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Review>> GetAllReviews()
+        public async Task<IEnumerable<Review>> GetAllReviewsAsync()
         {
             return await _context.Reviews
                 .Include(review => review.User)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByUserId(long userId)
+        public async Task<IEnumerable<Review>> GetReviewsByUserIdAsync(long userId)
         {
             return await _context.Reviews
                 .Where(r => r.UserId == userId)
@@ -30,18 +32,19 @@ namespace dotnetapp.Services
                 .ToListAsync();
         }
 
-        public async Task<bool> AddReview(Review review)
+        public async Task<Review> AddReviewAsync(Review review)
         {
-            try
+            if (review == null)
             {
-                _context.Reviews.Add(review);
-                await _context.SaveChangesAsync();
-                return true;
+                throw new ArgumentNullException(nameof(review), "Review cannot be null");
             }
-            catch
-            {
-                return false;
-            }
+
+            review.DateCreated = DateTime.Now;
+
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            return review;
         }
     }
 }
