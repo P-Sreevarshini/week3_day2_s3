@@ -2,9 +2,10 @@ import { User } from "./user.model";
 
 export class Review {
     ReviewId: number;
-    UserId: number;
-    ReviewText: string;
-    DatePosted: Date;
+    userId: number;
+    Subject: string;
+    Body: string;
     Rating: number;
+    DateCreated: Date;
     user?: User; 
 }
