@@ -16,15 +16,13 @@ import { AuthGuard } from './components/authguard/auth.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: RegistrationComponent ,canActivate: [AuthGuard]},
-  { path: 'admin/dashboard', component: AdminComponent },
-  { path: 'customer/dashboard', component: CustomerComponent },
-  { path: 'view/acount', component: ViewAccountComponent },
-  { path: 'add/account', component: AddAccountComponent },
-  { path: 'add/FD', component: AddFdComponent },
-  { path: 'view/FD', component: ViewFdComponent },
-
-
+  { path: 'signup', component: RegistrationComponent },
+  { path: 'admin/dashboard', component: AdminComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  { path: 'customer/dashboard', component: CustomerComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  { path: 'view/acount', component: ViewAccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  { path: 'add/account', component: AddAccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  { path: 'add/FD', component: AddFdComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  { path: 'view/FD', component: ViewFdComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
 
   {
     path: 'error',
