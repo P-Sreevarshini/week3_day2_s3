@@ -1,25 +1,40 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Review } from '../models/review.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewService {
-  private apiUrl = 'your-api-url';
+  private apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io'; // Replace 'your-api-url' with your actual API URL
 
   constructor(private http: HttpClient) { }
 
-  getAllReviews(): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/api/review`);
+  addReview(review: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.post(`${this.apiUrl}/api/review`, review, { headers });
   }
 
-  getReviewsByUserId(userId: number): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/api/review/${userId}`);
+  getAllReviews(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(`${this.apiUrl}/api/review`, { headers });
   }
 
-  addReview(review: Review): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/review`, review);
+  getReviewsByUserId(userId: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(`${this.apiUrl}/api/review/${userId}`, { headers });
   }
 }
