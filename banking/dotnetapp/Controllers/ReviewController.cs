@@ -1,4 +1,3 @@
-// ReviewController.cs
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,18 +18,17 @@ namespace dotnetapp.Controllers
         {
             _reviewService = reviewService;
         }
-        // [Authorize]
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetAllReviews()
         {
             var reviews = await _reviewService.GetAllReviews();
             return Ok(reviews);
         }
-        // [Authorize]
 
-
-       [HttpGet("{userId}")]
+        [Authorize]
+        [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviewsByUserId(long userId)
         {
             var reviews = await _reviewService.GetReviewsByUserId(userId);
@@ -43,13 +41,13 @@ namespace dotnetapp.Controllers
             return Ok(reviews);
         }
 
-        // [Authorize(Roles = "Customer")]
-
+        [Authorize("Customer")]
         [HttpPost]
         public async Task<ActionResult> AddReview([FromBody] Review review)
         {
             try
             {
+                review.DateCreated = DateTime.Now; 
                 var success = await _reviewService.AddReview(review);
 
                 if (success)
@@ -66,6 +64,5 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-
     }
 }

@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  ezmail: string = '';
+  email: string = '';
   password: string = '';
   error: string = '';
 

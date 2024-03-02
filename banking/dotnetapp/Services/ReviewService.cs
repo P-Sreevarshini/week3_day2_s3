@@ -1,4 +1,3 @@
-// ReviewService.cs
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnetapp.Models;
@@ -19,11 +18,11 @@ namespace dotnetapp.Services
         public async Task<IEnumerable<Review>> GetAllReviews()
         {
             return await _context.Reviews
-            .Include(review => review.User)
-            .ToListAsync();
+                .Include(review => review.User)
+                .ToListAsync();
         }
 
-      public async Task<IEnumerable<Review>> GetReviewsByUserId(long userId)
+        public async Task<IEnumerable<Review>> GetReviewsByUserId(long userId)
         {
             return await _context.Reviews
                 .Where(r => r.UserId == userId)
