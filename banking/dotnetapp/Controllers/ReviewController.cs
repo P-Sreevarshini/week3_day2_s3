@@ -1,11 +1,11 @@
-// ReviewController.cs
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
 using dotnetapp.Services;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
+using System.Security.Claims;
+
 
 namespace dotnetapp.Controllers
 {
@@ -14,14 +14,14 @@ namespace dotnetapp.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly ReviewService _reviewService;
-        private readonly AuthService _userService; // Inject UserService
-        public ReviewController(ReviewService reviewService, AuthService userService)
+        private readonly AuthService _authService; // Inject AuthService
+
+        public ReviewController(ReviewService reviewService, AuthService authService)
         {
             _reviewService = reviewService;
-             _userService = userService; // Assign injected UserService
-
+            _authService = authService; // Assign injected AuthService
         }
-                
+        
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllReviews()
@@ -51,47 +51,73 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, $"An error occurred while retrieving reviews for user ID {userId}: {ex.Message}");
             }
         }
-[Authorize(Roles = "Customer")]
-[HttpPost]
-public async Task<IActionResult> AddReview([FromBody] Review review)
-{
-    if (review == null)
-    {
-        return BadRequest("Review data is null");
-    }
 
-    try
-    {
-        if (review.User != null && review.User.UserId != review.UserId)
-        {
-            // If the provided user object's userId doesn't match the userId in the main object,
-            // use the userId from the main object and ignore the user object.
-            review.User = null;
-        }
+        // [Authorize(Roles = "Customer")]
+        // [HttpPost]
+        // public async Task<IActionResult> AddReview([FromBody] Review review)
+        // {
+        //     if (review == null)
+        //     {
+        //         return BadRequest("Review data is null");
+        //     }
 
-        var addedReview = await _reviewService.AddReviewAsync(review);
+        //     try
+        //     {
+        //         // Perform authentication to ensure the user is authorized to add a review
+        //         var userId = long.Parse(HttpContext.User.FindFirst("userId").Value); // Assuming userId claim is present
+        //         review.UserId = userId;
 
-        // Fetch user details (including user name) based on the user ID in the review
-        var user = await _userService.GetUserByIdAsync(review.UserId);
-        if (user == null)
-        {
-            // Handle the case where the user is not found (optional)
-            return BadRequest("User not found");
-        }
+        //         var addedReview = await _reviewService.AddReviewAsync(review);
+        //         return Ok(addedReview);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return StatusCode(500, $"An error occurred while adding a review: {ex.Message}");
+        //     }
+        // }
+            [Authorize(Roles = "Customer")]
+            [HttpPost]
+            public async Task<IActionResult> AddReview([FromBody] Review review)
+            {
+                if (review == null)
+                {
+                    return BadRequest("Review data is null");
+                }
 
-        // Include user details in the response
-        var response = new
-        {
-            Review = addedReview,
-            User = user
-        };
+                try
+                {
+                    var userId = long.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                    review.UserId = userId;
 
-        return Ok(response);
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, $"An error occurred while adding a review: {ex.Message}");
-    }
-}
+                    var addedReview = await _reviewService.AddReviewAsync(review);
+
+                    // Fetch user details based on the user ID in the review
+                    var user = await _authService.GetUserByIdAsync(review.UserId);
+                    if (user == null)
+                    {
+                        // Handle the case where the user is not found (optional)
+                        return BadRequest("User not found");
+                    }
+
+                    // Include user ID and user details in the response
+                   // Include user ID and user details in the response
+                    var response = new
+                    {
+                        ReviewId = addedReview.ReviewId,
+                        Body = addedReview.Body,
+                        Rating = addedReview.Rating,
+                        DateCreated = addedReview.DateCreated,
+                        UserId = user.UserId, // Add user ID to the response
+                        UserName = user.Name // Assuming 'Name' is the property that holds the user's name
+                    };
+
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, $"An error occurred while adding a review: {ex.Message}");
+                }
+            }
+
     }
 }
