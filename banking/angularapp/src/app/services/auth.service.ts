@@ -78,7 +78,9 @@ checkEmailExists(email: string): Observable<boolean> {
           localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', response.username);
           localStorage.setItem('userRole', response.role);
+          // localStorage.setItem('user', response.userId);
           localStorage.setItem('user', response.userId);
+
           this.userRoleSubject.next(response.role);
           this.isAuthenticatedSubject.next(true); // Notify observers that the user is authenticated
           this.storeUserData(response); // Call storeUserData to store user data in local storage

@@ -30,7 +30,7 @@ export class ViewReviewComponent implements OnInit {
   }
 
   getReviewsByUserId() {
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('user');
     console.log(userId);
     if (!userId) {
       console.error('User ID is not available in local storage');

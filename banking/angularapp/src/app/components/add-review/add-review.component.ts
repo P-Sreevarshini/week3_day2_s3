@@ -15,7 +15,7 @@ export class AddReviewComponent {
   reviews: Review[] = [];
   newReview: Review = {
     ReviewId: 0,
-    userId: 0,
+    UserId: 0,
     Body: '',
     Rating: 0,
     DateCreated: new Date()
@@ -31,7 +31,7 @@ export class AddReviewComponent {
     }
 
     const userId = this.jwtService.getUserId(); // Assuming getUserId() returns the user ID from the token
-    this.newReview.userId = userId;
+    this.newReview.UserId = userId;
   }
  
   addReview(form: NgForm): void {
@@ -43,7 +43,7 @@ export class AddReviewComponent {
           this.reviews.push(review);
           this.newReview = {
             ReviewId: 0,
-            userId: 0,
+            UserId: 0,
             Body: '',
             Rating: 0,
             DateCreated: new Date()

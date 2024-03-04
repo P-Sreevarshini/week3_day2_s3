@@ -31,6 +31,8 @@ export class ReviewService {
   }
 
   getReviewsByUserId(userId: string): Observable<Review[]> {
+    // localStorage.setItem('user', response.userId);
+
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

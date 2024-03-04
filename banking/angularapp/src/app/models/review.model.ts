@@ -2,7 +2,7 @@ import { User } from "./user.model";
 
 export class Review {
     ReviewId: number;
-    userId: number;
+    UserId: number;
     Body: string;
     Rating: number;
     DateCreated: Date;
