@@ -12,7 +12,8 @@ export class CustomerComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    // Accessing isCustomer property from the authService
-    this.isCustomer = this.authService.isCustomer;
+    this.authService.isCustomer$.subscribe(isCustomer => {
+      this.isCustomer = isCustomer;
+    });
   }
 }
