@@ -49,33 +49,34 @@ namespace dotnetapp.Controllers
 
         [Authorize(Roles = "Customer")]
         [HttpPost]
-        public async Task<IActionResult> AddReview([FromBody] Review review)
+public async Task<IActionResult> AddReview([FromBody] Review review)
+{
+    if (review == null)
+    {
+        return BadRequest("Review data is null");
+    }
+
+    try
+    {
+        // Get user ID from claims
+        var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null)
         {
-            if (review == null)
-            {
-                return BadRequest("Review data is null");
-            }
-
-            try
-            {
-                // Get user ID from claims
-                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim == null)
-                {
-                    return Unauthorized("User not authenticated");
-                }
-
-                var userId = long.Parse(userIdClaim.Value);
-                review.UserId = userId;
-
-                await _reviewService.AddReviewAsync(review);
-                return Ok("Review added successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while adding a review: {ex.Message}");
-            }
+            return Unauthorized("User not authenticated");
         }
+
+        var userId = long.Parse(userIdClaim.Value);
+        review.UserId = userId;
+
+        var addedReview = await _reviewService.AddReviewAsync(review);
+        return Ok(new { Message = "Review added successfully", Review = addedReview });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"An error occurred while adding a review: {ex.Message}");
+    }
+}
+
 
         [Authorize(Roles = "Customer")]
         [HttpDelete("{id}")]

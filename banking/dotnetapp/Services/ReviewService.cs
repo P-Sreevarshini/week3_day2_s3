@@ -29,7 +29,7 @@ namespace dotnetapp.Services
                 .ToListAsync();
         }
 
-public async Task AddReviewAsync(Review review)
+public async Task<Review> AddReviewAsync(Review review)
 {
     if (review == null)
     {
@@ -50,6 +50,8 @@ public async Task AddReviewAsync(Review review)
 
     _context.Reviews.Add(review);
     await _context.SaveChangesAsync();
+
+    return review; // Return the added review object
 }
 
 // public async Task AddReviewAsync(Review review)
