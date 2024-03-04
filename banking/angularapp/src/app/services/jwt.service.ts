@@ -33,4 +33,20 @@ export class JwtService {
     const decodedToken = jwtDecode(token); 
     return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   }
+
+  getUserId(): number {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken = this.decodeToken(token);
+      return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/nameid'];
+    }
+  }
+  getUserName(): string {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken = this.decodeToken(token);
+      return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/name'];
+    }
+  }
+
 }

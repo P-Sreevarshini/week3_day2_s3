@@ -19,7 +19,7 @@ addReview(review: any): Observable<any> {
     'Authorization': `Bearer ${token}` // Assuming your token is a bearer token, replace it accordingly
   });
 
-  return this.http.post(`${this.apiUrl}/api/review`, review, { headers });
+  return this.http.post(`${this.apiUrl}/api/Review`, review, { headers });
 }
 
 getAllReviews(){
@@ -29,7 +29,7 @@ getAllReviews(){
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}` // Assuming your token is a bearer token, replace it accordingly
   });
-  return this.http.get(`${this.apiUrl}/api/review`, { headers });
+  return this.http.get(`${this.apiUrl}/api/Review`, { headers });
 }
 
 getReviewsByUserId(){
@@ -40,6 +40,6 @@ getReviewsByUserId(){
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}` // Assuming your token is a bearer token, replace it accordingly
   });
-  return this.http.get(`${this.apiUrl}/api/review/${userId}`, { headers });
+  return this.http.get(`${this.apiUrl}/api/Review/${userId}`, { headers });
 }
 }

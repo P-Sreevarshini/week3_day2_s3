@@ -19,16 +19,19 @@ export class AddReviewComponent {
     Body: '',
     Rating: 0,
     DateCreated: new Date()
-    };
+  };
   showReviewId: boolean = true; 
 
   constructor(private reviewService: ReviewService, private jwtService: JwtService, private router: Router) {
     this.userRole = this.jwtService.getUserRole();
-    if (this.userRole === 'Admin') {
+    if (this.userRole === 'Customer') {
       this.showReviewId = true; // Show the ReviewId input field for admins
     } else {
       this.showReviewId = false; // Hide the ReviewId input field for other users
     }
+
+    const userId = this.jwtService.getUserId(); // Assuming getUserId() returns the user ID from the token
+    this.newReview.userId = userId;
   }
  
   addReview(form: NgForm): void {
@@ -44,9 +47,9 @@ export class AddReviewComponent {
             Body: '',
             Rating: 0,
             DateCreated: new Date()
-                    };
+          };
           alert('Review added successfully!');
-          this.router.navigate(['/view/reviews'])
+          this.router.navigate(['/view/review'])
         },
         (error) => {
           console.error('Error adding review:', error);
