@@ -55,9 +55,9 @@ checkEmailExists(email: string): Observable<boolean> {
   }
 
   private storeUserData(user: any): void {
-    localStorage.setItem('userToken', user.token);
-    localStorage.setItem('userRole', user.role);
-    localStorage.setItem('user', user.userId);
+    localStorage.setItem('userToken', user.Token);
+    localStorage.setItem('userRole', user.UserRole);
+    localStorage.setItem('user', user.UserId);
     console.log('The userId'+localStorage.getItem('user'));
   }
 
@@ -75,7 +75,7 @@ checkEmailExists(email: string): Observable<boolean> {
       .pipe(
         tap(response => {
           console.log(response);
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('token', response.Token);
           localStorage.setItem('currentUser', response.username);
           localStorage.setItem('userRole', response.role);
           localStorage.setItem('user', response.userId);

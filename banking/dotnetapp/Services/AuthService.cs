@@ -34,7 +34,6 @@ namespace dotnetapp.Services
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
-                //Name = model.Name
             };
 
  
@@ -49,44 +48,7 @@ namespace dotnetapp.Services
  
             return (1, "User created successfully!");
         }
- 
-        // public async Task<(int, string)> Login(LoginModel model)
-        // {
-        //     var user = await userManager.FindByEmailAsync(model.Email);
-        //     //var user1 = await context.Find(model.Email);
- 
-        //     var users = await context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-        //    Console.WriteLine("users  -------------------->"+users.UserRole);
-           
- 
-        //     Console.WriteLine(string.Join(", ", user));
- 
-        //     if (user == null)
-        //         return (0, "Invalid username");
-        //     if (!await userManager.CheckPasswordAsync(user, model.Password))
-        //         return (0, "Invalid password");
- 
-        //     var userRoles = await userManager.GetRolesAsync(user);
-        //     Console.WriteLine(string.Join(", ", userRoles));
- 
- 
-        //     var authClaims = new List<Claim>
-        //     {
-        //        new Claim(ClaimTypes.Name, user.UserName),
-        //        new Claim(ClaimTypes.NameIdentifier, users.UserId.ToString()),
-        //        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //        new Claim(ClaimTypes.Role, users.UserRole) // Add role claim
-
-        //     };
- 
-        //     foreach (var userRole in userRoles)
-        //     {
-        //         authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-        //     }
-        //     string token = GenerateToken(authClaims);
-        //     return (1, token);
-        // }
-public async Task<(int, string, string, long, string)> Login(LoginModel model)
+public async Task<(int, string, string, long, string, string)> Login(LoginModel model)
         {
             var user = await userManager.FindByEmailAsync(model.Email);
             var users = await context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
@@ -101,7 +63,7 @@ public async Task<(int, string, string, long, string)> Login(LoginModel model)
 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.NameIdentifier, users.UserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Role, users.UserRole) // Add role claim
@@ -114,7 +76,7 @@ public async Task<(int, string, string, long, string)> Login(LoginModel model)
 
             string token = GenerateToken(authClaims);
 
-            return (1, token, user.Email, users.UserId, users.UserRole);
+return (1, token, user.Email, users.UserId, users.UserRole, users.Username);
         }
 
  

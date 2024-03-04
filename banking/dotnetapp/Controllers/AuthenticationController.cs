@@ -52,12 +52,12 @@ namespace dotnetapp.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
 
-                var (status, token, email, userId, userRole) = await _authService.Login(model);
+                var (status, token, email, userId, userRole,userName) = await _authService.Login(model);
 
                 if (status == 0)
                     return BadRequest(new { Status = "Error", Message = token });
 
-                return Ok(new { Status = "Success", Token = token, Email = email, UserId = userId, UserRole = userRole });
+                return Ok(new { Status = "Success", Token = token, Email = email, UserId = userId, UserRole = userRole, Username = userName });
             }
             catch (Exception ex)
             {
