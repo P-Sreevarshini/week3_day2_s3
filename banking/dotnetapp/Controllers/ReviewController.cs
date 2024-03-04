@@ -79,12 +79,12 @@ public async Task<IActionResult> AddReview([FromBody] Review review)
 
 
         [Authorize(Roles = "Customer")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReview(int id)
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> DeleteReview(int userId)
         {
             try
             {
-                await _reviewService.DeleteReviewAsync(id);
+                await _reviewService.DeleteReviewAsync(userId);
                 return Ok("Review deleted successfully");
             }
             catch (Exception ex)

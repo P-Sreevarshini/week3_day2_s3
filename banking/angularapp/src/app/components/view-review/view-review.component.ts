@@ -13,7 +13,20 @@ export class ViewReviewComponent implements OnInit {
   constructor(private reviewService: ReviewService) { }
 
   ngOnInit(): void {
+    this.getAllReviews();
     this.getReviewsByUserId();
+  }
+
+  getAllReviews() {
+    this.reviewService.getAllReviews().subscribe(
+      (data: Review[]) => { 
+        this.reviews = data;
+        console.log(this.reviews)
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   getReviewsByUserId() {
@@ -21,10 +34,9 @@ export class ViewReviewComponent implements OnInit {
     console.log(userId);
     if (!userId) {
       console.error('User ID is not available in local storage');
-      return; // Exit early if user ID is not available
+      return; 
     }
   
-    // Pass the user ID to the service method
     this.reviewService.getReviewsByUserId(userId).subscribe(
       (data: Review[]) => { 
         this.reviews = data;

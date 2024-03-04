@@ -17,10 +17,12 @@ namespace dotnetapp.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Review>> GetAllReviewsAsync()
-        {
-            return await _context.Reviews.ToListAsync();
-        }
+      public async Task<IEnumerable<Review>> GetAllReviewsAsync()
+    {
+        return await _context.Reviews
+            .Include(review => review.User) // Include user details
+            .ToListAsync();
+    }
 
         public async Task<IEnumerable<Review>> GetReviewsByUserIdAsync(long userId)
         {
@@ -38,14 +40,12 @@ public async Task<Review> AddReviewAsync(Review review)
 
     review.DateCreated = DateTime.Now;
 
-    // Fetch the user corresponding to the provided user ID
     var user = await _context.Users.FindAsync(review.UserId);
     if (user == null)
     {
         throw new InvalidOperationException($"User with ID {review.UserId} not found");
     }
 
-    // Associate the review with the fetched user
     review.User = user;
 
     _context.Reviews.Add(review);
@@ -54,25 +54,6 @@ public async Task<Review> AddReviewAsync(Review review)
     return review; // Return the added review object
 }
 
-// public async Task AddReviewAsync(Review review)
-// {
-//     if (review == null)
-//     {
-//         throw new ArgumentNullException(nameof(review), "Review cannot be null");
-//     }
-
-//     review.DateCreated = DateTime.Now;
-//     var user = await _context.Users.FindAsync(review.UserId);
-//     if (user == null)
-//     {
-//         throw new InvalidOperationException($"User with ID {review.UserId} not found");
-//     }
-
-//     review.User = user;
-
-//     _context.Reviews.Add(review);
-//     await _context.SaveChangesAsync();
-// }
 
         public async Task DeleteReviewAsync(int id)
         {

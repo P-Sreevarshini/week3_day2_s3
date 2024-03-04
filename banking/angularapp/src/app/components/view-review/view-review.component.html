@@ -1,25 +1,23 @@
 <div id="customerViewReviewBody">
-    <h1>Reviews</h1>
-    <table class="table">
+  <h1>Reviews</h1>
+  <table class="table">
       <thead>
-        <tr>
-        <th>S.No</th>
-        <th>UserId
-          <th>Feedback Comments</th>
-          <th>Ratings (out of 5)</th>
-          <th>Date Created</th>
-        </tr>
+          <tr>
+              <th>S.No</th>
+              <th>UserId</th>
+              <th>Feedback Comments</th>
+              <th>Ratings (out of 5)</th>
+              <th>Date Created</th>
+          </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let review of reviews; let i = index">
-            <td>{{i + 1}}</td>
-            <td>{{review.UserId}}</td>
-            <td>{{ review.subject }}</td>
-          <td>{{ review.body }}</td>
-          <td>{{ review.rating }}</td>
-          <td>{{ review.dateCreated | date : "dd/MM/yyyy" }}</td>
-        </tr>
+          <tr *ngFor="let review of reviews; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ review.userId }}</td>
+              <td>{{ review.Body }}</td>
+              <td>{{ review.Rating }}</td>
+              <td>{{ review.DateCreated | date: 'dd/MM/yyyy' }}</td>
+          </tr>
       </tbody>
-    </table>
-  </div>
-  
+  </table>
+</div>
