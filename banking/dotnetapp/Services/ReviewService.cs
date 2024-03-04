@@ -32,6 +32,20 @@ namespace dotnetapp.Services
                 .ToListAsync();
         }
 
+        // public async Task<Review> AddReviewAsync(Review review)
+        // {
+        //     if (review == null)
+        //     {
+        //         throw new ArgumentNullException(nameof(review), "Review cannot be null");
+        //     }
+
+        //     review.DateCreated = DateTime.Now;
+
+        //     _context.Reviews.Add(review);
+        //     await _context.SaveChangesAsync();
+
+        //     return review;
+        // }
         public async Task<Review> AddReviewAsync(Review review)
         {
             if (review == null)
@@ -43,6 +57,9 @@ namespace dotnetapp.Services
 
             _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
+
+            // Fetch user details corresponding to the user ID in the review
+            review.User = await _context.Users.FindAsync(review.UserId);
 
             return review;
         }
