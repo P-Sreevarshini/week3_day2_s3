@@ -7,13 +7,34 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
-  isCustomer: boolean;
 
-  constructor(private authService: AuthService) { }
+  isCustomer: boolean = true;
+  authToken: string | null = null;
+
 
   ngOnInit(): void {
-    this.authService.isCustomer$.subscribe(isCustomer => {
-      this.isCustomer = isCustomer;
-    });
   }
 }
+
+ /*
+ import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-admin',
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.css']
+})
+export class AdminComponent implements OnInit {
+
+  isAdmin: boolean = true;
+  authToken: string | null = null;
+
+  // constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    // this.authToken = this.authService.getToken();
+  }
+
+
+}
+*/

@@ -10,6 +10,7 @@ export class AdminComponent implements OnInit {
   isAdmin: boolean = true;
   authToken: string | null = null;
 
+
   ngOnInit(): void {
   }
 

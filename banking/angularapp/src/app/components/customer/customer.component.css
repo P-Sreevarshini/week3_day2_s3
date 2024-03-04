@@ -15,12 +15,22 @@
     cursor: pointer;
   }
   
+  /* .card a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 23px;
+  } */
   .card a {
     text-decoration: none;
     color: #333;
     font-weight: bold;
     font-size: 23px;
+    background-color: black; /* Add this line to set the background color */
+    padding: 10px; /* Add padding to make the background visible */
+    border-radius: 5px; /* Optional: Add border radius for a rounded appearance */
   }
+  
   
   li {
     list-style-type: none;
