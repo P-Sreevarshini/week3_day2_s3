@@ -22,7 +22,7 @@ namespace dotnetapp.Controllers
             _authService = authService; // Assign injected AuthService
         }
         
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllReviews()
         {
@@ -37,7 +37,7 @@ namespace dotnetapp.Controllers
             }
         }
 
-        [Authorize]
+        // [Authorize]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetReviewsByUserId(long userId)
         {
@@ -75,7 +75,7 @@ namespace dotnetapp.Controllers
         //         return StatusCode(500, $"An error occurred while adding a review: {ex.Message}");
         //     }
         // }
-            [Authorize(Roles = "Customer")]
+            // [Authorize(Roles = "Customer")]
             [HttpPost]
             public async Task<IActionResult> AddReview([FromBody] Review review)
             {
@@ -90,25 +90,19 @@ namespace dotnetapp.Controllers
                     review.UserId = userId;
 
                     var addedReview = await _reviewService.AddReviewAsync(review);
-
-                    // Fetch user details based on the user ID in the review
                     var user = await _authService.GetUserByIdAsync(review.UserId);
                     if (user == null)
                     {
-                        // Handle the case where the user is not found (optional)
                         return BadRequest("User not found");
                     }
-
-                    // Include user ID and user details in the response
-                   // Include user ID and user details in the response
                     var response = new
                     {
                         ReviewId = addedReview.ReviewId,
                         Body = addedReview.Body,
                         Rating = addedReview.Rating,
                         DateCreated = addedReview.DateCreated,
-                        UserId = user.UserId, // Add user ID to the response
-                        UserName = user.Name // Assuming 'Name' is the property that holds the user's name
+                        userId = addedReview.UserId, // Add user ID to the response
+                        // userName = user.Username // Assuming 'Name' is the property that holds the user's name
                     };
 
                     return Ok(response);
