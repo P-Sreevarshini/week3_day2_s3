@@ -58,7 +58,7 @@ checkEmailExists(email: string): Observable<boolean> {
     localStorage.setItem('userToken', user.token);
     localStorage.setItem('userRole', user.role);
     localStorage.setItem('user', user.userId);
-    console.log('The userID'+localStorage.getItem('user'));
+    console.log('The userId'+localStorage.getItem('user'));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
@@ -78,7 +78,6 @@ checkEmailExists(email: string): Observable<boolean> {
           localStorage.setItem('token', response.token);
           localStorage.setItem('currentUser', response.username);
           localStorage.setItem('userRole', response.role);
-          // localStorage.setItem('user', response.userId);
           localStorage.setItem('user', response.userId);
 
           this.userRoleSubject.next(response.role);

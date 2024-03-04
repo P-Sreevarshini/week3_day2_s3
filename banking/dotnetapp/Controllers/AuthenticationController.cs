@@ -23,6 +23,26 @@ namespace dotnetapp.Controllers
         }
 
 
+        // [HttpPost]
+        // [Route("login")]
+        // public async Task<IActionResult> Login(LoginModel model)
+        // {
+        //     try
+        //     {
+        //         if (!ModelState.IsValid)
+        //             return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
+        //         var (status, message) = await _authService.Login(model);
+        //         if (status == 0)
+        //             return BadRequest(new { Status = "Error", Message = message });
+        //         return Ok(new { Status = "Success", token = message });
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         _logger.LogError(ex.Message);
+        //         return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //     }
+        // }
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginModel model)
@@ -31,10 +51,13 @@ namespace dotnetapp.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest(new { Status = "Error", Message = "Invalid Payload" });
-                var (status, message) = await _authService.Login(model);
+
+                var (status, token, email, userId, userRole) = await _authService.Login(model);
+
                 if (status == 0)
-                    return BadRequest(new { Status = "Error", Message = message });
-                return Ok(new { Status = "Success", token = message });
+                    return BadRequest(new { Status = "Error", Message = token });
+
+                return Ok(new { Status = "Success", Token = token, Email = email, UserId = userId, UserRole = userRole });
             }
             catch (Exception ex)
             {
@@ -43,7 +66,6 @@ namespace dotnetapp.Controllers
             }
         }
 
-        
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register(RegistrationModel model)
