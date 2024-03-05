@@ -18,7 +18,8 @@ namespace dotnetapp.Controllers
         {
             _reviewService = reviewService;
         }
-        
+        [Authorize]
+
         [HttpGet]
         public async Task<IActionResult> GetAllReviews()
         {
@@ -32,7 +33,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, $"An error occurred while retrieving reviews: {ex.Message}");
             }
         }
-
+        [Authorize]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetReviewsByUserId(long userId)
         {
