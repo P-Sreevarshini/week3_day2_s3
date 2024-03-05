@@ -79,13 +79,45 @@ public async Task<IActionResult> AddReview([FromBody] Review review)
 }
 
 
+        // [Authorize(Roles = "Customer")]
+        // [HttpDelete("{userId}")]
+        // public async Task<IActionResult> DeleteReview(int userId)
+        // {
+        //     try
+        //     {
+        //         await _reviewService.DeleteReviewAsync(userId);
+        //         return Ok("Review deleted successfully");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return StatusCode(500, $"An error occurred while deleting the review: {ex.Message}");
+        //     }
+        // }
+        
         [Authorize(Roles = "Customer")]
         [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteReview(int userId)
+        public async Task<IActionResult> DeleteReviewByUserId(long userId)
         {
             try
             {
+                // Get user ID from claims
+                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    return Unauthorized("User not authenticated");
+                }
+
+                var loggedInUserId = long.Parse(userIdClaim.Value);
+
+                // Check if the user is authorized to delete the review
+                if (loggedInUserId != userId)
+                {
+                    return Forbid("User is not authorized to delete this review");
+                }
+
+                // Delete the review associated with the specified user ID
                 await _reviewService.DeleteReviewAsync(userId);
+                
                 return Ok("Review deleted successfully");
             }
             catch (Exception ex)
@@ -93,7 +125,6 @@ public async Task<IActionResult> AddReview([FromBody] Review review)
                 return StatusCode(500, $"An error occurred while deleting the review: {ex.Message}");
             }
         }
-        
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]

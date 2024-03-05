@@ -56,9 +56,9 @@ public async Task<Review> AddReviewAsync(Review review)
 }
 
 
-        public async Task DeleteReviewAsync(int id)
+public async Task DeleteReviewAsync(long userId)
         {
-            var review = await _context.Reviews.FindAsync(id);
+            var review = await _context.Reviews.FindAsync(userId);
             if (review != null)
             {
                 _context.Reviews.Remove(review);
