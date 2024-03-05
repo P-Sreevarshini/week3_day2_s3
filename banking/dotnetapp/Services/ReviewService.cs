@@ -54,17 +54,37 @@ public async Task<Review> AddReviewAsync(Review review)
 
     return review; // Return the added review object
 }
-
-
-public async Task DeleteReviewAsync(long userId)
+        public async Task DeleteReviewAsync(long reviewId, long userId)
         {
-            var review = await _context.Reviews.FindAsync(userId);
-            if (review != null)
+            try
             {
+                // Find the review associated with the specified review ID and user ID
+                var review = await _context.Reviews
+                    .FirstOrDefaultAsync(r => r.ReviewId == reviewId && r.UserId == userId);
+
+                if (review == null)
+                {
+                    throw new Exception("Review not found for the specified user ID and review ID");
+                }
+
                 _context.Reviews.Remove(review);
                 await _context.SaveChangesAsync();
             }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to delete review: {ex.Message}");
+            }
         }
+
+        // public async Task DeleteReviewAsync(int userId)
+        // {
+        //     var review = await _context.Reviews.FindAsync(userId);
+        //     if (review != null)
+        //     {
+        //         _context.Reviews.Remove(review);
+        //         await _context.SaveChangesAsync();
+        //     }
+        // }
 
         public async Task UpdateReviewAsync(int id, Review updatedReview)
         {

@@ -37,7 +37,7 @@ export class ViewReviewComponent implements OnInit {
     );
   }
   }
-  deleteReview(): void {
+  deleteReview(reviewId: number): void {
     const role = localStorage.getItem('userRole');
     const userId = localStorage.getItem('user'); // Retrieve userId from localStorage
     
@@ -51,33 +51,26 @@ export class ViewReviewComponent implements OnInit {
       return; // Return early if userId is undefined
     }
   
-    this.reviewService.deleteReviewByUserId(parseInt(userId)).subscribe(
-  //     () => {
-  //       this.getAllReviews(); // Refresh the list of reviews after deletion
-  //     },
-  //     (error) => {
-  //       console.error('Error occurred while deleting review:', error);
-  //     }
-  //   );
-  // }
-   (response) => {
-      // Check if the response body is valid JSON
-      let message = '';
-      try {
-        message = JSON.parse(response.body).message;
-      } catch (error) {
-        console.error('Error parsing response body:', error);
-        message = 'An error occurred while deleting the review.';
+    this.reviewService.deleteReviewByUserId(parseInt(userId), reviewId).subscribe(
+      (response) => {
+        // Check if the response body is valid JSON
+        let message = '';
+        try {
+          message = JSON.parse(response.body).message;
+        } catch (error) {
+          console.error('Error parsing response body:', error);
+          message = 'An error occurred while deleting the review.';
+        }
+        
+        console.log('Review deletion response:', message);
+        this.getAllReviews(); // Refresh the list of reviews after deletion
+      },
+      (error) => {
+        console.error('Error occurred while deleting review:', error);
       }
-      
-      console.log('Review deletion response:', message);
-      this.getAllReviews(); // Refresh the list of reviews after deletion
-    },
-    (error) => {
-      console.error('Error occurred while deleting review:', error);
-    }
-  );
+    );
   }
+  
   
 
   getReviewsByUserId() {
