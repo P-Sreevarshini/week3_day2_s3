@@ -28,6 +28,7 @@ namespace dotnetapp.Services
         {
             return await _context.Reviews
                 .Where(r => r.UserId == userId)
+                .Include(review => review.User) // Include user details
                 .ToListAsync();
         }
 

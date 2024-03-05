@@ -24,6 +24,8 @@ export class ViewReviewComponent implements OnInit {
   }
 
   getAllReviews() {
+    if (this.userRole === 'Admin') {
+
     this.reviewService.getAllReviews().subscribe(
       (data: Review[]) => { 
         this.reviews = data;
@@ -33,9 +35,8 @@ export class ViewReviewComponent implements OnInit {
       }
     );
   }
-
+  }
   deleteReview(userId: Review): void {
-    // Check if the user is authorized to delete reviews
     if (this.userRole !== 'Customer') {
       console.error('Access denied. Only customers can delete reviews.');
       return;
