@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReviewService } from 'src/app/services/review.service';
 import { Review } from 'src/app/models/review.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-view-review',
@@ -36,17 +37,31 @@ export class ViewReviewComponent implements OnInit {
     );
   }
   }
-  deleteReview(userId: Review): void {
-    console.log(Review);
-    if (this.userRole !== 'Customer') {
+  deleteReview(): void {
+    const role = localStorage.getItem('userRole');
+    const userId = localStorage.getItem('user'); // Retrieve userId from localStorage
+    
+    if (role !== 'Customer') {
       console.error('Access denied. Only customers can delete reviews.');
-      return;
+      return; // Return early if not a customer
     }
-
-    this.reviewService.deleteReview(userId).subscribe(() => {
-      this.getAllReviews(); // Refresh the list of reviews after deletion
-    });
+    
+    if (!userId) {
+      console.error('User ID is undefined.');
+      return; // Return early if userId is undefined
+    }
+  
+    this.reviewService.deleteReviewByUserId(parseInt(userId)).subscribe(
+      () => {
+        this.getAllReviews(); // Refresh the list of reviews after deletion
+      },
+      (error) => {
+        console.error('Error occurred while deleting review:', error);
+      }
+    );
   }
+  
+  
 
   getReviewsByUserId() {
     const userId = localStorage.getItem('user');
