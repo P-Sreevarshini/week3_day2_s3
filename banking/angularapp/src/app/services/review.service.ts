@@ -48,7 +48,7 @@ export class ReviewService {
     const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
     const options = { headers };
 
-    return this.http.delete(`${this.apiUrl}/api/review/${userId}`, options).pipe(
+    return this.http.delete(`${this.apiUrl}/review/${userId}`, options).pipe(
       catchError((error) => {
         if (error.status === 401) {
           console.error('Authentication error: Redirect to login page or handle accordingly.');
