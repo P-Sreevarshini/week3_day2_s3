@@ -60,25 +60,24 @@ export class ViewReviewComponent implements OnInit {
   //     }
   //   );
   // }
-  (response) => {
-    // Check if the response body is valid JSON
-    let message = '';
-    try {
-      message = JSON.parse(response.body).message;
-    } catch (error) {
-      console.error('Error parsing response body:', error);
-      message = 'An error occurred while deleting the review.';
+   (response) => {
+      // Check if the response body is valid JSON
+      let message = '';
+      try {
+        message = JSON.parse(response.body).message;
+      } catch (error) {
+        console.error('Error parsing response body:', error);
+        message = 'An error occurred while deleting the review.';
+      }
+      
+      console.log('Review deletion response:', message);
+      this.getAllReviews(); // Refresh the list of reviews after deletion
+    },
+    (error) => {
+      console.error('Error occurred while deleting review:', error);
     }
-    
-    console.log('Review deletion response:', message);
-    this.getAllReviews(); // Refresh the list of reviews after deletion
-  },
-  (error) => {
-    console.error('Error occurred while deleting review:', error);
+  );
   }
-);
-  }
-  
   
 
   getReviewsByUserId() {
