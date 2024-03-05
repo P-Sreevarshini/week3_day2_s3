@@ -40,4 +40,13 @@ export class ReviewService {
     });
     return this.http.get<Review[]>(`${this.apiUrl}/api/Review/${userId}`, { headers });
   }
+
+  deleteReview(userId: Review): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.delete(`$this.apiUrl}/api/Review/${userId}`, { headers });
+  }
 }

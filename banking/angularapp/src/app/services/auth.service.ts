@@ -59,7 +59,7 @@ checkEmailExists(email: string): Observable<boolean> {
     localStorage.setItem('userRole', user.UserRole);
     localStorage.setItem('user', user.UserId);
     console.log('The userId'+localStorage.getItem('user'));
-    console.log('The user role'+localStorage.getItem('user'));
+    console.log('The user role'+localStorage.getItem('userRole'));
 
   }
 
@@ -81,6 +81,7 @@ checkEmailExists(email: string): Observable<boolean> {
           localStorage.setItem('currentUser', response.username);
           localStorage.setItem('userRole', response.role);
           localStorage.setItem('user', response.userId);
+          console.log(localStorage.getItem('userRole'));
 
           this.userRoleSubject.next(response.role);
           this.isAuthenticatedSubject.next(true); // Notify observers that the user is authenticated

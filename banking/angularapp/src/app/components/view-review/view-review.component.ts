@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from 'src/app/services/review.service';
 import { Review } from 'src/app/models/review.model';
-import { AuthService } from 'src/app/services/auth.service'; // Import AuthService here
-
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-view-review',
@@ -11,40 +10,23 @@ import { AuthService } from 'src/app/services/auth.service'; // Import AuthServi
 })
 export class ViewReviewComponent implements OnInit {
   reviews: Review[] = [];
-  isAdmin: boolean = true;
- isCustomer: boolean = true;
- userRole: string;
+  userRole: string;
 
+  constructor(private reviewService: ReviewService, private authService: AuthService) { }
 
-
-  constructor(private reviewService: ReviewService, private authService: AuthService) { } // Inject AuthService here
-
-  // ngOnInit(): void {
-  //   this.authService.getUserRole().subscribe(UserRole => {
-  //     if (UserRole === 'Admin') {
-  //       console.log(UserRole);
-  //       this.isAdmin = true;
-  //       this.getAllReviews();
-  //     } 
-  //     else if (UserRole === 'Customer') {
-  //       console.log(UserRole);
-  //       this.isCustomer = true;
-
-  //       this.getReviewsByUserId();
-  //     }
-  //   });
-  // }
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('userRole'); // get the user's role from local storage
-        this.getReviewsByUserId();
-        this.getAllReviews();
+    this.userRole = localStorage.getItem('userRole');
+    if (this.userRole === 'Admin') {
+      this.getAllReviews();
+    } else if (this.userRole === 'Customer') {
+      this.getReviewsByUserId();
+    }
+  }
 
-}
   getAllReviews() {
     this.reviewService.getAllReviews().subscribe(
       (data: Review[]) => { 
         this.reviews = data;
-        console.log(this.reviews)
       },
       (err) => {
         console.log(err);
@@ -52,9 +34,20 @@ export class ViewReviewComponent implements OnInit {
     );
   }
 
+  deleteReview(userId: Review): void {
+    // Check if the user is authorized to delete reviews
+    if (this.userRole !== 'Customer') {
+      console.error('Access denied. Only customers can delete reviews.');
+      return;
+    }
+
+    this.reviewService.deleteReview(userId).subscribe(() => {
+      this.getAllReviews(); // Refresh the list of reviews after deletion
+    });
+  }
+
   getReviewsByUserId() {
     const userId = localStorage.getItem('user');
-    console.log(userId);
     if (!userId) {
       console.error('User ID is not available in local storage');
       return; 
@@ -63,12 +56,10 @@ export class ViewReviewComponent implements OnInit {
     this.reviewService.getReviewsByUserId(userId).subscribe(
       (data: Review[]) => { 
         this.reviews = data;
-        console.log(this.reviews)
       },
       (err) => {
         console.log(err);
       }
     );
   }
-  
 }

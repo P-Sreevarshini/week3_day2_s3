@@ -19,6 +19,9 @@
               <td>{{ review.Body }}</td>
               <td>{{ review.Rating }}</td>
               <td>{{ review.DateCreated | date: 'dd/MM/yyyy' }}</td>
+              <td>
+                <button *ngIf="userRole === 'Customer'" (click)="deleteReview(userId)">Delete</button>
+              </td>
           </tr>
       </tbody>
   </table>
