@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from 'src/app/services/review.service';
 import { Review } from 'src/app/models/review.model';
+import { AuthService } from 'src/app/services/auth.service'; // Import AuthService here
+
 
 @Component({
   selector: 'app-view-review',
@@ -9,12 +11,24 @@ import { Review } from 'src/app/models/review.model';
 })
 export class ViewReviewComponent implements OnInit {
   reviews: Review[] = [];
+  isAdmin: boolean = false;
 
-  constructor(private reviewService: ReviewService) { }
+  constructor(private reviewService: ReviewService, private authService: AuthService) { } // Inject AuthService here
+
+  // ngOnInit(): void {
+  //   this.getAllReviews();
+  //   this.getReviewsByUserId();
+  // }
 
   ngOnInit(): void {
-    this.getAllReviews();
-    this.getReviewsByUserId();
+    this.authService.getUserRole().subscribe(role => {
+      if (role === 'Admin') {
+        this.isAdmin = true;
+        this.getAllReviews();
+      } else {
+        this.getReviewsByUserId();
+      }
+    });
   }
 
   getAllReviews() {
