@@ -37,68 +37,76 @@ export class ViewReviewComponent implements OnInit {
     );
   }
   }
-  // deleteReview(reviewId: number): void {
-  //   const role = localStorage.getItem('userRole');
-  //   const userId = localStorage.getItem('user'); // Retrieve userId from localStorage
-    
-  //   if (role !== 'Customer') {
-  //     console.error('Access denied. Only customers can delete reviews.');
-  //     return; // Return early if not a customer
-  //   }
-    
-  //   if (!userId) {
-  //     console.error('User ID is undefined.');
-  //     return; // Return early if userId is undefined
-  //   }
+ 
+//   deleteReview(userId: number, reviewId: number): void {
+//     const role = localStorage.getItem('userRole');
+
+//     if (role !== 'Customer') {
+//         console.error('Access denied. Only customers can delete reviews.');
+//         return; // Return early if not a customer
+//     }
+
+//     this.reviewService.deleteReview(userId, reviewId).subscribe(
+//         (response) => {
+//             // Check if the response body is valid JSON
+//             let message = '';
+//             try {
+//                 message = JSON.parse(response.body).message;
+//             } catch (error) {
+//                 console.error('Error parsing response body:', error);
+//                 message = 'An error occurred while deleting the review.';
+//             }
+
+//             console.log('Review deletion response:', message);
+//             this.getAllReviews(); // Refresh the list of reviews after deletion
+//         },
+//         (error) => {
+//             console.error('Error occurred while deleting review:', error);
+//         }
+//     );
+// }
+
   
-  //   this.reviewService.deleteReviewByUserId(parseInt(userId), reviewId).subscribe(
-  //     (response) => {
-  //       // Check if the response body is valid JSON
-  //       let message = '';
-  //       try {
-  //         message = JSON.parse(response.body).message;
-  //       } catch (error) {
-  //         console.error('Error parsing response body:', error);
-  //         message = 'An error occurred while deleting the review.';
-  //       }
-        
-  //       console.log('Review deletion response:', message);
-  //       this.getAllReviews(); // Refresh the list of reviews after deletion
-  //     },
-  //     (error) => {
-  //       console.error('Error occurred while deleting review:', error);
-  //     }
-  //   );
-  // }
-  deleteReview(UserId: number, reviewId: number): void {
-    const role = localStorage.getItem('userRole');
+deleteReview(userId: number, reviewId: number): void {
+  const role = localStorage.getItem('userRole');
+  const storedUserId = localStorage.getItem('user'); // Retrieve userId from localStorage
 
-    if (role !== 'Customer') {
-        console.error('Access denied. Only customers can delete reviews.');
-        return; // Return early if not a customer
-    }
+  if (role !== 'Customer') {
+      console.error('Access denied. Only customers can delete reviews.');
+      return; // Return early if not a customer
+  }
 
-    this.reviewService.deleteReview(userId, reviewId).subscribe(
-        (response) => {
-            // Check if the response body is valid JSON
-            let message = '';
-            try {
-                message = JSON.parse(response.body).message;
-            } catch (error) {
-                console.error('Error parsing response body:', error);
-                message = 'An error occurred while deleting the review.';
-            }
+  if (!storedUserId) {
+      console.error('User ID is undefined.');
+      return; // Return early if userId is undefined
+  }
 
-            console.log('Review deletion response:', message);
-            this.getAllReviews(); // Refresh the list of reviews after deletion
-        },
-        (error) => {
-            console.error('Error occurred while deleting review:', error);
-        }
-    );
+  const parsedUserId = parseInt(storedUserId, 10); // Parse userId as integer
+  if (isNaN(parsedUserId)) {
+      console.error('User ID is not a valid number.');
+      return; // Return early if userId is not a valid number
+  }
+
+  this.reviewService.deleteReview(parsedUserId, reviewId).subscribe(
+      (response) => {
+          // Check if the response body is valid JSON
+          let message = '';
+          try {
+              message = JSON.parse(response.body).message;
+          } catch (error) {
+              console.error('Error parsing response body:', error);
+              message = 'An error occurred while deleting the review.';
+          }
+
+          console.log('Review deletion response:', message);
+          this.getAllReviews(); // Refresh the list of reviews after deletion
+          this.getReviewsByUserId(); 
+      },
+      (error) => {
+          console.error('Error occurred while deleting review:', error);
+      }
+  );
 }
-
-  
 
   getReviewsByUserId() {
     const userId = localStorage.getItem('user');

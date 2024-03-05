@@ -9,6 +9,8 @@
               <th>Feedback Comments</th>
               <th>Ratings (out of 5)</th>
               <th>Date Created</th>
+              <th>Action</th> <!-- Add a new header for the action column -->
+
           </tr>
       </thead>
       <tbody>
@@ -20,7 +22,7 @@
               <td>{{ review.Rating }}</td>
               <td>{{ review.DateCreated | date: 'dd/MM/yyyy' }}</td>
               <td>
-                <button *ngIf="userRole === 'Customer'" (click)="deleteReview(userId, reviewId)">Delete</button>
+<button *ngIf="userRole === 'Customer'" (click)="deleteReview(userId, reviewId)">Delete</button>
             </td>
           </tr>
       </tbody>
