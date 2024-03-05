@@ -52,13 +52,31 @@ export class ViewReviewComponent implements OnInit {
     }
   
     this.reviewService.deleteReviewByUserId(parseInt(userId)).subscribe(
-      () => {
-        this.getAllReviews(); // Refresh the list of reviews after deletion
-      },
-      (error) => {
-        console.error('Error occurred while deleting review:', error);
-      }
-    );
+  //     () => {
+  //       this.getAllReviews(); // Refresh the list of reviews after deletion
+  //     },
+  //     (error) => {
+  //       console.error('Error occurred while deleting review:', error);
+  //     }
+  //   );
+  // }
+  (response) => {
+    // Check if the response body is valid JSON
+    let message = '';
+    try {
+      message = JSON.parse(response.body).message;
+    } catch (error) {
+      console.error('Error parsing response body:', error);
+      message = 'An error occurred while deleting the review.';
+    }
+    
+    console.log('Review deletion response:', message);
+    this.getAllReviews(); // Refresh the list of reviews after deletion
+  },
+  (error) => {
+    console.error('Error occurred while deleting review:', error);
+  }
+);
   }
   
   

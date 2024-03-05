@@ -79,20 +79,35 @@ public async Task<IActionResult> AddReview([FromBody] Review review)
 }
 
 
+        // [Authorize(Roles = "Customer")]
+        // [HttpDelete("{userId}")]
+        // public async Task<IActionResult> DeleteReview(int userId)
+        // {
+        //     try
+        //     {
+        //         await _reviewService.DeleteReviewAsync(userId);
+        //         return Ok("Review deleted successfully");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return StatusCode(500, $"An error occurred while deleting the review: {ex.Message}");
+        //     }
+        // }
         [Authorize(Roles = "Customer")]
-        [HttpDelete("{userId}")]
-        public async Task<IActionResult> DeleteReview(int userId)
-        {
-            try
-            {
-                await _reviewService.DeleteReviewAsync(userId);
-                return Ok("Review deleted successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while deleting the review: {ex.Message}");
-            }
-        }
+[HttpDelete("{userId}")]
+public async Task<IActionResult> DeleteReview(int userId)
+{
+    try
+    {
+        await _reviewService.DeleteReviewAsync(userId);
+        return Ok(new { message = "Review deleted successfully" }); // Return a JSON object with the success message
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { error = $"An error occurred while deleting the review: {ex.Message}" }); // Return a JSON object with the error message
+    }
+}
+
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
