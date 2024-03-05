@@ -47,7 +47,7 @@ export class ReviewService {
     const authToken = localStorage.getItem('token');
     const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
     const options = { headers };
-
+    // console.log(reviewId);
     return this.http.delete(`${this.apiUrl}/api/review/${userId}/${reviewId}`, options).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {

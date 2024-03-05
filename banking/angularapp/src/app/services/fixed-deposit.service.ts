@@ -64,19 +64,6 @@ export class FixedDepositService {
     );
   }
 
-  // deleteFdByAdmin(fixedDepositId: number): Observable<void> {
-  //   const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; // Corrected URL
-  //   const headers = this.getHeaders();
-
-  //   return this.http.delete<void>(endpoint, { headers }).pipe(
-  //     catchError((error) => {
-  //       if (error.status === 401) {
-  //         console.error('Authentication error: Redirect to login page or handle accordingly.');
-  //       }
-  //       return throwError(error);
-  //     })
-  //   );
-  // }
   deleteFdByAdmin(fixedDepositId: number): Observable<void> {
     console.log('Fixed deposit ID:', fixedDepositId); // Log the fixedDepositId
     const endpoint = `${this.apiUrl}/api/fixeddeposit/${fixedDepositId}`; // Corrected URL

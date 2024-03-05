@@ -37,35 +37,6 @@ export class ViewReviewComponent implements OnInit {
     );
   }
   }
- 
-//   deleteReview(userId: number, reviewId: number): void {
-//     const role = localStorage.getItem('userRole');
-
-//     if (role !== 'Customer') {
-//         console.error('Access denied. Only customers can delete reviews.');
-//         return; // Return early if not a customer
-//     }
-
-//     this.reviewService.deleteReview(userId, reviewId).subscribe(
-//         (response) => {
-//             // Check if the response body is valid JSON
-//             let message = '';
-//             try {
-//                 message = JSON.parse(response.body).message;
-//             } catch (error) {
-//                 console.error('Error parsing response body:', error);
-//                 message = 'An error occurred while deleting the review.';
-//             }
-
-//             console.log('Review deletion response:', message);
-//             this.getAllReviews(); // Refresh the list of reviews after deletion
-//         },
-//         (error) => {
-//             console.error('Error occurred while deleting review:', error);
-//         }
-//     );
-// }
-
   
 deleteReview(userId: number, reviewId: number): void {
   const role = localStorage.getItem('userRole');
@@ -86,6 +57,7 @@ deleteReview(userId: number, reviewId: number): void {
       console.error('User ID is not a valid number.');
       return; // Return early if userId is not a valid number
   }
+  // console.log(reviewId);
 
   this.reviewService.deleteReview(parsedUserId, reviewId).subscribe(
       (response) => {

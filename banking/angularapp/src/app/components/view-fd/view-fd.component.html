@@ -20,9 +20,6 @@
             <button (click)="editFd(fd)" class="edit-btn">Edit</button>
             <button (click)="deleteFd(fd)" class="delete-btn">Delete</button>
           </ng-container>
-          <ng-container *ngIf="userRole === 'Customer'">
-            <!-- Add Customer Actions Here -->
-          </ng-container>
         </td>
       </ng-container>
       <ng-template #editMode>

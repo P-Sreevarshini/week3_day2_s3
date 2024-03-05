@@ -10,12 +10,12 @@ import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
 import { AddFdComponent } from './components/add-fd/add-fd.component';
-import { ViewFdComponent } from './components/view-fd/view-fd.component';
 import { AddReviewComponent } from './components/add-review/add-review.component';
 import { AddAccountComponent } from './components/add-account/add-account.component';
 import { ViewAccountComponent } from './components/view-account/view-account.component';
 import { CustomerComponent } from './components/customer/customer.component';
 import { ViewReviewComponent } from './components/view-review/view-review.component';
+import { ViewFdComponent } from './components/view-fd/view-fd.component';
 
 @NgModule({
   declarations: [
