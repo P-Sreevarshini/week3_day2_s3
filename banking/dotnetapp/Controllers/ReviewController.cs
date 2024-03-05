@@ -59,7 +59,6 @@ public async Task<IActionResult> AddReview([FromBody] Review review)
 
     try
     {
-        // Get user ID from claims
         var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
         if (userIdClaim == null)
         {
@@ -79,45 +78,28 @@ public async Task<IActionResult> AddReview([FromBody] Review review)
 }
 
 
-        // [Authorize(Roles = "Customer")]
-        // [HttpDelete("{userId}")]
-        // public async Task<IActionResult> DeleteReview(int userId)
-        // {
-        //     try
-        //     {
-        //         await _reviewService.DeleteReviewAsync(userId);
-        //         return Ok("Review deleted successfully");
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return StatusCode(500, $"An error occurred while deleting the review: {ex.Message}");
-        //     }
-        // }
-
-        [HttpDelete("{reviewId}")]
-        public async Task<IActionResult> DeleteReview(long reviewId)
+       [Authorize(Roles = "Customer")]
+[HttpDelete("{userId}/{reviewId}")]
+public async Task<IActionResult> DeleteReview(long userId, long reviewId)
+{
+    try
+    {
+        // Check if the user is authorized to delete the review
+        var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !userIdClaim.Value.Equals(userId.ToString()))
         {
-            try
-            {
-                // Get user ID from claims
-                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim == null)
-                {
-                    return Unauthorized("User not authenticated");
-                }
-
-                var userId = long.Parse(userIdClaim.Value);
-
-                // Delete the review
-                await _reviewService.DeleteReviewAsync(reviewId, userId);
-
-                return Ok("Review deleted successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while deleting the review: {ex.Message}");
-            }
+            return Forbid("User is not authorized to delete this review");
         }
+
+        await _reviewService.DeleteReviewAsync(reviewId, userId);
+        return Ok("Review deleted successfully");
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"An error occurred while deleting the review: {ex.Message}");
+    }
+}
+
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]

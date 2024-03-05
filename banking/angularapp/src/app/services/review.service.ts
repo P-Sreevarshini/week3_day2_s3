@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { Review } from '../models/review.model';
@@ -43,13 +43,13 @@ export class ReviewService {
   }
 
 
-  deleteReviewByUserId(reviewId: number): Observable<any> {
+  deleteReview(userId: number, reviewId: number): Observable<any> {
     const authToken = localStorage.getItem('token');
     const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
     const options = { headers };
-  
-    return this.http.delete(`${this.apiUrl}/api/review/${reviewId}`, options).pipe(
-      catchError((error) => {
+
+    return this.http.delete(`${this.apiUrl}/api/review/${userId}/${reviewId}`, options).pipe(
+      catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
           console.error('Authentication error: Redirect to login page or handle accordingly.');
         }
