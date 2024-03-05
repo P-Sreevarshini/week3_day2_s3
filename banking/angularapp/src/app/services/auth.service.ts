@@ -59,6 +59,8 @@ checkEmailExists(email: string): Observable<boolean> {
     localStorage.setItem('userRole', user.UserRole);
     localStorage.setItem('user', user.UserId);
     console.log('The userId'+localStorage.getItem('user'));
+    console.log('The user role'+localStorage.getItem('user'));
+
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

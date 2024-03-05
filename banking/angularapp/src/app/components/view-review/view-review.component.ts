@@ -11,21 +11,35 @@ import { AuthService } from 'src/app/services/auth.service'; // Import AuthServi
 })
 export class ViewReviewComponent implements OnInit {
   reviews: Review[] = [];
-  isAdmin: boolean = false;
+  isAdmin: boolean = true;
+ isCustomer: boolean = true;
+ userRole: string;
+
+
 
   constructor(private reviewService: ReviewService, private authService: AuthService) { } // Inject AuthService here
 
-  ngOnInit(): void {
-    this.authService.getUserRole().subscribe(userRole => {
-      if (userRole === 'Admin') {
-        this.isAdmin = true;
-        this.getAllReviews();
-      } else {
-        this.getReviewsByUserId();
-      }
-    });
-  }
+  // ngOnInit(): void {
+  //   this.authService.getUserRole().subscribe(UserRole => {
+  //     if (UserRole === 'Admin') {
+  //       console.log(UserRole);
+  //       this.isAdmin = true;
+  //       this.getAllReviews();
+  //     } 
+  //     else if (UserRole === 'Customer') {
+  //       console.log(UserRole);
+  //       this.isCustomer = true;
 
+  //       this.getReviewsByUserId();
+  //     }
+  //   });
+  // }
+  ngOnInit(): void {
+    this.userRole = localStorage.getItem('userRole'); // get the user's role from local storage
+        this.getReviewsByUserId();
+        this.getAllReviews();
+
+}
   getAllReviews() {
     this.reviewService.getAllReviews().subscribe(
       (data: Review[]) => { 
