@@ -15,14 +15,9 @@ export class ViewReviewComponent implements OnInit {
 
   constructor(private reviewService: ReviewService, private authService: AuthService) { } // Inject AuthService here
 
-  // ngOnInit(): void {
-  //   this.getAllReviews();
-  //   this.getReviewsByUserId();
-  // }
-
   ngOnInit(): void {
-    this.authService.getUserRole().subscribe(role => {
-      if (role === 'Admin') {
+    this.authService.getUserRole().subscribe(userRole => {
+      if (userRole === 'Admin') {
         this.isAdmin = true;
         this.getAllReviews();
       } else {
