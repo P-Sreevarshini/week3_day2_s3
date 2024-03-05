@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Review } from '../models/review.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -41,12 +42,34 @@ export class ReviewService {
     return this.http.get<Review[]>(`${this.apiUrl}/api/Review/${userId}`, { headers });
   }
 
-  deleteReview(userId: Review): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.delete(`$this.apiUrl}/api/Review/${userId}`, { headers });
+
+  deleteReview(review: Review): Observable<any> {
+    if (!review || !review.UserId) {
+      console.error('Invalid review object or UserId is undefined.');
+      return throwError('Invalid review object or UserId is undefined.');
+    }
+  
+    const role = localStorage.getItem('userRole');
+    
+    if (role !== 'Customer') {
+      console.error('Access denied. Only customers can delete reviews.');
+      return throwError('Access denied. Only customers can delete reviews.');
+    }
+    
+    const userId = localStorage.getItem('user'); // Get the user ID
+    const endpoint = `${this.apiUrl}/reviews/${userId}`; // Pass the user ID instead of review ID
+    const authToken = localStorage.getItem('token');
+    const headers = authToken ? new HttpHeaders({ 'Authorization': `Bearer ${authToken}` }) : undefined;
+    const options = { headers };
+  
+    return this.http.delete(endpoint, options).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          console.error('Authentication error: Redirect to login page or handle accordingly.');
+        }
+        return throwError(error);
+      })
+    );
   }
+  
 }
