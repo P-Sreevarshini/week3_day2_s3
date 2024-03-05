@@ -116,9 +116,7 @@ export class ViewFdComponent implements OnInit {
       return;
     }
     
-    const updatedData: FixedDeposit = { ...fd };
-    // updatedData.FixedDepositId = fd.FixedDepositId; // Ensure that FixedDepositId is set correctly
-  
+    const updatedData: FixedDeposit = { ...fd };  
     updatedData.amount = fd.amount;
     updatedData.tenureMonths = fd.tenureMonths;
     updatedData.interestRate = fd.interestRate;
