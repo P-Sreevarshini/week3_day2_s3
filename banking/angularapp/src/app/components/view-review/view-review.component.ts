@@ -36,13 +36,14 @@ export class ViewReviewComponent implements OnInit {
     );
   }
   }
-  deleteReview(user: Review): void {
+  deleteReview(userId: Review): void {
+    console.log(Review);
     if (this.userRole !== 'Customer') {
       console.error('Access denied. Only customers can delete reviews.');
       return;
     }
 
-    this.reviewService.deleteReview(user).subscribe(() => {
+    this.reviewService.deleteReview(userId).subscribe(() => {
       this.getAllReviews(); // Refresh the list of reviews after deletion
     });
   }
