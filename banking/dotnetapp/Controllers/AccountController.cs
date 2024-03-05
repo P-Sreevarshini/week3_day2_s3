@@ -18,6 +18,7 @@ namespace dotnetapp.Controllers
         {
             _accountService = accountService;
         }
+        
         // [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccounts()
