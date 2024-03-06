@@ -12,7 +12,7 @@ using dotnetapp.Data;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240302150740_initial")]
+    [Migration("20240306045019_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,6 +116,33 @@ namespace dotnetapp.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.FDAccount", b =>
+                {
+                    b.Property<long>("FDAccountId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("FDAccountId"), 1L, 1);
+
+                    b.Property<long>("FixedDepositId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("FDAccountId");
+
+                    b.HasIndex("FixedDepositId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FDAccounts");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.FDRequest", b =>
@@ -391,6 +418,25 @@ namespace dotnetapp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("dotnetapp.Models.FDAccount", b =>
+                {
+                    b.HasOne("dotnetapp.Models.FixedDeposit", "FixedDeposit")
+                        .WithMany()
+                        .HasForeignKey("FixedDepositId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("dotnetapp.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FixedDeposit");
 
                     b.Navigation("User");
                 });

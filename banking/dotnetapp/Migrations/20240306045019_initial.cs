@@ -229,6 +229,33 @@ namespace dotnetapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FDAccounts",
+                columns: table => new
+                {
+                    FDAccountId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FixedDepositId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FDAccounts", x => x.FDAccountId);
+                    table.ForeignKey(
+                        name: "FK_FDAccounts_FixedDeposits_FixedDepositId",
+                        column: x => x.FixedDepositId,
+                        principalTable: "FixedDeposits",
+                        principalColumn: "FixedDepositId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FDAccounts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -317,6 +344,16 @@ namespace dotnetapp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FDAccounts_FixedDepositId",
+                table: "FDAccounts",
+                column: "FixedDepositId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FDAccounts_UserId",
+                table: "FDAccounts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FDRequests_FixedDepositId",
                 table: "FDRequests",
                 column: "FixedDepositId");
@@ -348,6 +385,9 @@ namespace dotnetapp.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "FDAccounts");
 
             migrationBuilder.DropTable(
                 name: "FDRequests");
