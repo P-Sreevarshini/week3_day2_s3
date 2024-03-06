@@ -29,19 +29,19 @@ namespace dotnetapp.Controllers
         }
         // [Authorize]
 
-        [HttpGet("{accountId}")]
-        public async Task<ActionResult<Account>> GetAccountById(long accountId)
-        {
-            var account = await _accountService.GetAccountById(accountId);
+        // [HttpGet("{accountId}")]
+        // public async Task<ActionResult<Account>> GetAccountById(long accountId)
+        // {
+        //     var account = await _accountService.GetAccountById(accountId);
 
-            if (account == null)
-            {
-                return NotFound(new { message = "Cannot find any account" });
-            }
+        //     if (account == null)
+        //     {
+        //         return NotFound(new { message = "Cannot find any account" });
+        //     }
 
-            return Ok(account);
-        }
-        
+        //     return Ok(account);
+        // }
+
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccountsByUserId(long userId)
         {
@@ -111,12 +111,12 @@ namespace dotnetapp.Controllers
             }
         }
         // [Authorize(Roles = "Customer")]
-        [HttpDelete("{accountId}")]
-        public async Task<ActionResult> DeleteAccount(long accountId)
+      [HttpDelete("/{userId}/{accountId}")]
+        public async Task<ActionResult> DeleteAccountForUser(long userId, long accountId)
         {
             try
             {
-                var success = await _accountService.DeleteAccount(accountId);
+                var success = await _accountService.DeleteAccountForUser(userId, accountId);
 
                 if (success)
                 {
@@ -124,7 +124,7 @@ namespace dotnetapp.Controllers
                 }
                 else
                 {
-                    return NotFound(new { message = "Cannot find any account" });
+                    return NotFound(new { message = "Account not found for the user" });
                 }
             }
             catch (Exception ex)
@@ -132,5 +132,6 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
     }
 }

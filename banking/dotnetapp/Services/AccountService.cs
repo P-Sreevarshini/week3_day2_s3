@@ -85,19 +85,29 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> DeleteAccount(long accountId)
+        public async Task<bool> DeleteAccountForUser(long userId, long accountId)
         {
             try
             {
-                var account = await _context.Accounts
-                    .FirstOrDefaultAsync(a => a.AccountId == accountId);
+                // Check if the user exists
+                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+                if (existingUser == null)
+                {
+                    return false; // User not found
+                }
 
+                // Check if the account exists and belongs to the user
+                var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountId == accountId && a.UserId == userId);
                 if (account == null)
-                    return false;
+                {
+                    return false; // Account not found for the user
+                }
 
+                // Remove the account from the database
                 _context.Accounts.Remove(account);
                 await _context.SaveChangesAsync();
-                return true;
+
+                return true; // Account deleted successfully
             }
             catch (Exception)
             {
@@ -105,9 +115,14 @@ namespace dotnetapp.Services
                 return false;
             }
         }
-        public async Task<IEnumerable<Account>> GetAccountsByUserId(long userId)
+
+       public async Task<IEnumerable<Account>> GetAccountsByUserId(long userId)
         {
-            return await _context.Accounts.Where(a => a.UserId == userId).ToListAsync();
+            return await _context.Accounts
+                .Include(account => account.User)
+                .Where(account => account.UserId == userId)
+                .ToListAsync();
         }
+
     }
 }
