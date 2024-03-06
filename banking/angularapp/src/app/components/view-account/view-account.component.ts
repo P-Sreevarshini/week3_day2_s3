@@ -42,6 +42,4 @@ export class ViewAccountComponent implements OnInit {
       console.error('deleteAccount method not found in AccountService');
     }
   }
- 
-  
 }
