@@ -51,7 +51,6 @@ namespace dotnetapp.Controllers
             return CreatedAtAction(nameof(GetFDAccount), new { id = fdAccount.FDAccountId }, fdAccount);
         }
 
-        // DELETE: api/FDAccounts/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFDAccount(long id)
         {
