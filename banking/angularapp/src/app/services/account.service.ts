@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Account } from './account.model';
+import { Account } from '../models/account.model';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +12,14 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAccounts(): Observable<Account[]> {
-    return this.http.get<Account[]>(this.apiUrl);
+  addAccount(account: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}`, account)
+      .pipe(
+        catchError(this.handleError) // Handle errors
+      );
   }
-
-  getAccountById(accountId: number): Observable<Account> {
-    const url = `${this.apiUrl}/${accountId}`;
-    return this.http.get<Account>(url);
-  }
-
-  addAccount(account: Account): Observable<any> {
-    return this.http.post<any>(this.apiUrl, account);
-  }
-
-  updateAccount(accountId: number, account: Account): Observable<any> {
-    const url = `${this.apiUrl}/${accountId}`;
-    return this.http.put<any>(url, account);
-  }
-
-  deleteAccount(accountId: number): Observable<any> {
-    const url = `${this.apiUrl}/${accountId}`;
-    return this.http.delete<any>(url);
+  private handleError(error: any): Observable<never> {
+    console.error('An error occurred:', error);
+    throw error;
   }
 }

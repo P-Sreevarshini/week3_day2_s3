@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from '../../services/account.service';
+import { NgForm } from '@angular/forms';
+import { JwtService } from '../../services/jwt.service';
+import { Router } from '@angular/router';
+import { Account } from '../../models/account.model'; // Import the Account model
 
 @Component({
   selector: 'app-add-account',
@@ -7,37 +11,30 @@ import { AccountService } from 'src/app/services/account.service';
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent {
-  account = { userId: 0, balance: 0, accountType: '' };
+  userRole: string;
 
-  constructor(private accountService: AccountService) {}
+  account: Account = {
+    AccountId: 0,
+    UserId: 0,
+    Balance: 0,
+    AccountType: ''
+  };
 
-  ngOnInit(): void {
-    // Retrieve user details from local storage
-    const userId = Number(localStorage.getItem('userId'));
-    const userRole = localStorage.getItem('userRole');
-
-    if (userId && userRole === 'Customer') {
-      // Set the user ID for the new account
-      this.account.userId = userId;
-    } else {
-      // Redirect or handle unauthorized access
-      console.error('Unauthorized access');
-    }
+  constructor(private accountService: AccountService, private jwtService: JwtService, private router: Router) {
+    this.userRole = this.jwtService.getUserRole();
   }
 
-  addAccount() {
-    if (localStorage.getItem('userRole') !== 'Customer') {
-      // Redirect or handle unauthorized access
-      console.error('Only customers can add accounts');
-      return;
+  addAccount(form: NgForm): void {
+    if (form.valid) {
+      this.accountService.addAccount(this.account).subscribe(
+        () => {
+          alert('Account added successfully!');
+          this.router.navigate(['/view/accounts']);
+        },
+        (error) => {
+          console.error('Error adding account:', error);
+        }
+      );
     }
-
-    this.accountService.addAccount(this.account).subscribe((addedAccount) => {
-      // Handle success
-      console.log('Account added successfully:', addedAccount);
-    }, (error) => {
-      // Handle error
-      console.error('Failed to add account:', error);
-    });
   }
 }
