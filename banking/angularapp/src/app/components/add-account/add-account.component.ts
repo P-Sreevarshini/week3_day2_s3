@@ -27,7 +27,7 @@ export class AddAccountComponent {
   addAccount(form: NgForm): void {
     if (form.valid) {
       // Retrieve UserId from localStorage
-      const userId = Number(localStorage.getItem('userId'));
+      const userId = Number(localStorage.getItem('user'));
       
       if (userId) {
         // Set UserId to the account object
