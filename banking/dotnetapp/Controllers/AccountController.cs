@@ -19,7 +19,7 @@ namespace dotnetapp.Controllers
             _accountService = accountService;
         }
         
-        // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccounts()
         {
@@ -27,20 +27,9 @@ namespace dotnetapp.Controllers
            
             return Ok(accounts);
         }
-        // [Authorize]
+        
+        [Authorize]
 
-        // [HttpGet("{accountId}")]
-        // public async Task<ActionResult<Account>> GetAccountById(long accountId)
-        // {
-        //     var account = await _accountService.GetAccountById(accountId);
-
-        //     if (account == null)
-        //     {
-        //         return NotFound(new { message = "Cannot find any account" });
-        //     }
-
-        //     return Ok(account);
-        // }
 
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccountsByUserId(long userId)
@@ -63,7 +52,7 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
 
         [HttpPost]
         public async Task<ActionResult<Account>> AddAccount([FromBody] Account account)
@@ -87,7 +76,7 @@ namespace dotnetapp.Controllers
             }
         }
 
-        // [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
 
         [HttpPut("{accountId}")]
         public async Task<ActionResult> UpdateAccount(long accountId, [FromBody] Account account)
@@ -110,7 +99,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        // [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
       [HttpDelete("/{userId}/{accountId}")]
         public async Task<ActionResult> DeleteAccountForUser(long userId, long accountId)
         {
