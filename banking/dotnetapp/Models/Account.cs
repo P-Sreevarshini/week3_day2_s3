@@ -9,10 +9,10 @@ namespace dotnetapp.Models
         public long UserId { get; set; } // Foreign key referencing User
         public decimal Balance { get; set; }
         public string AccountType {get;set;}
-        public long FixedDepositId { get; set; }
+        // public long FixedDepositId { get; set; }
 
         public User? User { get; set; }
-        public FixedDeposit? FixedDeposit { get; set; }
+        // public FixedDeposit? FixedDeposit { get; set; }
 
     }
 }
