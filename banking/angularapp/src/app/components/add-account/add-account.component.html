@@ -3,21 +3,23 @@
   <form (ngSubmit)="addAccount()" #accountForm="ngForm">
     <div class="form-group">
       <label for="balance">Balance:</label>
-      <input type="number" class="form-control" id="balance" name="balance" [(ngModel)]="account.balance" required 
-             min="0" #balance="ngModel">
-      <div *ngIf="balance.invalid && (balance.dirty || balance.touched)" class="text-danger">
-        <div *ngIf="balance.errors?.required">Balance is required.</div>
-        <div *ngIf="balance.errors?.min">Balance must be greater than or equal to 0.</div>
+      <input type="number" class="form-control" id="balance" name="balance" [(ngModel)]="account.Balance" required min="0">
+      <div *ngIf="accountForm.controls['balance'].invalid && (accountForm.controls['balance'].dirty || accountForm.controls['balance'].touched)" class="text-danger">
+        <div *ngIf="accountForm.controls['balance'].errors.required">Balance is required.</div>
+        <div *ngIf="accountForm.controls['balance'].errors.min">Balance must be greater than or equal to 0.</div>
       </div>
     </div>
     <div class="form-group">
       <label for="accountType">Account Type:</label>
-      <input type="text" class="form-control" id="accountType" name="accountType" [(ngModel)]="account.accountType" required 
-             minlength="3" maxlength="50" #accountType="ngModel">
-      <div *ngIf="accountType.invalid && (accountType.dirty || accountType.touched)" class="text-danger">
-        <div *ngIf="accountType.errors?.required">Account type is required.</div>
-        <div *ngIf="accountType.errors?.minlength">Account type must be at least 3 characters long.</div>
-        <div *ngIf="accountType.errors?.maxlength">Account type cannot exceed 50 characters.</div>
+      <select class="form-control" id="accountType" name="accountType" [(ngModel)]="account.AccountType" required>
+        <option value="" disabled selected>Select Account Type</option>
+        <option value="Savings">Savings</option>
+        <option value="Current">Checking</option>
+        <option value="Investment">Investment</option>
+        <!-- Add more options as needed -->
+      </select>
+      <div *ngIf="accountForm.controls['accountType'].invalid && (accountForm.controls['accountType'].dirty || accountForm.controls['accountType'].touched)" class="text-danger">
+        <div *ngIf="accountForm.controls['accountType'].errors.required">Account type is required.</div>
       </div>
     </div>
     <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid">Add Account</button>
