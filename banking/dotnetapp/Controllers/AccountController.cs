@@ -44,15 +44,15 @@ namespace dotnetapp.Controllers
         // [Authorize(Roles = "Customer")]
 
         [HttpPost]
-        public async Task<ActionResult> AddAccount([FromBody] Account account)
+        public async Task<ActionResult<Account>> AddAccount([FromBody] Account account)
         {
             try
             {
-                var success = await _accountService.AddAccount(account);
+                var addedAccount = await _accountService.AddAccount(account);
 
-                if (success)
+                if (addedAccount != null)
                 {
-                    return Ok(new { message = "Account added successfully" });
+                    return Ok(addedAccount); // Return the added account
                 }
                 else
                 {
@@ -64,6 +64,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
         // [Authorize(Roles = "Customer")]
 
         [HttpPut("{accountId}")]

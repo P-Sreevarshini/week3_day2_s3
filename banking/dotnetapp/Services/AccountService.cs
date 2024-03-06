@@ -32,19 +32,36 @@ namespace dotnetapp.Services
                 .FirstOrDefaultAsync(a => a.AccountId == accountId);
         }
 
-        public async Task<bool> AddAccount(Account account)
+      public async Task<Account> AddAccount(Account account)
+{
+    try
+    {
+        // Check if the user with the specified UserId exists
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == account.UserId);
+        
+        if (existingUser == null)
         {
-            try
-            {
-                _context.Accounts.Add(account);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            // User does not exist, return null or handle accordingly
+            return null;
         }
+        
+        // Associate the account with the existing user
+        account.User = existingUser;
+        
+        // Add the account to the database
+        _context.Accounts.Add(account);
+        await _context.SaveChangesAsync();
+        
+        return account; // Return the added account
+    }
+    catch (Exception)
+    {
+        // Log the exception if needed
+        return null;
+    }
+}
+
+
 
         public async Task<bool> UpdateAccount(long accountId, Account account)
         {
