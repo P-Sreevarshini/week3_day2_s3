@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccountService {
-  private apiUrl = 'api/account';
+  private apiUrl = '/api/account';
 
   constructor(private http: HttpClient) { }
 
