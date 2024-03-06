@@ -31,7 +31,7 @@ namespace dotnetapp.Controllers
         [Authorize]
 
 
-        [HttpGet("user/{userId}")]
+        [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccountsByUserId(long userId)
         {
             try
@@ -100,7 +100,7 @@ namespace dotnetapp.Controllers
             }
         }
         [Authorize(Roles = "Customer")]
-      [HttpDelete("/{userId}/{accountId}")]
+      [HttpDelete("{userId}/{accountId}")]
         public async Task<ActionResult> DeleteAccountForUser(long userId, long accountId)
         {
             try

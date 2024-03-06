@@ -6,13 +6,13 @@ import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { CustomerComponent } from './components/customer/customer.component';
-import { ViewAccountComponent } from './components/view-account/view-account.component';
 import { AddAccountComponent } from './components/add-account/add-account.component';
 import { AddFdComponent } from './components/add-fd/add-fd.component';
 import { ViewFdComponent } from './components/view-fd/view-fd.component';
 import { AuthGuard } from './components/authguard/auth.guard';
 import { AddReviewComponent } from './components/add-review/add-review.component';
 import { ViewReviewComponent } from './components/view-review/view-review.component';
+import { ViewAccountComponent } from './components/view-account/view-account.component';
 
 
 const routes: Routes = [
@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'signup', component: RegistrationComponent },
   { path: 'admin/dashboard', component: AdminComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'customer/dashboard', component: CustomerComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
-  { path: 'view/acount', component: ViewAccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  { path: 'view/account', component: ViewAccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'add/account', component: AddAccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'add/FD', component: AddFdComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'view/FD', component: ViewFdComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here

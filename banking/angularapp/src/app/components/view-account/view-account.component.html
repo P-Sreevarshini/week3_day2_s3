@@ -18,7 +18,7 @@
           <td>{{ account.Balance }}</td>
           <td>{{ account.AccountType }}</td>
           <td>
-            <ng-container *ngIf="userRole === 'Admin'">
+            <ng-container *ngIf="userRole === 'Customer'">
               <button (click)="editAccount(account)" class="edit-btn">Edit</button>
               <button (click)="deleteAccount(account)" class="delete-btn">Delete</button>
             </ng-container>

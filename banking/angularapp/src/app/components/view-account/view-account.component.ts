@@ -32,7 +32,11 @@ export class ViewAccountComponent implements OnInit {
       this.accounts = accounts;
     });
   }
-
+  getCustomerAccounts(userId: number): void {
+    this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
+      this.accounts = accounts;
+    });
+  }
   deleteAccount(userId: number, accountId: number): void {
     if (this.accountService.deleteAccount) {
       this.accountService.deleteAccount(userId, accountId).subscribe(() => {
