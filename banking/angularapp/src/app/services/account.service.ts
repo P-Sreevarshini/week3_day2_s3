@@ -32,9 +32,59 @@ export class AccountService {
       })
     );
   }
+  deleteAccount(accountId: number): Observable<void> {
+    const endpoint = `${this.apiUrl}/api/account/${accountId}`;
+    const headers = this.getHeaders();
   
-  private handleError(error: any): Observable<never> {
-    console.error('An error occurred:', error);
-    throw error;
+    return this.http.delete<void>(endpoint, { headers }).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          console.error('Authentication error: Redirect to login page or handle accordingly.');
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+  editAccount(accountId: number, updatedAccountData: Account): Observable<Account> {
+    const endpoint = `${this.apiUrl}/api/account/${accountId}`;
+    const headers = this.getHeaders();
+  
+    return this.http.put<Account>(endpoint, updatedAccountData, { headers }).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          console.error('Authentication error: Redirect to login page or handle accordingly.');
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+  getAllAccounts(): Observable<Account[]> {
+    const endpoint = `${this.apiUrl}/api/account`;
+    const headers = this.getHeaders();
+  
+    return this.http.get<Account[]>(endpoint, { headers }).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          console.error('Authentication error: Redirect to login page or handle accordingly.');
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+  getCustomerAccounts(customerId: number): Observable<Account[]> {
+    const endpoint = `${this.apiUrl}/api/account/user/${customerId}`;
+    const headers = this.getHeaders();
+  
+    return this.http.get<Account[]>(endpoint, { headers }).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          console.error('Authentication error: Redirect to login page or handle accordingly.');
+        }
+        return throwError(error);
+      })
+    );
   }
 }
