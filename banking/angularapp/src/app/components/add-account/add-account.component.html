@@ -1,1 +1,12 @@
-<p>add-account works!</p>
+<div *ngIf="accounts">
+    <h2>Accounts</h2>
+    <ul>
+      <li *ngFor="let account of accounts">
+        <span>{{account.accountId}}</span>
+        <span>{{account.userId}}</span>
+        <span>{{account.balance}}</span>
+        <span>{{account.accountType}}</span>
+      </li>
+    </ul>
+  </div>
+  
