@@ -33,33 +33,33 @@ namespace dotnetapp.Services
         }
 
       public async Task<Account> AddAccount(Account account)
-{
-    try
-    {
-        // Check if the user with the specified UserId exists
-        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == account.UserId);
-        
-        if (existingUser == null)
         {
-            // User does not exist, return null or handle accordingly
-            return null;
+            try
+            {
+                // Check if the user with the specified UserId exists
+                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == account.UserId);
+                
+                if (existingUser == null)
+                {
+                    // User does not exist, return null or handle accordingly
+                    return null;
+                }
+                
+                // Associate the account with the existing user
+                account.User = existingUser;
+                
+                // Add the account to the database
+                _context.Accounts.Add(account);
+                await _context.SaveChangesAsync();
+                
+                return account; // Return the added account
+            }
+            catch (Exception)
+            {
+                // Log the exception if needed
+                return null;
+            }
         }
-        
-        // Associate the account with the existing user
-        account.User = existingUser;
-        
-        // Add the account to the database
-        _context.Accounts.Add(account);
-        await _context.SaveChangesAsync();
-        
-        return account; // Return the added account
-    }
-    catch (Exception)
-    {
-        // Log the exception if needed
-        return null;
-    }
-}
 
 
 
@@ -104,6 +104,10 @@ namespace dotnetapp.Services
                 // Log the exception if needed
                 return false;
             }
+        }
+        public async Task<IEnumerable<Account>> GetAccountsByUserId(long userId)
+        {
+            return await _context.Accounts.Where(a => a.UserId == userId).ToListAsync();
         }
     }
 }

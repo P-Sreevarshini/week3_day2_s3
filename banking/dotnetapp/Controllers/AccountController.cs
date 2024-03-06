@@ -41,6 +41,28 @@ namespace dotnetapp.Controllers
 
             return Ok(account);
         }
+        
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccountsByUserId(long userId)
+        {
+            try
+            {
+                // Retrieve accounts associated with the specified user ID
+                var accounts = await _accountService.GetAccountsByUserId(userId);
+
+                if (accounts == null || !accounts.Any())
+                {
+                    return NotFound(new { message = "No accounts found for the specified user ID" });
+                }
+
+                return Ok(accounts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
         // [Authorize(Roles = "Customer")]
 
         [HttpPost]
