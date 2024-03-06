@@ -29,7 +29,7 @@
         </ng-container>
         <ng-template #editMode>
           <td><input [(ngModel)]="account.AccountId" readonly></td>
-          <td><input [ngModel]="account.User?.name" readonly></td> <!-- Display user's name -->
+          <td><input [ngModel]="account.User?.Username" readonly></td> <!-- Display user's name -->
           <td><input [(ngModel)]="account.UserId" readonly></td>
           <td><input [(ngModel)]="account.Balance"></td>
           <td><input [(ngModel)]="account.AccountType"></td>
