@@ -13,7 +13,7 @@
       <tr *ngFor="let account of accounts">
         <ng-container *ngIf="selectedAccount !== account; else editMode">
           <td>{{ account.AccountId }}</td>
-          <td>{{ account.User?.name }}</td> <!-- Display user's name -->
+          <td>{{ account.User?.Username }}</td> <!-- Display user's name -->
           <td>{{ account.UserId }}</td>
           <td>{{ account.Balance }}</td>
           <td>{{ account.AccountType }}</td>
