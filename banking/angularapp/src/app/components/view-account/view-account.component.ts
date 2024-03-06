@@ -33,13 +33,15 @@ export class ViewAccountComponent implements OnInit {
     });
   }
 
-  deleteAccount(account: Account): void {
+  deleteAccount(userId: number, accountId: number): void {
     if (this.accountService.deleteAccount) {
-      this.accountService.deleteAccount(account.AccountId).subscribe(() => {
+      this.accountService.deleteAccount(userId, accountId).subscribe(() => {
         this.getAllAccounts();
       });
     } else {
       console.error('deleteAccount method not found in AccountService');
     }
   }
+ 
+  
 }

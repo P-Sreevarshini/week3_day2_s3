@@ -32,8 +32,8 @@ export class AccountService {
       })
     );
   }
-  deleteAccount(accountId: number): Observable<void> {
-    const endpoint = `${this.apiUrl}/api/account/${accountId}`;
+  deleteAccount(userId: number, accountId: number): Observable<void> {
+    const endpoint = `${this.apiUrl}/api/account/${userId}/${accountId}`;
     const headers = this.getHeaders();
   
     return this.http.delete<void>(endpoint, { headers }).pipe(
@@ -45,6 +45,8 @@ export class AccountService {
       })
     );
   }
+  
+  
 
   editAccount(accountId: number, updatedAccountData: Account): Observable<Account> {
     const endpoint = `${this.apiUrl}/api/account/${accountId}`;
