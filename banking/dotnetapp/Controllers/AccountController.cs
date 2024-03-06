@@ -24,7 +24,7 @@ namespace dotnetapp.Controllers
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccounts();
-            return Ok(accounts);
+
         }
         // [Authorize]
 
@@ -63,7 +63,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
 
         [HttpPut("{accountId}")]
         public async Task<ActionResult> UpdateAccount(long accountId, [FromBody] Account account)
@@ -86,7 +86,7 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
-        [Authorize(Roles = "Customer")]
+        // [Authorize(Roles = "Customer")]
         [HttpDelete("{accountId}")]
         public async Task<ActionResult> DeleteAccount(long accountId)
         {
