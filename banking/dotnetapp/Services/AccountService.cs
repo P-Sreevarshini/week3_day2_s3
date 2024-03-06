@@ -21,8 +21,8 @@ namespace dotnetapp.Services
         public async Task<IEnumerable<Account>> GetAllAccounts()
         {
             return await _context.Accounts
-            .Include(account => account.User)
-            .ToListAsync();
+                .Include(account => account.User) // Include user details
+                .ToListAsync();
         }
 
         public async Task<Account> GetAccountById(long accountId)

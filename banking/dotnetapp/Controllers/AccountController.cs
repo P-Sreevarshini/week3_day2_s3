@@ -24,7 +24,8 @@ namespace dotnetapp.Controllers
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccounts()
         {
             var accounts = await _accountService.GetAllAccounts();
-
+           
+            return Ok(accounts);
         }
         // [Authorize]
 
