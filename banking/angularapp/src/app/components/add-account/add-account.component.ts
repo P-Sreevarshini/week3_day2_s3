@@ -32,7 +32,7 @@ export class AddAccountComponent {
           this.router.navigate(['/view/accounts']);
         },
         (error) => {
-          console.log(account);
+          console.log(this.account);
           console.error('Error adding account:', error);
         }
       );
