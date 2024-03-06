@@ -42,7 +42,6 @@ namespace dotnetapp.Services
             }
             catch (Exception)
             {
-                // Log the exception if needed
                 return false;
             }
         }
