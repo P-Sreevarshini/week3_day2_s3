@@ -13,7 +13,7 @@ import { AuthGuard } from './components/authguard/auth.guard';
 import { AddReviewComponent } from './components/add-review/add-review.component';
 import { ViewReviewComponent } from './components/view-review/view-review.component';
 import { ViewAccountComponent } from './components/view-account/view-account.component';
-import { AddFdaccountComponent } from './components/add-fdaccount/add-fdaccount.component';
+// import { AddFdaccountComponent } from './components/add-fdaccount/add-fdaccount.component';
 import { ViewFdaccountComponent } from './components/view-fdaccount/view-fdaccount.component';
 
 
@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'view/FD', component: ViewFdComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'add/review', component: AddReviewComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'view/review', component: ViewReviewComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
-  { path: 'add/FDaccount', component: AddFdaccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
+  // { path: 'add/FDaccount', component: AddFdaccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
   { path: 'view/FDaccount', component: ViewFdaccountComponent, canActivate: [AuthGuard] }, // Apply AuthGuard here
 
 
