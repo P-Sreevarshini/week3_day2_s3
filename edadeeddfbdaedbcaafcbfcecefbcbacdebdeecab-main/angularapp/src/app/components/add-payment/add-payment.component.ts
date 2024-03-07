@@ -36,17 +36,6 @@ export class AddPaymentComponent implements OnInit {
       this.paymentData.courseId = params['courseID'];
       this.paymentData.course = { ...params }; // Spread the query parameters into the course object
       console.log('Payment Data:', this.paymentData);
-      // const role = localStorage.getItem('userId')
-      // console.log(role);
-      // {
-      //   "paymentID": 0,
-      //   "courseId": 0,
-      //   "userId": 0,
-      //   "status": "string",
-      //   "totalAmount": 0,
-      //   "paymentDate": "2024-02-27T06:38:42.799Z",
-      //   "modeOfPayment": "string"
-      // }
     });
   }
 
