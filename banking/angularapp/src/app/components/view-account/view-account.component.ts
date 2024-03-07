@@ -16,7 +16,18 @@ export class ViewAccountComponent implements OnInit {
   constructor(private accountService: AccountService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.getAllAccounts();
+    this.userRole = localStorage.getItem('userRole');
+    console.log('User Role:', this.userRole);
+  
+    if (this.userRole === 'Admin') {
+      this.getAllAccounts();
+    } else if (this.userRole === 'Customer') {
+      const userId = this.getUserIdFromStorage();
+      if (userId) {
+        this.getCustomerAccounts(userId);
+      }
+    }
+  // }
     this.userRole = localStorage.getItem('userRole');
     console.log('User Role:', this.userRole);
 
@@ -37,16 +48,19 @@ export class ViewAccountComponent implements OnInit {
     });
   }
 }
-//   getCustomerAccounts(userId: number): void {
-//     this.userRole = localStorage.getItem('userRole');
-//     if (this.userRole === 'Customer') {
-//     this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
-//       this.accounts = accounts;
-//       console.log(accounts);
+  getCustomerAccounts(userId: number): void {
+    console.log("user"+userId);
+    this.userRole = localStorage.getItem('userRole');
+    console.log("user"+this.userRole);
+    if (this.userRole === 'Customer') {
+      console.log("user"+this.userRole);
+    this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
+      this.accounts = accounts;
+      console.log(accounts);
 
-//     });
-//   }
-// }
+    });
+  }
+}
   deleteAccount(userId: number, accountId: number): void {
     this.userRole = localStorage.getItem('userRole');
      if (this.userRole === 'Admin') {
@@ -60,21 +74,13 @@ export class ViewAccountComponent implements OnInit {
   }
 }
 getUserIdFromStorage(): number {
-  const token = localStorage.getItem('token');
-  if (token) {
-    const decodedToken = this.authService.decodeToken(token);
-    if (decodedToken) {
-      return decodedToken.userId;
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = this.authService.decodeToken(token);
+      if (decodedToken) {
+        return decodedToken.userId;
+      }
     }
+    return null;
   }
-  return null;
-}
-
-getCustomerAccounts(userId: number): void {
-  if (userId) {
-    this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
-      this.accounts = accounts;
-    });
-  }
-}
 }
