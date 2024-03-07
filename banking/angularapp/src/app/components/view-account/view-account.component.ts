@@ -19,20 +19,18 @@ export class ViewAccountComponent implements OnInit {
   ngOnInit(): void {
     this.userRole = localStorage.getItem('userRole');
     console.log('User Role:', this.userRole);
-
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.authService.decodeToken(token);
-      if (decodedToken) {
-        this.userId = decodedToken.userId;
-        console.log('User ID:', this.userId);
-
-        if (this.userRole === 'Admin') {
-          this.getAllAccounts();
-        } else if (this.userRole === 'Customer') {
-          this.getCustomerAccounts(this.userId);
-        }
+  
+    const userId = this.authService.getUserId();
+    console.log('User ID:', userId);
+  
+    if (this.userRole === 'Admin') {
+      this.getAllAccounts();
+    } else if (this.userRole === 'Customer') {
+      if (userId) {
+        this.getCustomerAccounts(userId);
       }
+    }
+  }
 
 
   getAllAccounts(): void {
@@ -44,7 +42,6 @@ export class ViewAccountComponent implements OnInit {
   }
 }
   getCustomerAccounts(userId: number): void {
-    console.log("user"+userId);
     this.userRole = localStorage.getItem('userRole');
     console.log("user"+this.userRole);
     if (this.userRole === 'Customer') {

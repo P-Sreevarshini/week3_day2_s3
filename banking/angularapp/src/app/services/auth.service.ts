@@ -27,6 +27,10 @@ export class AuthService {
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
+  getUserId(): number | null {
+    return Number(localStorage.getItem('user'));
+  }
+
 register(userName: string, password: string, userRole: string, email: string, mobileNumber: string): Observable<any>
  {
   const body = { userName, password, userRole, email, mobileNumber };
