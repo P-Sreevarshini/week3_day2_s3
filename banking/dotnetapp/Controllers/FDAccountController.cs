@@ -11,16 +11,15 @@ namespace dotnetapp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class FDAccountsController : ControllerBase
+    public class FDAccountController : ControllerBase
     {
         private readonly FDAccountService _fdAccountService;
 
-        public FDAccountsController(FDAccountService fdAccountService)
+        public FDAccountController(FDAccountService fdAccountService)
         {
             _fdAccountService = fdAccountService;
         }
 
-        // GET: api/FDAccounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FDAccount>>> GetFDAccounts()
         {
@@ -86,5 +85,17 @@ namespace dotnetapp.Controllers
 
             return NoContent();
         }
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<FDAccount>>> GetFDAccountsByUserId(long userId)
+        {
+            var fdAccounts = await _fdAccountService.GetFDAccountsByUserIdAsync(userId);
+            if (fdAccounts == null || !fdAccounts.Any())
+            {
+                return NotFound();
+            }
+            return fdAccounts;
+        }
+
+
     }
 }

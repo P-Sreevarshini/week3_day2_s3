@@ -99,7 +99,15 @@ namespace dotnetapp.Services
         {
             return _context.FDAccounts.Any(e => e.FDAccountId == id);
         }
-
+        public async Task<List<FDAccount>> GetFDAccountsByUserIdAsync(long userId)
+        {
+            var fdAccounts = await _context.FDAccounts.Where(fd => fd.UserId == userId).ToListAsync();
+            foreach (var fdAccount in fdAccounts)
+            {
+                await PopulateUserAndFixedDeposit(fdAccount);
+            }
+            return fdAccounts;
+        }
         private async Task PopulateUserAndFixedDeposit(FDAccount fdAccount)
         {
             fdAccount.User = await _context.Users.FindAsync(fdAccount.UserId);
