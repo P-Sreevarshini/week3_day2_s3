@@ -37,14 +37,16 @@ export class ViewAccountComponent implements OnInit {
     });
   }
 }
-  getCustomerAccounts(userId: number): void {
-    this.userRole = localStorage.getItem('userRole');
-    if (this.userRole === 'Customer') {
-    this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
-      this.accounts = accounts;
-    });
-  }
-}
+//   getCustomerAccounts(userId: number): void {
+//     this.userRole = localStorage.getItem('userRole');
+//     if (this.userRole === 'Customer') {
+//     this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
+//       this.accounts = accounts;
+//       console.log(accounts);
+
+//     });
+//   }
+// }
   deleteAccount(userId: number, accountId: number): void {
     this.userRole = localStorage.getItem('userRole');
      if (this.userRole === 'Admin') {
@@ -55,6 +57,24 @@ export class ViewAccountComponent implements OnInit {
     } else {
       console.error('deleteAccount method not found in AccountService');
     }
+  }
+}
+getUserIdFromStorage(): number {
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decodedToken = this.authService.decodeToken(token);
+    if (decodedToken) {
+      return decodedToken.userId;
+    }
+  }
+  return null;
+}
+
+getCustomerAccounts(userId: number): void {
+  if (userId) {
+    this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
+      this.accounts = accounts;
+    });
   }
 }
 }
