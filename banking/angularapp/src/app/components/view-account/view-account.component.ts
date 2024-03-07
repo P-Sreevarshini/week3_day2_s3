@@ -55,7 +55,7 @@ export class ViewAccountComponent implements OnInit {
 }
   deleteAccount(userId: number, accountId: number): void {
     this.userRole = localStorage.getItem('userRole');
-     if (this.userRole === 'Admin') {
+     if (this.userRole === 'Customer') {
     if (this.accountService.deleteAccount) {
       this.accountService.deleteAccount(userId, accountId).subscribe(() => {
         this.getAllAccounts();
@@ -75,4 +75,8 @@ getUserIdFromStorage(): number {
     }
     return null;
   }
+  // cancelEdit(): void {
+  //   this.editModeMap[this.selectedFd.FixedDepositId] = false;
+  //   this.selectedFd = null; 
+  // }
 }
