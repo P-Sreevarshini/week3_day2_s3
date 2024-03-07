@@ -23,11 +23,14 @@ export class ViewAccountComponent implements OnInit {
       this.getAllAccounts();
     } else if (this.userRole === 'Customer') {
       const userId = this.getUserIdFromStorage();
+        console.log("acc"+userId);
+
       if (userId) {
+        console.log("acc"+userId);
         this.getCustomerAccounts(userId);
       }
     }
-  // }
+  
     this.userRole = localStorage.getItem('userRole');
     console.log('User Role:', this.userRole);
 
@@ -73,14 +76,4 @@ export class ViewAccountComponent implements OnInit {
     }
   }
 }
-getUserIdFromStorage(): number {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.authService.decodeToken(token);
-      if (decodedToken) {
-        return decodedToken.userId;
-      }
-    }
-    return null;
-  }
 }
