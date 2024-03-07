@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using dotnetapp.Data;
 using dotnetapp.Models;
+using dotnetapp.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace dotnetapp.Controllers
@@ -13,25 +13,26 @@ namespace dotnetapp.Controllers
     [Route("api/[controller]")]
     public class FDAccountsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly FDAccountService _fdAccountService;
 
-        public FDAccountsController(ApplicationDbContext context)
+        public FDAccountsController(FDAccountService fdAccountService)
         {
-            _context = context;
+            _fdAccountService = fdAccountService;
         }
 
         // GET: api/FDAccounts
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FDAccount>>> GetFDAccounts()
         {
-            return await _context.FDAccounts.ToListAsync();
+            var fdAccounts = await _fdAccountService.GetAllFDAccountsAsync();
+            return fdAccounts;
         }
 
         // GET: api/FDAccounts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FDAccount>> GetFDAccount(long id)
         {
-            var fdAccount = await _context.FDAccounts.FindAsync(id);
+            var fdAccount = await _fdAccountService.GetFDAccountByIdAsync(id);
 
             if (fdAccount == null)
             {
@@ -45,30 +46,45 @@ namespace dotnetapp.Controllers
         [HttpPost]
         public async Task<ActionResult<FDAccount>> PostFDAccount(FDAccount fdAccount)
         {
-            _context.FDAccounts.Add(fdAccount);
-            await _context.SaveChangesAsync();
+            await _fdAccountService.AddFDAccountAsync(fdAccount);
 
             return CreatedAtAction(nameof(GetFDAccount), new { id = fdAccount.FDAccountId }, fdAccount);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteFDAccount(long id)
+        // PUT: api/FDAccounts/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutFDAccount(long id, FDAccount fdAccount)
         {
-            var fdAccount = await _context.FDAccounts.FindAsync(id);
-            if (fdAccount == null)
+            try
+            {
+                await _fdAccountService.UpdateFDAccountAsync(id, fdAccount);
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            _context.FDAccounts.Remove(fdAccount);
-            await _context.SaveChangesAsync();
+            catch (ArgumentException)
+            {
+                return BadRequest();
+            }
 
             return NoContent();
         }
 
-        private bool FDAccountExists(long id)
+        // DELETE: api/FDAccounts/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFDAccount(long id)
         {
-            return _context.FDAccounts.Any(e => e.FDAccountId == id);
+            try
+            {
+                await _fdAccountService.DeleteFDAccountAsync(id);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

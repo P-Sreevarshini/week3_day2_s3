@@ -20,17 +20,29 @@ namespace dotnetapp.Services
         // Get all FDAccounts
         public async Task<List<FDAccount>> GetAllFDAccountsAsync()
         {
-            return await _context.FDAccounts.ToListAsync();
+            var fdAccounts = await _context.FDAccounts.ToListAsync();
+            foreach (var fdAccount in fdAccounts)
+            {
+                await PopulateUserAndFixedDeposit(fdAccount);
+            }
+            return fdAccounts;
         }
 
         // Get FDAccount by ID
         public async Task<FDAccount> GetFDAccountByIdAsync(long id)
         {
-            return await _context.FDAccounts.FindAsync(id);
+            var fdAccount = await _context.FDAccounts.FindAsync(id);
+            if (fdAccount != null)
+            {
+                await PopulateUserAndFixedDeposit(fdAccount);
+            }
+            return fdAccount;
         }
 
         public async Task<FDAccount> AddFDAccountAsync(FDAccount fdAccount)
         {
+            await PopulateUserAndFixedDeposit(fdAccount);
+
             _context.FDAccounts.Add(fdAccount);
             await _context.SaveChangesAsync();
             return fdAccount;
@@ -43,6 +55,8 @@ namespace dotnetapp.Services
             {
                 throw new ArgumentException("Invalid ID");
             }
+
+            await PopulateUserAndFixedDeposit(fdAccount);
 
             _context.Entry(fdAccount).State = EntityState.Modified;
 
@@ -84,6 +98,12 @@ namespace dotnetapp.Services
         private bool FDAccountExists(long id)
         {
             return _context.FDAccounts.Any(e => e.FDAccountId == id);
+        }
+
+        private async Task PopulateUserAndFixedDeposit(FDAccount fdAccount)
+        {
+            fdAccount.User = await _context.Users.FindAsync(fdAccount.UserId);
+            fdAccount.FixedDeposit = await _context.FixedDeposits.FindAsync(fdAccount.FixedDepositId);
         }
     }
 }
