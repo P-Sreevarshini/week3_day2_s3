@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FdaccountService } from '../../services/fdaccount.service'; // Import the service here
+import { FdaccountService } from '../../services/fdaccount.service';
 
 @Component({
   selector: 'app-add-fdaccount',
@@ -11,24 +11,48 @@ import { FdaccountService } from '../../services/fdaccount.service'; // Import t
 export class AddFdaccountComponent implements OnInit {
   fdAccountForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private fdAccountService: FdaccountService) { } // Inject the service here
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private fdAccountService: FdaccountService
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.fdAccountForm = this.formBuilder.group({
-      // Define your form controls with validators here
-      userName: ['', Validators.required],
-      balance: ['', [Validators.required, Validators.min(0)]],
-      accountType: ['', Validators.required]
+      amount: ['', [Validators.required, Validators.min(0)]],
+      tenureMonths: ['', [Validators.required, Validators.min(1)]],
+      interestRate: ['', [Validators.required, Validators.min(0)]]
     });
   }
 
-  onSubmit(): void {
+  // Convenience getter for easy access to form fields
+  get form() {
+    return this.fdAccountForm.controls;
+  }
+
+  onSubmit() {
+    // Stop here if form is invalid
     if (this.fdAccountForm.invalid) {
       return;
     }
-    const formData = this.fdAccountForm.value;
-    this.fdAccountService.addFDAccount(formData).subscribe(() => {
-      this.router.navigate(['/view/FDaccount']);
-    });
+
+    // Prepare data for submission
+    const fdData = {
+      amount: this.form.amount.value,
+      tenureMonths: this.form.tenureMonths.value,
+      interestRate: this.form.interestRate.value
+    };
+
+    // Call the service to add FD account
+    this.fdAccountService.addFdAccount(fdData).subscribe(
+      () => {
+        // Redirect to another page after successful submission
+        this.router.navigate(['/success']); // Change '/success' to the desired route
+      },
+      error => {
+        // Handle error
+        console.error('Error adding FD account:', error);
+      }
+    );
   }
 }

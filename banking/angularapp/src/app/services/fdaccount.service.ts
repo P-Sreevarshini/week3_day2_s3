@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FdaccountService {
-  apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io'; 
+  apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io';
 
   constructor(private http: HttpClient) {}
 
-  addFDAccount(formData: any): Observable<any> {
-    const endpoint = `${this.apiUrl}/api/FDAccounts`; // Adjust the endpoint according to your API
-    return this.http.post<any>(endpoint, formData);
+  addFdAccount(fdData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/FDAccount`, fdData);
   }
 }
