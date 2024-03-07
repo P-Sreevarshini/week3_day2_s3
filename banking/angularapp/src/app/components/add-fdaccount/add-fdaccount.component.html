@@ -1,1 +1,19 @@
-<p>add-fdaccount works!</p>
+<div class="container">
+    <h2>Add FDAccount</h2>
+    <form [formGroup]="fdAccountForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="userName">User Name:</label>
+        <input type="text" formControlName="userName" class="form-control" placeholder="Enter user name">
+      </div>
+      <div class="form-group">
+        <label for="balance">Balance:</label>
+        <input type="number" formControlName="balance" class="form-control" placeholder="Enter balance">
+      </div>
+      <div class="form-group">
+        <label for="accountType">Account Type:</label>
+        <input type="text" formControlName="accountType" class="form-control" placeholder="Enter account type">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="fdAccountForm.invalid">Submit</button>
+    </form>
+  </div>
+  
