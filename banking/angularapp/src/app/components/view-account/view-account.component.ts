@@ -82,9 +82,14 @@ getUserIdFromStorage(): number {
     return null;
   }
   cancelEdit(): void {
-    this.editModeMap[this.selectedaccount.AccountId] = false;
-    this.selectedaccount = null; 
-  }
+    if (this.selectedaccount) {
+        this.editModeMap[this.selectedaccount.AccountId] = false;
+        this.selectedaccount = null;
+    } else {
+        console.error('Selected account is undefined.');
+    }
+}
+
   updateAccount(account: Account): void {
     if (!account.AccountId) {
         console.error('Account ID is undefined.');

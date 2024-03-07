@@ -46,6 +46,20 @@ export class AccountService {
     );
   }
   
+  updateAccount(accountId: number, updatedAccountData: Account): Observable<Account> {
+    const endpoint = `${this.apiUrl}/api/account/${accountId}`;
+    const headers = this.getHeaders();
+  
+    return this.http.put<Account>(endpoint, updatedAccountData, { headers }).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          console.error('Authentication error: Redirect to login page or handle accordingly.');
+        }
+        return throwError(error);
+      })
+    );
+}
+
   
 
   editAccount(accountId: number, updatedAccountData: Account): Observable<Account> {
@@ -62,19 +76,10 @@ export class AccountService {
     );
   }
 
-  updateAccount(accountId: number, updatedAccountData: Account): Observable<Account> {
-    const endpoint = `${this.apiUrl}/api/account/${accountId}`;
-    const headers = this.getHeaders();
-  
-    return this.http.put<Account>(endpoint, updatedAccountData, { headers }).pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          console.error('Authentication error: Redirect to login page or handle accordingly.');
-        }
-        return throwError(error);
-      })
-    );
-  }
+  // updateAccount(accountId: number, updatedAccountData: Account): Observable<void> {
+  //   const endpoint = `${this.apiUrl}/api/accounts/${accountId}`; 
+  //   return this.http.put<void>(endpoint, updatedAccountData);
+  // }
 
   getAllAccounts(): Observable<Account[]> {
     const endpoint = `${this.apiUrl}/api/account`;
