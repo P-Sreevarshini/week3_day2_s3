@@ -100,7 +100,7 @@ export class ViewFdComponent implements OnInit {
   }
 
   createAccount(fd: FixedDeposit): void {
-    this.router.navigate(['/payment/make'], { queryParams: { ...fd } });
+    this.router.navigate(['/'], { queryParams: { ...fd } });
     console.log(fd);
   }
 }

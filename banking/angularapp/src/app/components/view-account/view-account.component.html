@@ -20,9 +20,6 @@
               <button (click)="editAccount(account)" class="edit-btn">Edit</button>
               <button (click)="deleteAccount(account)" class="delete-btn">Delete</button>
             </ng-container>
-            <ng-container *ngIf="userRole === 'Customer'">
-              <button (click)="createFd(account)" class="edit-btn">Create Fixed Deposit</button>
-            </ng-container>
           </td>
         </ng-container>
         <ng-template #editMode>
