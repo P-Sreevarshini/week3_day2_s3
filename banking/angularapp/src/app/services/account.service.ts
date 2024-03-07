@@ -62,6 +62,11 @@ export class AccountService {
     );
   }
 
+  // updateAccount(accountId: number, updatedAccountData: Account): Observable<void> {
+  //   const endpoint = `${this.apiUrl}/api/accounts/${accountId}`; 
+  //   return this.http.put<void>(endpoint, updatedAccountData);
+  // }
+
   getAllAccounts(): Observable<Account[]> {
     const endpoint = `${this.apiUrl}/api/account`;
     const headers = this.getHeaders();

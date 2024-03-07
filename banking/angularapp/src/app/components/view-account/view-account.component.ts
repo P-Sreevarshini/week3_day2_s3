@@ -13,6 +13,9 @@ export class ViewAccountComponent implements OnInit {
   accounts: Account[];
   userRole: string;
   userId: number;
+  editModeMap: { [key: number]: boolean } = {}; // Map to track the edit mode of each FD
+  selectedaccount: Account;
+
 
   constructor(private accountService: AccountService, private authService: AuthService, private router: Router) { }
 
@@ -32,6 +35,9 @@ export class ViewAccountComponent implements OnInit {
     }
   }
 
+  toggleEditMode(accounts: Account): void {
+    this.selectedaccount = this.selectedaccount === accounts ? null : accounts;
+  }
 
   getAllAccounts(): void {
     this.userRole = localStorage.getItem('userRole');
@@ -43,7 +49,7 @@ export class ViewAccountComponent implements OnInit {
 }
   getCustomerAccounts(userId: number): void {
     this.userRole = localStorage.getItem('userRole');
-    console.log("user"+this.userRole);
+    // console.log("user"+this.userRole);
     if (this.userRole === 'Customer') {
       console.log("user"+this.userRole);
     this.accountService.getCustomerAccounts(userId).subscribe(accounts => {
@@ -75,8 +81,46 @@ getUserIdFromStorage(): number {
     }
     return null;
   }
-  // cancelEdit(): void {
-  //   this.editModeMap[this.selectedFd.FixedDepositId] = false;
-  //   this.selectedFd = null; 
-  // }
+  cancelEdit(): void {
+    this.editModeMap[this.selectedaccount.AccountId] = false;
+    this.selectedaccount = null; 
+  }
+
+  editAccount(accounts: Account): void {
+    // console.log('User Role:', this.userRole);
+
+    if (this.userRole !== 'Customer') {
+      console.error('Access denied. Only Customer can edit Account.');
+      return;
+    }
+    this.editModeMap[accounts.AccountId] = !this.editModeMap[accounts.AccountId];
+    this.selectedaccount = accounts;
+  }
+  
+  updateAccount(account: Account): void {
+    if (!account.AccountId) {
+        console.error('Account ID is undefined.');
+        console.log('Account Object:', account);
+        return;
+    }
+    if (this.userRole !== 'Admin') {
+        console.error('Access denied. Only admins can update accounts.');
+        return;
+    }
+
+    const updatedData: Account = { ...account };
+    updatedData.Balance = account.Balance;
+    updatedData.AccountType = account.AccountType;
+
+    this.accountService.editAccount(account.AccountId, updatedData).subscribe(
+        () => {
+            console.log('Account updated successfully.');
+            this.getAllAccounts();
+        },
+        (error) => {
+            console.error('Error updating account:', error);
+        }
+    );
+}
+
 }

@@ -19,4 +19,5 @@ export class FdAccountService {
     const endpoint = `${this.apiUrl}/api/FDAccount/user/${userId}`; // Assuming the API endpoint for fetching FD accounts by user ID is '/api/FDAccount/user/:userId'
     return this.http.get<FDAccount[]>(endpoint);
   }
+  
 }
