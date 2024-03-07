@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FdaccountService } from '../../services/fdaccount.service';
+import { FDAccount } from 'src/app/models/fixedDepositAccount';
 
 @Component({
   selector: 'app-add-fdaccount',
@@ -10,6 +11,7 @@ import { FdaccountService } from '../../services/fdaccount.service';
 })
 export class AddFdaccountComponent implements OnInit {
   fdAccountForm: FormGroup;
+  fdAccount: FDAccount; // Define fdAccount property
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,14 +47,18 @@ export class AddFdaccountComponent implements OnInit {
 
     // Call the service to add FD account
     this.fdAccountService.addFdAccount(fdData).subscribe(
-      () => {
-        // Redirect to another page after successful submission
-        this.router.navigate(['/success']); // Change '/success' to the desired route
+      (fdAccount: FDAccount) => { 
+        this.fdAccount = fdAccount; 
+        this.router.navigate(['/']); 
       },
       error => {
         // Handle error
         console.error('Error adding FD account:', error);
       }
     );
+  }
+
+  requestClosure() {
+    console.log('Closure requested');
   }
 }

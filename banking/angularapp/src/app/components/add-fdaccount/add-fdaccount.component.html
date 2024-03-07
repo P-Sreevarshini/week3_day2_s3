@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="fdAccount">
   <h2>Fixed Deposit Account Details</h2>
   <table>
     <thead>
@@ -8,16 +8,18 @@
         <th>Tenure (Months)</th>
         <th>Interest Rate</th>
         <th>Status</th>
+        <th>User Name</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>{{ fdAccount.FixedDepositId }}</td>
-        <td>{{ fdAccount.Amount }}</td>
-        <td>{{ fdAccount.TenureMonths }}</td>
-        <td>{{ fdAccount.InterestRate }}</td>
+        <td>{{ fdAccount.FixedDeposit.amount }}</td>
+        <td>{{ fdAccount.FixedDeposit.tenureMonths }}</td>
+        <td>{{ fdAccount.FixedDeposit.interestRate }}</td>
         <td>{{ fdAccount.Status }}</td>
+        <td>{{ fdAccount.User.username }}</td>
         <td>
           <button (click)="requestClosure()" *ngIf="fdAccount.Status !== 'Closed'">Request Closure</button>
         </td>
