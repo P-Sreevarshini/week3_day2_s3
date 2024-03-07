@@ -1,1 +1,22 @@
-<p>view-fdaccount works!</p>
+<h2>FD Account Details</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>User Name</th>
+      <th>Amount</th>
+      <th>Tenure Months</th>
+      <th>Interest Rate</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts">
+      <td>{{ account.User.Username }}</td>
+      <td>{{ account.FixedDeposit.Amount }}</td>
+      <td>{{ account.FixedDeposit.TenureMonths }}</td>
+      <td>{{ account.FixedDeposit.InterestRate }}</td>
+      <td>{{ account.Status }}</td>
+    </tr>
+  </tbody>
+</table>
