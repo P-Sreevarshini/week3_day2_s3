@@ -13,7 +13,7 @@
       <tr *ngFor="let account of accounts">
         <ng-container *ngIf="selectedAccount !== account; else editMode">
           <td>{{ account.AccountId }}</td>
-          <td>{{ account.User.Username }}</td> <!-- Display user's name -->
+          <td>{{ account.User.Username }}</td> 
           <td>{{ account.UserId }}</td>
           <td>{{ account.Balance }}</td>
           <td>{{ account.AccountType }}</td>
@@ -29,7 +29,7 @@
         </ng-container>
         <ng-template #editMode>
           <td><input [(ngModel)]="account.AccountId" readonly></td>
-          <td><input [ngModel]="account.User.Username" readonly></td> <!-- Display user's name -->
+          <td><input [ngModel]="account.User.Username" readonly></td> 
           <td><input [(ngModel)]="account.UserId" readonly></td>
           <td><input [(ngModel)]="account.Balance"></td>
           <td><input [(ngModel)]="account.AccountType"></td>

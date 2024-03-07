@@ -18,6 +18,8 @@ export class ViewAccountComponent implements OnInit {
   ngOnInit(): void {
     this.getAllAccounts();
     this.userRole = localStorage.getItem('userRole');
+    console.log('User Role:', this.userRole);
+
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = this.authService.decodeToken(token);
@@ -26,15 +28,6 @@ export class ViewAccountComponent implements OnInit {
       }
     }
   }
-  // ngOnInit(): void {
-  //   this.userRole = localStorage.getItem('userRole');
-  //   if (this.userRole === 'Admin') {
-  //     this.getAllAccounts();
-  //   } else if (this.userRole === 'Customer') {
-  //     this.getCustomerAccounts(this.userId);
-  //     this.deleteAccount(this.userId, this.accountId);
-  //   }
-  // }
 
   getAllAccounts(): void {
     this.userRole = localStorage.getItem('userRole');

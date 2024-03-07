@@ -76,8 +76,8 @@ export class AccountService {
     );
   }
 
-  getCustomerAccounts(customerId: number): Observable<Account[]> {
-    const endpoint = `${this.apiUrl}/api/account/user/${customerId}`;
+  getCustomerAccounts(userId: number): Observable<Account[]> {
+    const endpoint = `${this.apiUrl}/api/account/${userId}`;
     const headers = this.getHeaders();
   
     return this.http.get<Account[]>(endpoint, { headers }).pipe(
