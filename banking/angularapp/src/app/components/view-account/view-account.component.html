@@ -30,7 +30,12 @@
           <!-- <td><input [(ngModel)]="account.AccountId" readonly></td> -->
           <td><input [ngModel]="account.User.Username" readonly></td> <!-- Display user's name -->
           <td><input [(ngModel)]="account.Balance"></td>
-          <td><input [(ngModel)]="account.AccountType"></td>
+          <!-- <td><input [(ngModel)]="account.AccountType"></td> -->
+          <td>
+            <select [(ngModel)]="account.AccountType">
+                <option *ngFor="let type of accountTypes" [value]="type">{{ type }}</option>
+            </select>
+        </td>
           <td>
             <!-- <button (click)="updateAccount(account)" class="save-btn">Save</button>
             <button (click)="cancelEdit()" class="cancel-btn">Cancel</button> -->

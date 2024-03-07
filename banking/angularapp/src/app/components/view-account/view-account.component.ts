@@ -85,6 +85,32 @@ getUserIdFromStorage(): number {
     this.editModeMap[this.selectedaccount.AccountId] = false;
     this.selectedaccount = null; 
   }
+  updateAccount(account: Account): void {
+    if (!account.AccountId) {
+        console.error('Account ID is undefined.');
+        console.log('Account Object:', account);
+        return;
+    }
+    if (this.userRole !== 'Customer') {
+        console.error('Access denied. Only Customer can update accounts.');
+        return;
+    }
+
+    const updatedData: Account = { ...account };  
+    updatedData.Balance = account.Balance;
+    updatedData.AccountType = account.AccountType;
+
+    this.accountService.updateAccount(account.AccountId, updatedData).subscribe(
+        () => {
+            console.log('Account updated successfully.');
+            this.getAllAccounts();
+            // this.getCustomerAccounts(this.userId); // Assuming this method exists to refresh the account list
+        },
+        (error) => {
+            console.error('Error updating account:', error);
+        }
+    );
+}
 
   // editAccount(accounts: Account): void {
   //   // console.log('User Role:', this.userRole);
