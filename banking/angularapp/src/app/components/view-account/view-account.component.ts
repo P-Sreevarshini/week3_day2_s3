@@ -64,7 +64,7 @@ export class ViewAccountComponent implements OnInit {
      if (this.userRole === 'Customer') {
     if (this.accountService.deleteAccount) {
       this.accountService.deleteAccount(userId, accountId).subscribe(() => {
-        this.getAllAccounts();
+        this.getCustomerAccounts(userId);
       });
     } else {
       console.error('deleteAccount method not found in AccountService');
@@ -86,41 +86,66 @@ getUserIdFromStorage(): number {
     this.selectedaccount = null; 
   }
 
-  editAccount(accounts: Account): void {
-    // console.log('User Role:', this.userRole);
+  // editAccount(accounts: Account): void {
+  //   // console.log('User Role:', this.userRole);
 
-    if (this.userRole !== 'Customer') {
-      console.error('Access denied. Only Customer can edit Account.');
-      return;
-    }
-    this.editModeMap[accounts.AccountId] = !this.editModeMap[accounts.AccountId];
-    this.selectedaccount = accounts;
-  }
+  //   if (this.userRole !== 'Customer') {
+  //     console.error('Access denied. Only Customer can edit Account.');
+  //     return;
+  //   }
+  //   this.editModeMap[accounts.AccountId] = !this.editModeMap[accounts.AccountId];
+  //   this.selectedaccount = accounts;
+  // }
   
-  updateAccount(account: Account): void {
-    if (!account.AccountId) {
-        console.error('Account ID is undefined.');
-        console.log('Account Object:', account);
-        return;
-    }
-    if (this.userRole !== 'Admin') {
-        console.error('Access denied. Only admins can update accounts.');
-        return;
-    }
+//   editAccount(account: Account): void {
+//     if (!account.AccountId) {
+//         console.error('Account ID is undefined.');
+//         console.log('Account Object:', account);
+//         return;
+//     }
+//     if (this.userRole !== 'Customer') {
+//         console.error('Access denied. Only Customer can update accounts.');
+//         return;
+//     }
 
-    const updatedData: Account = { ...account };
-    updatedData.Balance = account.Balance;
-    updatedData.AccountType = account.AccountType;
+//     const updatedData: Account = { ...account };
+//     updatedData.Balance = account.Balance;
+//     updatedData.AccountType = account.AccountType;
 
-    this.accountService.editAccount(account.AccountId, updatedData).subscribe(
-        () => {
-            console.log('Account updated successfully.');
-            this.getAllAccounts();
-        },
-        (error) => {
-            console.error('Error updating account:', error);
-        }
-    );
+//     this.accountService.editAccount(account.AccountId, updatedData).subscribe(
+//         () => {
+//             console.log('Account updated successfully.');
+//             this.getAllAccounts();
+//         },
+//         (error) => {
+//             console.error('Error updating account:', error);
+//         }
+//     );
+// }
+// editAccount(account: Account): void {
+//   console.log('Edit button clicked for account:', account);
+
+//   if (!account.AccountId) {
+//     console.error('Account ID is undefined.');
+//     console.log('Account Object:', account);
+//     return;
+//   }
+//   if (this.userRole !== 'Customer') {
+//     console.error('Access denied. Only Customer can edit Account.');
+//     return;
+//   }
+
+//   // Toggle edit mode for the selected account
+//   this.editModeMap[account.AccountId] = !this.editModeMap[account.AccountId];
+// }
+editAccount(account: Account): void {
+  if (!this.editModeMap[account.AccountId]) {
+    this.editModeMap[account.AccountId] = true; // Enable edit mode for the selected account
+  } else {
+    this.editModeMap[account.AccountId] = false; // Disable edit mode for the selected account
+  }
 }
+
+
 
 }

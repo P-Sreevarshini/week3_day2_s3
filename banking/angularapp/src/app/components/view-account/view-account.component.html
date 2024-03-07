@@ -10,7 +10,9 @@
     </thead>
     <tbody>
       <tr *ngFor="let account of accounts">
-        <ng-container *ngIf="selectedAccount !== account; else editMode">
+        <!-- <ng-container *ngIf="selectedAccount !== account; else editMode"> -->
+          <ng-container *ngIf="!editModeMap[account.AccountId]; else editMode">
+
           <!-- <td>{{ account.AccountId }}</td> -->
           <td>{{ account.User.Username }}</td> <!-- Display user's name -->
           <td>{{ account.Balance }}</td>
@@ -18,7 +20,9 @@
           <td>
             <ng-container *ngIf="userRole === 'Customer'">
               <button (click)="editAccount(account)" class="edit-btn">Edit</button>
-              <button (click)="deleteAccount(account)" class="delete-btn">Delete</button>
+              <!-- <button (click)="deleteAccount(account)" class="delete-btn">Delete</button> -->
+              <button (click)="deleteAccount(account.User.UserId, account.AccountId)" class="delete-btn">Delete</button>
+
             </ng-container>
           </td>
         </ng-container>
@@ -28,8 +32,11 @@
           <td><input [(ngModel)]="account.Balance"></td>
           <td><input [(ngModel)]="account.AccountType"></td>
           <td>
+            <!-- <button (click)="updateAccount(account)" class="save-btn">Save</button>
+            <button (click)="cancelEdit()" class="cancel-btn">Cancel</button> -->
             <button (click)="updateAccount(account)" class="save-btn">Save</button>
-            <button (click)="cancelEdit()" class="cancel-btn">Cancel</button>
+            <button (click)="cancelEdit(account.AccountId)" class="cancel-btn">Cancel</button>
+  
           </td>
         </ng-template>
       </tr>
