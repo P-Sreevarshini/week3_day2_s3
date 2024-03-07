@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ViewFdComponent implements OnInit {
   fds: FixedDeposit[];
+  fda: FixedDepositAccount[];
   selectedFd: FixedDeposit;
   userRole: string;
   editModeMap: { [key: number]: boolean } = {}; // Map to track the edit mode of each FD
@@ -99,8 +100,33 @@ export class ViewFdComponent implements OnInit {
     this.selectedFd = null; 
   }
 
+  // createAccount(fd: FixedDeposit): void {
+  //   this.router.navigate(['/add/FDaccount'], { queryParams: { ...fd } });
+  //   console.log(fd);
+  // }
   createAccount(fd: FixedDeposit): void {
-    this.router.navigate(['/add/FDaccount'], { queryParams: { ...fd } });
-    console.log(fd);
+    const userId = localStorage.getItem('userId'); // Get the user ID from local storage or wherever it's stored
+    if (!userId) {
+      console.error('User ID not found.');
+      return;
+    }
+  
+    const newAccountData = {
+      FixedDepositId: fd.FixedDepositId,
+      UserId: userId,
+      Status: 'Pending' // Set the default status to pending
+    };
+  
+    this.fdService.createFdAccount(newAccountData).subscribe(
+      () => {
+        console.log('New FD account created successfully.');
+        // Redirect to the page to view all details
+        this.router.navigate(['/view/all-details']);
+      },
+      (error) => {
+        console.error('Error creating FD account:', error);
+      }
+    );
   }
+  
 }

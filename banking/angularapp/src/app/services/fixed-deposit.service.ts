@@ -92,4 +92,18 @@ export class FixedDepositService {
       })
     );
   }
+  createFdAccount(newAccountData: any): Observable<any> {
+    const endpoint = `${this.apiUrl}/api/FDAccount`; // Assuming this is the correct endpoint for creating FD accounts
+    const headers = this.getHeaders();
+  
+    return this.http.post<any>(endpoint, newAccountData, { headers }).pipe(
+      catchError((error) => {
+        if (error.status === 401) {
+          console.error('Authentication error: Redirect to login page or handle accordingly.');
+        }
+        return throwError(error);
+      })
+    );
+  }
+  
 }
