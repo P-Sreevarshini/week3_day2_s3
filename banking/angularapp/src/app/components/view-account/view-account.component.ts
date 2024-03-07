@@ -12,25 +12,11 @@ import { Router } from '@angular/router';
 export class ViewAccountComponent implements OnInit {
   accounts: Account[];
   userRole: string;
+  userId: number;
 
   constructor(private accountService: AccountService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
-    this.userRole = localStorage.getItem('userRole');
-    console.log('User Role:', this.userRole);
-  
-    if (this.userRole === 'Admin') {
-      this.getAllAccounts();
-    } else if (this.userRole === 'Customer') {
-      const userId = this.getUserIdFromStorage();
-        console.log("acc"+userId);
-
-      if (userId) {
-        console.log("acc"+userId);
-        this.getCustomerAccounts(userId);
-      }
-    }
-  
     this.userRole = localStorage.getItem('userRole');
     console.log('User Role:', this.userRole);
 
@@ -38,10 +24,16 @@ export class ViewAccountComponent implements OnInit {
     if (token) {
       const decodedToken = this.authService.decodeToken(token);
       if (decodedToken) {
-        this.userRole = decodedToken.role;
+        this.userId = decodedToken.userId;
+        console.log('User ID:', this.userId);
+
+        if (this.userRole === 'Admin') {
+          this.getAllAccounts();
+        } else if (this.userRole === 'Customer') {
+          this.getCustomerAccounts(this.userId);
+        }
       }
-    }
-  }
+
 
   getAllAccounts(): void {
     this.userRole = localStorage.getItem('userRole');
@@ -76,4 +68,14 @@ export class ViewAccountComponent implements OnInit {
     }
   }
 }
+getUserIdFromStorage(): number {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = this.authService.decodeToken(token);
+      if (decodedToken) {
+        return decodedToken.userId;
+      }
+    }
+    return null;
+  }
 }
