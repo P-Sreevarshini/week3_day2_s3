@@ -33,7 +33,6 @@ builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<FDRequestService>();
 builder.Services.AddScoped<FixedDepositService>();
 builder.Services.AddScoped<ReviewService>();
-builder.Services.AddScoped<TransactionService>();
 builder.Services.AddScoped<FDAccountService>();
 
 
