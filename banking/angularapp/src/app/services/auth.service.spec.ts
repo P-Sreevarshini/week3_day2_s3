@@ -31,7 +31,7 @@ describe('AuthService', () => {
       // Add more assertions based on your implementation
     });
 
-    const req = httpTestingController.expectOne(`${(service as any).apiUrl}/auth/register`);
+    const req = httpTestingController.expectOne(`${(service as any).apiUrl}/api/register`);
     expect(req.request.method).toEqual('POST');
 
     req.flush(newUser);
@@ -46,7 +46,7 @@ describe('AuthService', () => {
       expect(userResponse.emailID).toEqual(newUser.emailID);
     });
 
-    const req = httpTestingController.expectOne(`${service['apiUrl']}/auth/register`);
+    const req = httpTestingController.expectOne(`${service['apiUrl']}/api/register`);
     expect(req.request.method).toEqual('POST');
 
     req.flush(newUser);
@@ -61,7 +61,7 @@ describe('AuthService', () => {
       expect(loginResponse).toBeDefined();
     });
 
-    const req = httpTestingController.expectOne(`${service['apiUrl']}/auth/login`);
+    const req = httpTestingController.expectOne(`${service['apiUrl']}/api/login`);
     expect(req.request.method).toEqual('POST');
 
     req.flush(user);

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ViewFdAccountsComponent } from './view-fdaccount.component';
 
-import { ViewFdaccountComponent } from './view-fdaccount.component';
 
-describe('ViewFdaccountComponent', () => {
-  let component: ViewFdaccountComponent;
-  let fixture: ComponentFixture<ViewFdaccountComponent>;
+describe('ViewFdAccountsComponent', () => {
+  let component: ViewFdAccountsComponent;
+  let fixture: ComponentFixture<ViewFdAccountsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ViewFdaccountComponent ]
+      declarations: [ ViewFdAccountsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ViewFdaccountComponent);
+    fixture = TestBed.createComponent(ViewFdAccountsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

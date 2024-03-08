@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { FdAccountService } from './fdaccount.service';
 
-import { FdaccountService } from './fdaccount.service';
 
 describe('FdaccountService', () => {
-  let service: FdaccountService;
+  let service: FdAccountService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FdaccountService);
+    service = TestBed.inject(FdAccountService);
   });
 
   it('should be created', () => {
