@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,6 +17,7 @@ import { ViewReviewComponent } from './components/view-review/view-review.compon
 import { ViewFdComponent } from './components/view-fd/view-fd.component';
 // import { AddFdaccountComponent } from './components/add-fdaccount/add-fdaccount.component';
 import { ViewFdAccountsComponent } from './components/view-fdaccount/view-fdaccount.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
