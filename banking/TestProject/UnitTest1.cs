@@ -484,6 +484,64 @@ public async Task Backend_Test_Get_All_ReviewsByAdmin() //get all the reviews by
             // Ensure the request is successful
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
         }
+[Test]
+        public async Task Backend_Test_Get_FD_AccountsByAdmin()
+        {
+           string registrationUniqueId = Guid.NewGuid().ToString();
+
+    // Generate a unique userName based on a timestamp
+    string uniqueUsername = $"abcd_{registrationUniqueId}";
+    string uniqueEmail = $"abcd{registrationUniqueId}@gmail.com";
+
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Customer\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
+
+    // Print registration response
+    string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Registration Response: " + registerResponseBody);
+
+    // Login with the registered user
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+
+    // Ensure login is successful
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+    // Extract response body from login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+
+    // Extract user ID from the login response
+    dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    long userId = loginResponseMap.UserId; // Assuming the response contains the user ID
+    string token = loginResponseMap?.Token;
+
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
+    Console.WriteLine("Retrieved User ID: " + userId);
+
+    Assert.IsNotNull(token);
+            // Generate unique data for the FDAccount
+            var status = "Pending";
+            var fixedDepositId = 1; // Assuming you have a valid FixedDepositId
+
+            // Construct the request body for the FDAccount
+            var fdAccount = new
+            {
+                UserId = userId,
+                Status = status,
+                FixedDepositId = fixedDepositId
+            };
+            var requestBody = JsonConvert.SerializeObject(fdAccount);
+
+            // Add the token to the request headers
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+            // Post the FDAccount
+            var response = await _httpClient.PostAsync("/api/FDAccount", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+
+            // Ensure the request is successful
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        }
 
 
 
@@ -603,6 +661,35 @@ public void Backend_Test_ApplicationDbContext_ContainsDbSet_Review()
         Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
     }
 }
+
+[Test]
+public void Backend_Test_ApplicationDbContext_ContainsDbSet_FDAccount()
+{
+    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+    if (contextType == null)
+    {
+        Assert.Fail("No DbContext found in the assembly");
+        return;
+    }
+    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "FDAccount");
+    if (accountType == null)
+    {
+        Assert.Fail("No FDAccount entity found in the assembly");
+        return;
+    }
+    var propertyInfo = contextType.GetProperty("FDAccounts", typeof(DbSet<>).MakeGenericType(accountType));
+    if (propertyInfo == null)
+    {
+        Assert.Fail("FDAccounts property not found in the DbContext");
+        return;
+    }
+    else
+    {
+        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
+    }
+}
+
 
 [TearDown]
     public void TearDown()
