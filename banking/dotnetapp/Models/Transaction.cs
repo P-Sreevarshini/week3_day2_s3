@@ -15,7 +15,7 @@ namespace dotnetapp.Models
 
         public long AccountId { get; set; }
 
-        public string Type { get; set;} // Credit or Debit////``
+        public string Type { get; set;} 
         public decimal Amount { get; set; }
         public DateTime Timestamp { get; set; }
 
