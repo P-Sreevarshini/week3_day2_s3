@@ -42,4 +42,10 @@ export class ViewFdAccountsComponent implements OnInit {
     });
   }
 }
+updateAccountStatus(fdAccountId: number, newStatus: string): void {
+  this.fdAccountService.updateFdAccountStatus(fdAccountId, newStatus).subscribe(() => {
+    // Handle success or any further actions if needed
+    console.log(`Status updated to: ${newStatus} for account ID: ${fdAccountId}`);
+  });
+}
 }
