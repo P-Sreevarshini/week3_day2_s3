@@ -85,77 +85,59 @@ public class ApplicationTests
     }
 
     [Test]
-    public async Task Backend_TestLoginUser()
-    {
-        string uniqueId = Guid.NewGuid().ToString();
+public async Task Backend_Test_Post_FixedDepositByAdmin()
+{
+    string registrationUniqueId = Guid.NewGuid().ToString();
 
-        // Generate a unique userName based on a timestamp
-        string uniqueUsername = $"abcd_{uniqueId}";
-        string uniqueEmail = $"abcd{uniqueId}@gmail.com";
+    // Generate a unique userName based on a timestamp
+    string uniqueUsername = $"abcd_{registrationUniqueId}";
+    string uniqueEmail = $"abcd{registrationUniqueId}@admin.com";
 
-        string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Customer\"}}";
-        HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
 
-        // Print registration response
-        string registerResponseBody = await response.Content.ReadAsStringAsync();
-        Console.WriteLine("Registration Response: " + registerResponseBody);
+    // Print registration response
+    string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Registration Response: " + registerResponseBody);
 
-        // Login with the registered user
-        string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+    // Login with the registered user
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
 
-        // Print login response
-        string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-        Console.WriteLine("Login Response: " + loginResponseBody);
+    // Print login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Login Response: " + loginResponseBody);
 
-        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    }
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+    
+    // Extract token from the login response
+    dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    string token = loginResponseMap?.Token;
 
-    [Test, Order(5)]
-    public async Task Backend_Test_Post_FixedDepositByAdmin()
-    {
-        string uniqueId = Guid.NewGuid().ToString();
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
 
-        // Generate a unique userName based on a timestamp
-        string uniqueUsername = $"abcd_{uniqueId}";
-        string uniqueEmail = $"abcd{uniqueId}@admin.com";
+    Assert.IsNotNull(token);
 
-        string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
-        HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+    // Generate unique data for the fixed deposit
+    string depositUniqueId = Guid.NewGuid().ToString();
+    decimal amount = 10000; // Sample amount
+    int tenureMonths = 12; // Sample tenure in months
+    decimal interestRate = 5.5m; // Sample interest rate
 
-        // Print registration response
-        string registerResponseBody = await response.Content.ReadAsStringAsync();
-        Console.WriteLine("Registration Response: " + registerResponseBody);
+    // Construct the request body for the fixed deposit
+    string fixedDepositRequestBody = $"{{\"Amount\": {amount}, \"TenureMonths\": {tenureMonths}, \"InterestRate\": {interestRate}}}";
 
-        // Login with the registered user
-        string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-        HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+    // Add the token to the request headers
+    _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-        // Print login response
-        string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-        Console.WriteLine("Login Response: " + loginResponseBody);
+    // Post the fixed deposit
+    HttpResponseMessage fixedDepositResponse = await _httpClient.PostAsync("/api/fixeddeposit", new StringContent(fixedDepositRequestBody, Encoding.UTF8, "application/json"));
 
-        Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-        string responseBody = await loginResponse.Content.ReadAsStringAsync();
+    Assert.AreEqual(HttpStatusCode.OK, fixedDepositResponse.StatusCode);
+}
 
-        dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
 
-        string token = responseMap.token;
-
-        Assert.IsNotNull(token);
-
-        string uniquetitle = Guid.NewGuid().ToString();
-
-        // Use a dynamic and unique userName for admin (appending timestamp)
-        string uniqueprodTitle = $"prodTitle_{uniquetitle}";
-
-        string giftJson = $"{{\"Name\":\"{uniqueprodTitle}\",\"Description\":\"test\",\"Price\":250,\"Quantity\":10}}";
-        _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-        HttpResponseMessage prodresponse = await _httpClient.PostAsync("/api/product",
-            new StringContent(giftJson, Encoding.UTF8, "application/json"));
-
-        Assert.AreEqual(HttpStatusCode.OK, prodresponse.StatusCode);
-    }
 
     // [Test, Order(6)]
     // public async Task Backend_Test_Post_ProductByInventoryManager_Forbidden()
