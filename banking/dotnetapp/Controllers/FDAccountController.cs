@@ -6,6 +6,8 @@ using dotnetapp.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace dotnetapp.Controllers
 {
@@ -19,7 +21,7 @@ namespace dotnetapp.Controllers
         {
             _fdAccountService = fdAccountService;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FDAccount>>> GetFDAccounts()
         {
@@ -28,6 +30,8 @@ namespace dotnetapp.Controllers
         }
 
         // GET: api/FDAccounts/5
+                [Authorize]
+
         [HttpGet("{id}")]
         public async Task<ActionResult<FDAccount>> GetFDAccount(long id)
         {
@@ -42,6 +46,8 @@ namespace dotnetapp.Controllers
         }
 
         // POST: api/FDAccounts
+                [Authorize]
+
         [HttpPost]
         public async Task<ActionResult<FDAccount>> PostFDAccount(FDAccount fdAccount)
         {
@@ -51,6 +57,8 @@ namespace dotnetapp.Controllers
         }
 
         // PUT: api/FDAccounts/5
+                [Authorize]
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFDAccount(long id, FDAccount fdAccount)
         {
@@ -71,6 +79,8 @@ namespace dotnetapp.Controllers
         }
 
         // DELETE: api/FDAccounts/5
+                [Authorize]
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFDAccount(long id)
         {
@@ -85,6 +95,8 @@ namespace dotnetapp.Controllers
 
             return NoContent();
         }
+                [Authorize]
+
         [HttpGet("user/{userId}")]
         public async Task<ActionResult<IEnumerable<FDAccount>>> GetFDAccountsByUserId(long userId)
         {

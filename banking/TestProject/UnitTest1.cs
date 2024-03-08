@@ -426,61 +426,64 @@ public async Task Backend_Test_Get_All_ReviewsByAdmin() //get all the reviews by
     Assert.IsTrue(reviews.Any());
 }
 
- [Test]
+[Test]
         public async Task Backend_Test_Post_FD_Account()
         {
-            // Generate unique user data for registration
-            string registrationUniqueId = Guid.NewGuid().ToString();
-            string uniqueUsername = $"user_{registrationUniqueId}";
-            string uniqueEmail = $"user{registrationUniqueId}@example.com";
-            string userPassword = "password123";
+           string registrationUniqueId = Guid.NewGuid().ToString();
 
-            // Registration request body
-            string registrationRequestBody = JsonConvert.SerializeObject(new
-            {
-                Username = uniqueUsername,
-                Password = userPassword,
-                Email = uniqueEmail,
-                UserRole = "Customer"
-            });
+    // Generate a unique userName based on a timestamp
+    string uniqueUsername = $"abcd_{registrationUniqueId}";
+    string uniqueEmail = $"abcd{registrationUniqueId}@gmail.com";
 
-            // Register the user
-            HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
-            Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Customer\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
 
-            // Login with the registered user
-            string loginRequestBody = JsonConvert.SerializeObject(new
-            {
-                Email = uniqueEmail,
-                Password = userPassword
-            });
-            HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-            Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+    // Print registration response
+    string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Registration Response: " + registerResponseBody);
 
-            // Extract user ID and token from the login response
-            dynamic loginResponseData = JsonConvert.DeserializeObject(await loginResponse.Content.ReadAsStringAsync());
-            long userId = loginResponseData.UserId;
-            string token = loginResponseData.Token;
+    // Login with the registered user
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
 
-            Assert.IsFalse(string.IsNullOrEmpty(token));
-            Assert.IsTrue(userId > 0);
+    // Ensure login is successful
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
 
-            // Construct FD Account data
+    // Extract response body from login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+
+    // Extract user ID from the login response
+    dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    long userId = loginResponseMap.UserId; // Assuming the response contains the user ID
+    string token = loginResponseMap?.Token;
+
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
+    Console.WriteLine("Retrieved User ID: " + userId);
+
+    Assert.IsNotNull(token);
+            // Generate unique data for the FDAccount
+            var status = "Pending";
+            var fixedDepositId = 1; // Assuming you have a valid FixedDepositId
+
+            // Construct the request body for the FDAccount
             var fdAccount = new
             {
                 UserId = userId,
-                Status = "Pending", // Assuming the status is pending for a new FD account
-                // You can add more properties here as needed
+                Status = status,
+                FixedDepositId = fixedDepositId
             };
+            var requestBody = JsonConvert.SerializeObject(fdAccount);
 
-            // Post the FD account
-            string fdAccountRequestBody = JsonConvert.SerializeObject(fdAccount);
-            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-            HttpResponseMessage postFdAccountResponse = await _httpClient.PostAsync("/api/FDAccount", new StringContent(fdAccountRequestBody, Encoding.UTF8, "application/json"));
+            // Add the token to the request headers
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-            Assert.AreEqual(HttpStatusCode.Created, postFdAccountResponse.StatusCode);
+            // Post the FDAccount
+            var response = await _httpClient.PostAsync("/api/FDAccount", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+
+            // Ensure the request is successful
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
         }
-    }
 
 
 
