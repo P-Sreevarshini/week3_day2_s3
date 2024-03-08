@@ -11,6 +11,8 @@ using dotnetapp.Data;
 using System.Reflection;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
+
 
 
 
@@ -91,8 +93,8 @@ public class ApplicationTests
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Test]
-public async Task Backend_Test_Post_FixedDepositByAdmin()
+[Test]
+public async Task Backend_Test_Post_FixedDepositByAdmin() //add fixed deposit by admin 
 {
     string registrationUniqueId = Guid.NewGuid().ToString();
 
@@ -144,7 +146,7 @@ public async Task Backend_Test_Post_FixedDepositByAdmin()
     Assert.AreEqual(HttpStatusCode.OK, fixedDepositResponse.StatusCode);
 }
 [Test]
-public async Task Backend_Test_Get_All_FixedDeposits()
+public async Task Backend_Test_Get_All_FixedDeposits() //get all fixed deposit
 {
      string registrationUniqueId = Guid.NewGuid().ToString();
 
@@ -209,7 +211,7 @@ public async Task Backend_Test_Get_All_FixedDeposits()
 }
 
 [Test]
-public async Task Backend_Test_Post_AccountByCustomer()
+public async Task Backend_Test_Post_AccountByCustomer() //add account by customer 
 {
     string registrationUniqueId = Guid.NewGuid().ToString();
 
@@ -262,7 +264,59 @@ public async Task Backend_Test_Post_AccountByCustomer()
 }
 
 
+[Test]
+public async Task Backend_Test_Get_All_AccountsByAdmin() //get all accounts by admin 
+{
+    string registrationUniqueId = Guid.NewGuid().ToString();
 
+    // Generate a unique userName based on a timestamp
+    string uniqueUsername = $"abcd_{registrationUniqueId}";
+    string uniqueEmail = $"abcd{registrationUniqueId}@admin.com";
+
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
+
+    // Print registration response
+    string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Registration Response: " + registerResponseBody);
+
+    // Login with the registered user
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+
+    // Ensure login is successful
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+    // Extract response body from login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+    // Extract token from the login response
+    dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    string token = loginResponseMap?.Token;
+
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
+
+    Assert.IsNotNull(token);
+
+    // Add the token to the request headers
+    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+    // Make a GET request to retrieve all accounts
+    HttpResponseMessage response = await _httpClient.GetAsync("/api/account");
+
+    // Check if the request is successful
+    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+    // Read the response content
+    string responseBody = await response.Content.ReadAsStringAsync();
+
+    // Deserialize the response content
+    var accounts = JsonConvert.DeserializeObject<IEnumerable<Account>>(responseBody);
+
+    // Ensure that the response contains data
+    Assert.IsNotNull(accounts);
+    Assert.IsTrue(accounts.Any());
+}
 
 
 
