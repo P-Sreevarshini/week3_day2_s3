@@ -26,3 +26,65 @@
     </tr>
   </tbody>
 </table>
+
+<!-- 
+<table>
+  <thead>
+    <tr>
+      <th>Fixed Deposit ID</th>
+      <th>Amount</th>
+      <th>Tenure (Months)</th>
+      <th>Interest Rate</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let fd of fds">
+      <ng-container *ngIf="selectedFd !== fd; else editMode">
+        <td>{{ fd.FixedDepositId }}</td>
+        <td>{{ fd.Amount }}</td>
+        <td>{{ fd.TenureMonths }}</td>
+        <td>{{ fd.InterestRate }}</td>
+        <td>
+          <ng-container *ngIf="userRole === 'Admin'; else statusText">
+            <select [(ngModel)]="fd.Status" (change)="updateStatus(fd)">
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </ng-container>
+          <ng-template #statusText>
+            {{ fd.Status }}
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="userRole === 'Admin'">
+            <button (click)="editFd(fd)" class="edit-btn">Edit</button>
+            <button (click)="deleteFd(fd)" class="delete-btn">Delete</button>
+          </ng-container>
+          <ng-container *ngIf="userRole === 'Customer'">
+            <button (click)="createAccount(fd)" class="edit-btn">Create FD Account</button>
+          </ng-container>
+        </td>
+      </ng-container>
+      <ng-template #editMode>
+        <td>{{ fd.FixedDepositId }}</td>
+        <td>{{ fd.Amount }}</td>
+        <td>{{ fd.TenureMonths }}</td>
+        <td>{{ fd.InterestRate }}</td>
+        <td>
+          <select [(ngModel)]="fd.Status">
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </td>
+        <td>
+          <button (click)="updateFd(fd)" class="save-btn">Save</button>
+          <button (click)="cancelEdit()" class="cancel-btn">Cancel</button>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table> -->

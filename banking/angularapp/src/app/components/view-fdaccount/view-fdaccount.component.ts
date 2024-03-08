@@ -44,24 +44,10 @@ export class ViewFdAccountsComponent implements OnInit {
   }
 }
 
-// getFdAccountsByUser(): void {
-//   this.loading = true;
-//   this.fdAccountService.getFdAccountsByUser(this.userId).subscribe(
-//     accounts => {
-//       this.accounts = accounts;
-//       this.loading = false;
-//     },
-//     error => {
-//       this.error = "Error occurred while fetching FD accounts.";
-//       this.loading = false;
-//       console.error(error);
-//     }
-//   );
-// }
 
-updateAccountStatus(fdAccountId: number, newStatus: string): void {
-  this.fdAccountService.updateFdAccountStatus(fdAccountId, newStatus).subscribe(() => {
-    console.log(`Status updated to: ${newStatus} for account ID: ${fdAccountId}`);
-  });
-}
+// updateAccountStatus(fdAccountId: number, newStatus: string): void {
+//   this.fdAccountService.updateFdAccountStatus(fdAccountId, newStatus).subscribe(() => {
+//     console.log(`Status updated to: ${newStatus} for account ID: ${fdAccountId}`);
+//   });
+// }
 }
