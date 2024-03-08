@@ -21,7 +21,7 @@ describe('ReviewService', () => {
     httpMock.verify();
   });
 
-  fit('should get all reviews', () => {
+  fit('Frontend_ReviewService should get all reviews', () => {
     const mockToken = 'mockToken';
     const mockReviews: Review[] = [
       { ReviewId: 1, UserId: 1, Body: 'Great experience', Rating: 4, DateCreated: new Date()},
@@ -42,9 +42,9 @@ describe('ReviewService', () => {
     req.flush(mockReviews);
   });
 
-  fit('should get reviews by user ID', () => {
+  fit('Frontend_ReviewService should get reviews by user ID', () => {
     const mockToken = 'mockToken';
-    const userId = 123;
+    const userId = 1;
     const mockReviews: Review[] = [
       { ReviewId: 1, UserId: userId, Body: 'Great experience', Rating: 4, DateCreated: new Date()},
       { ReviewId: 2, UserId: userId, Body: 'Excellent service', Rating: 5, DateCreated: new Date() }

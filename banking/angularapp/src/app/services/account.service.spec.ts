@@ -21,7 +21,7 @@ describe('AccountService', () => {
     httpMock.verify();
   });
 
-  fit('Frontend_should get all accounts by admin', () => {
+  fit('Frontend_AccountService should get all accounts by admin', () => {
     const mockToken = 'mockToken';
 
     // Mock the localStorage getItem method to return the mock token
@@ -35,7 +35,7 @@ describe('AccountService', () => {
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toBe('Bearer ' + mockToken);
   });
-  fit('should retrieve customer accounts by user ID', async(() => {
+  fit('Frontend_AccountService should retrieve customer accounts by user ID', async(() => {
     const userId = 1; // Replace with a valid user ID
 
     const mockAccounts: Account[] = [

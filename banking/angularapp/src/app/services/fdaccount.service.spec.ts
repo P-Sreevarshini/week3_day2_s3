@@ -21,7 +21,7 @@ describe('FdAccountService', () => {
     httpMock.verify();
   });
 
-  fit('should get all FD accounts by admin', () => {
+  fit('Frontend_FdAccountService should get all FD accounts by admin', () => {
     const mockFdAccounts: FDAccount[] = [
       { FDAccountId: 1, UserId: 1, Status: 'Active', FixedDepositId: 1 },
       { FDAccountId: 2, UserId: 2, Status: 'Inactive', FixedDepositId: 2 }
