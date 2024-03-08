@@ -16,6 +16,7 @@ import { CustomerComponent } from './components/customer/customer.component';
 import { ViewReviewComponent } from './components/view-review/view-review.component';
 import { ViewFdComponent } from './components/view-fd/view-fd.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ViewFdAccountsComponent } from './components/view-fdaccount/view-fdaccount.component';
 
 @NgModule({
   declarations: [
