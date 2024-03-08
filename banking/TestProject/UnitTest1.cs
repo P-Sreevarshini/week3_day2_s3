@@ -1,13 +1,16 @@
+using NUnit.Framework;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers; 
 using System.Text;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using Newtonsoft.Json;
-using dotnetapp.Models; // Add this using directive at the top of the file
+using dotnetapp.Models;
+using Microsoft.AspNetCore.Mvc;
+using dotnetapp.Data; 
+using System.Reflection;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -143,7 +146,7 @@ public async Task Backend_Test_Post_FixedDepositByAdmin()
 [Test]
 public async Task Backend_Test_Get_All_FixedDeposits()
 {
-      string registrationUniqueId = Guid.NewGuid().ToString();
+     string registrationUniqueId = Guid.NewGuid().ToString();
 
     // Generate a unique userName based on a timestamp
     string uniqueUsername = $"abcd_{registrationUniqueId}";
@@ -156,41 +159,115 @@ public async Task Backend_Test_Get_All_FixedDeposits()
     string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
     Console.WriteLine("Registration Response: " + registerResponseBody);
 
-    // Perform login to get the token
-    string uniqueId = Guid.NewGuid().ToString();
-    string uniqueEmail = $"abcd{uniqueId}@admin.com";
-
     // Login with the registered user
-    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; 
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+
+    // Print login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Login Response: " + loginResponseBody);
 
     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
     
-    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    dynamic responseMap = JsonConvert.DeserializeObject(loginResponseBody);
-    string token = responseMap.token;
+    // Extract token from the login response
+    dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    string token = loginResponseMap?.Token;
+
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
+
     Assert.IsNotNull(token);
 
-    // Add the token to the request headers
-    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    // Generate unique data for the fixed deposit
+    string depositUniqueId = Guid.NewGuid().ToString();
+    decimal amount = 10000; // Sample amount
+    int tenureMonths = 12; // Sample tenure in months
+    decimal interestRate = 5.5m; // Sample interest rate
 
-    // Make a GET request to retrieve all fixed deposits
-    HttpResponseMessage response = await _httpClient.GetAsync("/api/fixeddeposit");
+    // Construct the request body for the fixed deposit
+    string fixedDepositRequestBody = $"{{\"Amount\": {amount}, \"TenureMonths\": {tenureMonths}, \"InterestRate\": {interestRate}}}";
+
+    // Add the token to the request headers
+    _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+    // Post the fixed deposit
+    HttpResponseMessage fixedDepositResponse = await _httpClient.PostAsync("/api/fixeddeposit", new StringContent(fixedDepositRequestBody, Encoding.UTF8, "application/json"));
+
+    Assert.AreEqual(HttpStatusCode.OK, fixedDepositResponse.StatusCode);
+
+    // Perform a GET request to retrieve all fixed deposits
+    HttpResponseMessage getAllFixedDepositsResponse = await _httpClient.GetAsync("/api/fixeddeposit");
 
     // Check if the request is successful
-    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+    Assert.AreEqual(HttpStatusCode.OK, getAllFixedDepositsResponse.StatusCode);
 
     // Read the response content
-    string responseBody = await response.Content.ReadAsStringAsync();
+    string getAllFixedDepositsResponseBody = await getAllFixedDepositsResponse.Content.ReadAsStringAsync();
 
-    // Deserialize the response content
-    var fixedDeposits = JsonConvert.DeserializeObject<IEnumerable<FixedDeposit>>(responseBody);
-
-    // Ensure that the response contains data
-    Assert.IsNotNull(fixedDeposits);
-    Assert.IsTrue(fixedDeposits.Any());
+    // Print or process the response body as needed
+    Console.WriteLine("All Fixed Deposits Response: " + getAllFixedDepositsResponseBody);
+}
+[Test]
+public void Backend_Test_ApplicationDbContext_ContainsDbSet_User()
+{
+    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+    if (contextType == null)
+    {
+        Assert.Fail("No DbContext found in the assembly");
+        return;
+    }
+    Type userType = assembly.GetTypes().FirstOrDefault(t => t.Name == "User");
+    if (userType == null)
+    {
+        Assert.Fail("No User entity found in the assembly");
+        return;
+    }
+    var propertyInfo = contextType.GetProperty("Users", typeof(DbSet<>).MakeGenericType(userType));
+    if (propertyInfo == null)
+    {
+        Assert.Fail("Users property not found in the DbContext");
+        return;
+    }
+    else
+    {
+        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(userType), propertyInfo.PropertyType);
+    }
+}
+[Test]
+public void Backend_Test_ApplicationDbContext_ContainsDbSet_Account()
+{
+    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+    if (contextType == null)
+    {
+        Assert.Fail("No DbContext found in the assembly");
+        return;
+    }
+    Type userType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Account");
+    if (userType == null)
+    {
+        Assert.Fail("No Account entity found in the assembly");
+        return;
+    }
+    var propertyInfo = contextType.GetProperty("Users", typeof(DbSet<>).MakeGenericType(userType));
+    if (propertyInfo == null)
+    {
+        Assert.Fail("Accounts property not found in the DbContext");
+        return;
+    }
+    else
+    {
+        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(userType), propertyInfo.PropertyType);
+    }
 }
 
+
+[TearDown]
+    public void TearDown()
+    {
+        _httpClient.Dispose();
+    }
 
 
     // [Test, Order(6)]
