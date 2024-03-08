@@ -543,15 +543,6 @@ public async Task Backend_Test_Get_All_ReviewsByAdmin() //get all the reviews by
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
         }
 
-
-
-
-
-
-
-
-
-
 [Test]
 public void Backend_Test_ApplicationDbContext_ContainsDbSet_User()
 {
