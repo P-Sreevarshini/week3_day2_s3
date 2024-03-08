@@ -17,12 +17,12 @@
       <td>{{ account.FixedDeposit.TenureMonths }}</td>
       <td>{{ account.FixedDeposit.InterestRate }}</td>
       <td>{{ account.Status }}</td>
-      <td>
+      <!-- <td>
         <select *ngIf="userRole === 'Admin'" (change)="updateAccountStatus(account.Id, $event.target.value)">
           <option value="Open">Open</option>
           <option value="Closed">Closed</option>
         </select>
-      </td>
+      </td> -->
     </tr>
   </tbody>
 </table>

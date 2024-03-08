@@ -15,8 +15,6 @@ import { ViewAccountComponent } from './components/view-account/view-account.com
 import { CustomerComponent } from './components/customer/customer.component';
 import { ViewReviewComponent } from './components/view-review/view-review.component';
 import { ViewFdComponent } from './components/view-fd/view-fd.component';
-// import { AddFdaccountComponent } from './components/add-fdaccount/add-fdaccount.component';
-import { ViewFdAccountsComponent } from './components/view-fdaccount/view-fdaccount.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
@@ -33,7 +31,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AddAccountComponent,
     ViewAccountComponent,
     CustomerComponent,
-    // AddFdaccountComponent,
     ViewFdAccountsComponent
     ],
   imports: [
