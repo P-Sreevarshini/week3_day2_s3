@@ -228,14 +228,15 @@ public async Task Backend_Test_Post_AccountByCustomer()
     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
 
-    // Print login response
-    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    Console.WriteLine("Login Response: " + loginResponseBody);
-
+    // Ensure login is successful
     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    
-    // Extract token from the login response
+
+    // Extract response body from login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+
+    // Extract user ID from the login response
     dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    long userId = loginResponseMap.UserId; // Assuming the response contains the user ID
     string token = loginResponseMap?.Token;
 
     // Debugging statement to check the retrieved token
@@ -243,22 +244,24 @@ public async Task Backend_Test_Post_AccountByCustomer()
 
     Assert.IsNotNull(token);
 
-    // Generate unique data for the fixed deposit
-    string AccountId = Guid.NewGuid().ToString();
-    decimal Balance = 10000; // Sample amount
-    string AccountType = "Savings"; // Sample interest rate
+    // Generate unique data for the account
+    string accountId = Guid.NewGuid().ToString();
+    decimal balance = 10000; // Sample balance
+    string accountType = "Savings"; // Sample account type
 
-    // Construct the request body for the fixed deposit
-    string fixedDepositRequestBody = $"{{\"Balance\": {balance}, \"AccountType\": {accountType}}}";
+    // Construct the request body for the account
+    string accountRequestBody = $"{{\"UserId\": {userId}, \"Balance\": {balance}, \"AccountType\": \"{accountType}\"}}"; // Include UserId in the request body
 
     // Add the token to the request headers
     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
-    // Post the fixed deposit
-    HttpResponseMessage fixedDepositResponse = await _httpClient.PostAsync("/api/account", new StringContent(fixedDepositRequestBody, Encoding.UTF8, "application/json"));
+    // Post the account
+    HttpResponseMessage accountResponse = await _httpClient.PostAsync("/api/account", new StringContent(accountRequestBody, Encoding.UTF8, "application/json"));
 
-    Assert.AreEqual(HttpStatusCode.OK, fixedDepositResponse.StatusCode);
+    Assert.AreEqual(HttpStatusCode.OK, accountResponse.StatusCode);
 }
+
+
 
 
 
