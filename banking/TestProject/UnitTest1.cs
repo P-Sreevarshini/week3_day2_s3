@@ -318,7 +318,7 @@ public async Task Backend_Test_Get_All_AccountsByAdmin() //get all accounts by a
 }
 
 [Test]
-public async Task Backend_Test_Post_ReviewByCustomer()
+public async Task Backend_Test_Post_ReviewByCustomer() //post the reviews by customer
 {
     string registrationUniqueId = Guid.NewGuid().ToString();
 
@@ -343,34 +343,144 @@ public async Task Backend_Test_Post_ReviewByCustomer()
     // Extract response body from login response
     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
 
-    // Extract token from the login response
+    // Extract user ID from the login response
     dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    long userId = loginResponseMap.UserId; // Assuming the response contains the user ID
     string token = loginResponseMap?.Token;
-    long userId = loginResponseMap?.UserId;
 
-    // Debugging statement to check the retrieved user ID
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
     Console.WriteLine("Retrieved User ID: " + userId);
 
+    Assert.IsNotNull(token);
+
     // Generate unique data for the review
-    string reviewId = Guid.NewGuid().ToString();
-    int rating = 5; // Sample rating
-    string body = "This is a sample review body"; // Sample body
-    DateTime dateCreated = DateTime.Now;
+    string body = "This is a sample review body";
+    int rating = 5;
+    DateTime dateCreated = DateTime.UtcNow;
 
     // Construct the request body for the review
-    string reviewRequestBody = $"{{\"UserId\": {userId}, \"Rating\": {rating}, \"Body\": \"{body}\", \"DateCreated\": \"{dateCreated}\"}}";
+    string reviewRequestBody = $"{{\"UserId\": {userId}, \"Body\": \"{body}\", \"Rating\": {rating}, \"DateCreated\": \"{dateCreated:yyyy-MM-ddTHH:mm:ss.fffZ}\"}}";
 
     // Add the token to the request headers
-    _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
     // Post the review
-    HttpResponseMessage reviewResponse = await _httpClient.PostAsync("/api/Review", new StringContent(reviewRequestBody, Encoding.UTF8, "application/json"));
+    HttpResponseMessage reviewResponse = await _httpClient.PostAsync("/api/review", new StringContent(reviewRequestBody, Encoding.UTF8, "application/json"));
 
     Assert.AreEqual(HttpStatusCode.OK, reviewResponse.StatusCode);
 }
 
+[Test]
+public async Task Backend_Test_Get_All_ReviewsByAdmin() //get all the reviews by admin
+{
+    string registrationUniqueId = Guid.NewGuid().ToString();
 
+    // Generate a unique userName based on a timestamp
+    string uniqueUsername = $"abcd_{registrationUniqueId}";
+    string uniqueEmail = $"abcd{registrationUniqueId}@admin.com";
 
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
+
+    // Print registration response
+    string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Registration Response: " + registerResponseBody);
+
+    // Login with the registered user
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+
+    // Ensure login is successful
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+    // Extract response body from login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+
+    // Extract user ID from the login response
+    dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    string token = loginResponseMap?.Token;
+
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
+
+    Assert.IsNotNull(token);
+
+    // Add the token to the request headers
+    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+    // Make a GET request to retrieve all reviews
+    HttpResponseMessage response = await _httpClient.GetAsync("/api/Review");
+
+    // Check if the request is successful
+    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+    // Read the response content
+    string responseBody = await response.Content.ReadAsStringAsync();
+
+    // Deserialize the response content
+    var reviews = JsonConvert.DeserializeObject<IEnumerable<Review>>(responseBody);
+
+    // Ensure that the response contains data
+    Assert.IsNotNull(reviews);
+    Assert.IsTrue(reviews.Any());
+}
+
+ [Test]
+        public async Task Backend_Test_Post_FD_Account()
+        {
+            // Generate unique user data for registration
+            string registrationUniqueId = Guid.NewGuid().ToString();
+            string uniqueUsername = $"user_{registrationUniqueId}";
+            string uniqueEmail = $"user{registrationUniqueId}@example.com";
+            string userPassword = "password123";
+
+            // Registration request body
+            string registrationRequestBody = JsonConvert.SerializeObject(new
+            {
+                Username = uniqueUsername,
+                Password = userPassword,
+                Email = uniqueEmail,
+                UserRole = "Customer"
+            });
+
+            // Register the user
+            HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
+            Assert.AreEqual(HttpStatusCode.OK, registrationResponse.StatusCode);
+
+            // Login with the registered user
+            string loginRequestBody = JsonConvert.SerializeObject(new
+            {
+                Email = uniqueEmail,
+                Password = userPassword
+            });
+            HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+            Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+
+            // Extract user ID and token from the login response
+            dynamic loginResponseData = JsonConvert.DeserializeObject(await loginResponse.Content.ReadAsStringAsync());
+            long userId = loginResponseData.UserId;
+            string token = loginResponseData.Token;
+
+            Assert.IsFalse(string.IsNullOrEmpty(token));
+            Assert.IsTrue(userId > 0);
+
+            // Construct FD Account data
+            var fdAccount = new
+            {
+                UserId = userId,
+                Status = "Pending", // Assuming the status is pending for a new FD account
+                // You can add more properties here as needed
+            };
+
+            // Post the FD account
+            string fdAccountRequestBody = JsonConvert.SerializeObject(fdAccount);
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            HttpResponseMessage postFdAccountResponse = await _httpClient.PostAsync("/api/FDAccount", new StringContent(fdAccountRequestBody, Encoding.UTF8, "application/json"));
+
+            Assert.AreEqual(HttpStatusCode.Created, postFdAccountResponse.StatusCode);
+        }
+    }
 
 
 
