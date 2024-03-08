@@ -100,6 +100,8 @@ checkEmailExists(email: string): Observable<boolean> {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userRole');
     localStorage.removeItem('email');
+    localStorage.removeItem('user');
+
     this.currentUserSubject.next(null);
   }
 
