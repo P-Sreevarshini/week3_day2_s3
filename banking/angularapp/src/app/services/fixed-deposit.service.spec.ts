@@ -21,7 +21,7 @@ describe('FixedDepositService', () => {
     httpMock.verify();
   });
 
-  fit('should save fixed deposit by admin', () => {
+  fit('Frontend_should save fixed deposit by admin', () => {
     const mockToken = 'mockToken';
     const mockFixedDeposit: FixedDeposit = {
       FixedDepositId: 1,

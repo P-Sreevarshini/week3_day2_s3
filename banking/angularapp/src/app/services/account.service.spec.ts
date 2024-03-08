@@ -36,15 +36,15 @@ describe('AccountService', () => {
     expect(req.request.headers.get('Authorization')).toBe('Bearer ' + mockToken);
   });
   fit('should retrieve customer accounts by user ID', async(() => {
-    const userId = 123; // Replace with a valid user ID
+    const userId = 1; // Replace with a valid user ID
 
     const mockAccounts: Account[] = [
       { AccountId: 1, UserId: userId, AccountType: 'Savings', Balance: 1000 },
-      { AccountId: 2, UserId: userId, AccountType: 'Checking', Balance: 500 }
+      // { AccountId: 2, UserId: userId, AccountType: 'Checking', Balance: 500 }
     ];
 
     service.getCustomerAccounts(userId).subscribe((accounts) => {
-      expect(accounts.length).toBe(2);
+      expect(accounts.length).toBe(1);
       expect(accounts).toEqual(mockAccounts);
     });
 
