@@ -19,9 +19,9 @@ export class FdAccountService {
     const endpoint = `${this.apiUrl}/api/FDAccount/user/${userId}`; // Assuming the API endpoint for fetching FD accounts by user ID is '/api/FDAccount/user/:userId'
     return this.http.get<FDAccount[]>(endpoint);
   }
-   updateFdAccountStatus(fdAccountId: number, newStatus: string): Observable<any> {
-    return this.http.put<any>(`/api/fdaccounts/${fdAccountId}/status`, { status: newStatus });
-  }
+  //  updateFdAccountStatus(id: number, newStatus: string): Observable<any> {
+  //   return this.http.put<any>(`/api/FDAccount/${id}`, { status: newStatus });
+  // }
 
   
 }

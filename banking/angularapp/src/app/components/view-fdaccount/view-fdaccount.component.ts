@@ -11,6 +11,8 @@ export class ViewFdAccountsComponent implements OnInit {
   accounts: FDAccount[];
   userId: number;
   userRole: string;
+  // selectedFd: FDAccount;
+
   loading: boolean = false;
   error: string = null;
 
@@ -49,5 +51,24 @@ export class ViewFdAccountsComponent implements OnInit {
 //   this.fdAccountService.updateFdAccountStatus(fdAccountId, newStatus).subscribe(() => {
 //     console.log(`Status updated to: ${newStatus} for account ID: ${fdAccountId}`);
 //   });
+// }
+// updateStatus(fd: FDAccount): void {
+//   this.fdAccountService.updateFdAccountStatus(fd.FixedDepositId, fd.Status).subscribe(
+//     () => {
+//       console.log(`Status updated to: ${fd.Status} for account ID: ${fd.FixedDepositId}`);
+//     },
+//     error => {
+//       console.error("Error occurred while updating status:", error);
+//       // Handle error
+//     }
+//   );
+// }
+
+// editFd(fd: FDAccount): void {
+//   this.selectedFd = fd;
+// }
+// cancelEdit(): void {
+//   this.selectedFd = null;
+// }
 // }
 }
