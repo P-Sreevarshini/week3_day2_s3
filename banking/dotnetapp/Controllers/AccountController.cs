@@ -99,8 +99,9 @@ namespace dotnetapp.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+        
         [Authorize(Roles = "Customer")]
-      [HttpDelete("{userId}/{accountId}")]
+       [HttpDelete("{userId}/{accountId}")]
         public async Task<ActionResult> DeleteAccountForUser(long userId, long accountId)
         {
             try

@@ -207,6 +207,71 @@ public async Task Backend_Test_Get_All_FixedDeposits()
     // Print or process the response body as needed
     Console.WriteLine("All Fixed Deposits Response: " + getAllFixedDepositsResponseBody);
 }
+
+[Test]
+public async Task Backend_Test_Post_AccountByCustomer()
+{
+    string registrationUniqueId = Guid.NewGuid().ToString();
+
+    // Generate a unique userName based on a timestamp
+    string uniqueUsername = $"abcd_{registrationUniqueId}";
+    string uniqueEmail = $"abcd{registrationUniqueId}@gmail.com";
+
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Customer\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
+
+    // Print registration response
+    string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Registration Response: " + registerResponseBody);
+
+    // Login with the registered user
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+
+    // Print login response
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Login Response: " + loginResponseBody);
+
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+    
+    // Extract token from the login response
+    dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    string token = loginResponseMap?.Token;
+
+    // Debugging statement to check the retrieved token
+    Console.WriteLine("Retrieved Token: " + token);
+
+    Assert.IsNotNull(token);
+
+    // Generate unique data for the fixed deposit
+    string AccountId = Guid.NewGuid().ToString();
+    decimal Balance = 10000; // Sample amount
+    string AccountType = "Savings"; // Sample interest rate
+
+    // Construct the request body for the fixed deposit
+    string fixedDepositRequestBody = $"{{\"Balance\": {balance}, \"AccountType\": {accountType}}}";
+
+    // Add the token to the request headers
+    _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+    // Post the fixed deposit
+    HttpResponseMessage fixedDepositResponse = await _httpClient.PostAsync("/api/account", new StringContent(fixedDepositRequestBody, Encoding.UTF8, "application/json"));
+
+    Assert.AreEqual(HttpStatusCode.OK, fixedDepositResponse.StatusCode);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 [Test]
 public void Backend_Test_ApplicationDbContext_ContainsDbSet_User()
 {
@@ -244,13 +309,13 @@ public void Backend_Test_ApplicationDbContext_ContainsDbSet_Account()
         Assert.Fail("No DbContext found in the assembly");
         return;
     }
-    Type userType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Account");
-    if (userType == null)
+    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Account");
+    if (accountType == null)
     {
         Assert.Fail("No Account entity found in the assembly");
         return;
     }
-    var propertyInfo = contextType.GetProperty("Users", typeof(DbSet<>).MakeGenericType(userType));
+    var propertyInfo = contextType.GetProperty("Accounts", typeof(DbSet<>).MakeGenericType(accountType));
     if (propertyInfo == null)
     {
         Assert.Fail("Accounts property not found in the DbContext");
@@ -258,359 +323,69 @@ public void Backend_Test_ApplicationDbContext_ContainsDbSet_Account()
     }
     else
     {
-        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(userType), propertyInfo.PropertyType);
+        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
+    }
+}
+[Test]
+public void Backend_Test_ApplicationDbContext_ContainsDbSet_FixedDeposit()
+{
+    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+    if (contextType == null)
+    {
+        Assert.Fail("No DbContext found in the assembly");
+        return;
+    }
+    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "FixedDeposit");
+    if (accountType == null)
+    {
+        Assert.Fail("No FixedDeposit entity found in the assembly");
+        return;
+    }
+    var propertyInfo = contextType.GetProperty("FixedDeposits", typeof(DbSet<>).MakeGenericType(accountType));
+    if (propertyInfo == null)
+    {
+        Assert.Fail("FixedDeposits property not found in the DbContext");
+        return;
+    }
+    else
+    {
+        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
     }
 }
 
+[Test]
+public void Backend_Test_ApplicationDbContext_ContainsDbSet_Review()
+{
+    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+    if (contextType == null)
+    {
+        Assert.Fail("No DbContext found in the assembly");
+        return;
+    }
+    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Review");
+    if (accountType == null)
+    {
+        Assert.Fail("No Review entity found in the assembly");
+        return;
+    }
+    var propertyInfo = contextType.GetProperty("Reviews", typeof(DbSet<>).MakeGenericType(accountType));
+    if (propertyInfo == null)
+    {
+        Assert.Fail("Reviews property not found in the DbContext");
+        return;
+    }
+    else
+    {
+        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
+    }
+}
 
 [TearDown]
     public void TearDown()
     {
         _httpClient.Dispose();
     }
-
-
-    // [Test, Order(6)]
-    // public async Task Backend_Test_Post_ProductByInventoryManager_Forbidden()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"InventoryManager\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-    //     string token = responseMap.token;
-
-    //     Assert.IsNotNull(token);
-
-    //     string uniquetitle = Guid.NewGuid().ToString();
-
-    //     // Use a dynamic and unique userName for admin (appending timestamp)
-    //     string uniqueprodTitle = $"prodTitle_{uniquetitle}";
-
-    //     string giftJson = $"{{\"Name\":\"{uniqueprodTitle}\",\"Description\":\"test\",\"Price\":250,\"Quantity\":10}}";
-    //     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-    //     HttpResponseMessage prodresponse = await _httpClient.PostAsync("/api/product",
-    //         new StringContent(giftJson, Encoding.UTF8, "application/json"));
-
-    //     Assert.AreEqual(HttpStatusCode.Forbidden, prodresponse.StatusCode);
-    // }
-
-    // [Test, Order(7)]
-    // public async Task Backend_TestGetAllproductsByBoth()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-    //     string token = responseMap.token;
-
-    //     Assert.IsNotNull(token);
-
-
-    //     Console.WriteLine("admin111" + token);
-    //     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
-    //     HttpResponseMessage prodresponse = await _httpClient.GetAsync("/api/product");
-
-    //     Assert.AreEqual(HttpStatusCode.OK, prodresponse.StatusCode);
-    // }
-
-    // [Test, Order(8)]
-    // public async Task Backend_Test_Post_CustomerByInventoryManager_Forbidden()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"InventoryManager\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-    //     string token = responseMap.token;
-
-    //     Assert.IsNotNull(token);
-
-    //     string uniquetitle = Guid.NewGuid().ToString();
-
-    //     // Use a dynamic and unique userName for admin (appending timestamp)
-    //     string uniqueCustName = $"prodTitle_{uniquetitle}";
-
-    //     string giftJson = $"{{\"CustomerName\":\"{uniqueCustName}\",\"MobileNumber\":\"7894561232\",\"Email\":\"{uniqueCustName}@gmail.com\"}}";
-    //     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-    //     HttpResponseMessage prodresponse = await _httpClient.PostAsync("/api/customer",
-    //         new StringContent(giftJson, Encoding.UTF8, "application/json"));
-
-    //     Assert.AreEqual(HttpStatusCode.Forbidden, prodresponse.StatusCode);
-    // }
-
-    // [Test, Order(9)]
-    // public async Task Backend_Test_Post_CustomerByAdmin_Ok()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-    //     string token = responseMap.token;
-
-    //     Assert.IsNotNull(token);
-
-    //     string uniquetitle = Guid.NewGuid().ToString();
-
-    //     // Use a dynamic and unique userName for admin (appending timestamp)
-    //     string uniqueCustName = $"prodTitle_{uniquetitle}";
-
-    //     string giftJson = $"{{\"CustomerName\":\"{uniqueCustName}\",\"MobileNumber\":\"7894561232\",\"Email\":\"{uniqueCustName}@gmail.com\"}}";
-    //     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-    //     HttpResponseMessage prodresponse = await _httpClient.PostAsync("/api/customer",
-    //         new StringContent(giftJson, Encoding.UTF8, "application/json"));
-
-    //     Assert.AreEqual(HttpStatusCode.OK, prodresponse.StatusCode);
-    // }
-
-    // [Test, Order(10)]
-    // public async Task Backend_TestGetAllCustomerByBoth()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-    //     string token = responseMap.token;
-
-    //     Assert.IsNotNull(token);
-
-
-    //     Console.WriteLine("admin111" + token);
-    //     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
-    //     HttpResponseMessage prodresponse = await _httpClient.GetAsync("/api/customer");
-
-    //     Assert.AreEqual(HttpStatusCode.OK, prodresponse.StatusCode);
-    // }
-
-    // [Test, Order(11)]
-    // public async Task Backend_TestGetAllCustomerByBoth_WithoutToken_Should_Unauthorized()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-
-    //     HttpResponseMessage prodresponse = await _httpClient.GetAsync("/api/customer");
-
-    //     Assert.AreEqual(HttpStatusCode.Unauthorized, prodresponse.StatusCode);
-    // }
-
-    // [Test, Order(12)]
-    // public async Task Backend_TestGetAllNotificationByAdmin()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-    //     string token = responseMap.token;
-
-    //     Assert.IsNotNull(token);
-
-
-    //     Console.WriteLine("admin111" + token);
-    //     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
-    //     HttpResponseMessage prodresponse = await _httpClient.GetAsync("/api/notification");
-
-    //     Assert.AreEqual(HttpStatusCode.OK, prodresponse.StatusCode);
-    // }
-
-
-    // [Test, Order(13)]
-    // public async Task Backend_TestGetAllNotificationByInventoryManager_Forbidden()
-    // {
-    //     string uniqueId = Guid.NewGuid().ToString();
-
-    //     // Generate a unique userName based on a timestamp
-    //     string uniqueUsername = $"abcd_{uniqueId}";
-    //     string uniqueEmail = $"abcd{uniqueId}@gmail.com";
-
-    //     string requestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"InventoryManager\"}}";
-    //     HttpResponseMessage response = await _httpClient.PostAsync("/api/register", new StringContent(requestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print registration response
-    //     string registerResponseBody = await response.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Registration Response: " + registerResponseBody);
-
-    //     // Login with the registered user
-    //     string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; // Updated variable names
-    //     HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
-
-    //     // Print login response
-    //     string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
-    //     Console.WriteLine("Login Response: " + loginResponseBody);
-
-    //     Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
-    //     string responseBody = await loginResponse.Content.ReadAsStringAsync();
-
-    //     dynamic responseMap = JsonConvert.DeserializeObject(responseBody);
-
-    //     string token = responseMap.token;
-
-    //     Assert.IsNotNull(token);
-
-
-    //     Console.WriteLine("admin111" + token);
-    //     _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
-    //     HttpResponseMessage prodresponse = await _httpClient.GetAsync("/api/notification");
-
-    //     Assert.AreEqual(HttpStatusCode.Forbidden, prodresponse.StatusCode);
-    // }
-
 
 }
