@@ -83,7 +83,7 @@ checkEmailExists(email: string): Observable<boolean> {
           console.log(response);
           localStorage.setItem('token', response.Token);
           localStorage.setItem('currentUser', response.username);
-          localStorage.setItem('userRole', response.role);
+          localStorage.setItem('userRole', response.UserRole);
           localStorage.setItem('user', response.userId);
           console.log(localStorage.getItem('userRole'));
 
