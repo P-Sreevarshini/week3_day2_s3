@@ -1,10 +1,14 @@
-using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers; 
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 using Newtonsoft.Json;
+using dotnetapp.Models; // Add this using directive at the top of the file
+
 
 
 [TestFixture]
@@ -135,6 +139,56 @@ public async Task Backend_Test_Post_FixedDepositByAdmin()
     HttpResponseMessage fixedDepositResponse = await _httpClient.PostAsync("/api/fixeddeposit", new StringContent(fixedDepositRequestBody, Encoding.UTF8, "application/json"));
 
     Assert.AreEqual(HttpStatusCode.OK, fixedDepositResponse.StatusCode);
+}
+[Test]
+public async Task Backend_Test_Get_All_FixedDeposits()
+{
+      string registrationUniqueId = Guid.NewGuid().ToString();
+
+    // Generate a unique userName based on a timestamp
+    string uniqueUsername = $"abcd_{registrationUniqueId}";
+    string uniqueEmail = $"abcd{registrationUniqueId}@admin.com";
+
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
+    HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
+
+    // Print registration response
+    string registerResponseBody = await registrationResponse.Content.ReadAsStringAsync();
+    Console.WriteLine("Registration Response: " + registerResponseBody);
+
+    // Perform login to get the token
+    string uniqueId = Guid.NewGuid().ToString();
+    string uniqueEmail = $"abcd{uniqueId}@admin.com";
+
+    // Login with the registered user
+    string loginRequestBody = $"{{\"Email\" : \"{uniqueEmail}\",\"Password\" : \"abc@123A\"}}"; 
+    HttpResponseMessage loginResponse = await _httpClient.PostAsync("/api/login", new StringContent(loginRequestBody, Encoding.UTF8, "application/json"));
+
+    Assert.AreEqual(HttpStatusCode.OK, loginResponse.StatusCode);
+    
+    string loginResponseBody = await loginResponse.Content.ReadAsStringAsync();
+    dynamic responseMap = JsonConvert.DeserializeObject(loginResponseBody);
+    string token = responseMap.token;
+    Assert.IsNotNull(token);
+
+    // Add the token to the request headers
+    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+    // Make a GET request to retrieve all fixed deposits
+    HttpResponseMessage response = await _httpClient.GetAsync("/api/fixeddeposit");
+
+    // Check if the request is successful
+    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+    // Read the response content
+    string responseBody = await response.Content.ReadAsStringAsync();
+
+    // Deserialize the response content
+    var fixedDeposits = JsonConvert.DeserializeObject<IEnumerable<FixedDeposit>>(responseBody);
+
+    // Ensure that the response contains data
+    Assert.IsNotNull(fixedDeposits);
+    Assert.IsTrue(fixedDeposits.Any());
 }
 
 
