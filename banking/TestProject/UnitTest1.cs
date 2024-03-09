@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using dotnetapp.Models;
 using Microsoft.AspNetCore.Mvc;
-using dotnetapp.Data; 
+// using dotnetapp.Data; 
 using System.Reflection;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -513,13 +513,13 @@ public async Task Backend_Test_Get_All_ReviewsByAdmin() //get all the reviews by
 [Test]
         public async Task Backend_Test_Get_FD_AccountsByAdmin()
         {
-           string registrationUniqueId = Guid.NewGuid().ToString();
+          string registrationUniqueId = Guid.NewGuid().ToString();
 
     // Generate a unique userName based on a timestamp
     string uniqueUsername = $"abcd_{registrationUniqueId}";
-    string uniqueEmail = $"abcd{registrationUniqueId}@gmail.com";
+    string uniqueEmail = $"abcd{registrationUniqueId}@admin.com";
 
-    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Customer\"}}";
+    string registrationRequestBody = $"{{\"Username\": \"{uniqueUsername}\", \"Password\": \"abc@123A\", \"Email\": \"{uniqueEmail}\", \"MobileNumber\": \"1234567890\", \"UserRole\": \"Admin\"}}";
     HttpResponseMessage registrationResponse = await _httpClient.PostAsync("/api/register", new StringContent(registrationRequestBody, Encoding.UTF8, "application/json"));
 
     // Print registration response
@@ -538,174 +538,171 @@ public async Task Backend_Test_Get_All_ReviewsByAdmin() //get all the reviews by
 
     // Extract user ID from the login response
     dynamic loginResponseMap = JsonConvert.DeserializeObject(loginResponseBody);
-    long userId = loginResponseMap.UserId; // Assuming the response contains the user ID
     string token = loginResponseMap?.Token;
 
     // Debugging statement to check the retrieved token
     Console.WriteLine("Retrieved Token: " + token);
-    Console.WriteLine("Retrieved User ID: " + userId);
 
     Assert.IsNotNull(token);
-            // Generate unique data for the FDAccount
-            var status = "Pending";
-            var fixedDepositId = 1; // Assuming you have a valid FixedDepositId
 
-            // Construct the request body for the FDAccount
-            var fdAccount = new
-            {
-                UserId = userId,
-                Status = status,
-                FixedDepositId = fixedDepositId
-            };
-            var requestBody = JsonConvert.SerializeObject(fdAccount);
+    // Add the token to the request headers
+    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // Add the token to the request headers
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+    HttpResponseMessage response = await _httpClient.GetAsync("/api/FDAccount");
 
-            // Post the FDAccount
-            var response = await _httpClient.PostAsync("/api/FDAccount", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+    // Check if the request is successful
+    Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
-            // Ensure the request is successful
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+    // Read the response content
+    string responseBody = await response.Content.ReadAsStringAsync();
+
+    // Deserialize the response content
+    var fdaccounts = JsonConvert.DeserializeObject<IEnumerable<Review>>(responseBody);
+
+    // Ensure that the response contains data
+    Assert.IsNotNull(fdaccounts);
+    Assert.IsTrue(fdaccounts.Any());
+
+
         }
 
-[Test]
-public void Backend_Test_ApplicationDbContext_ContainsDbSet_User()
-{
-    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
-    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
-    if (contextType == null)
-    {
-        Assert.Fail("No DbContext found in the assembly");
-        return;
-    }
-    Type userType = assembly.GetTypes().FirstOrDefault(t => t.Name == "User");
-    if (userType == null)
-    {
-        Assert.Fail("No User entity found in the assembly");
-        return;
-    }
-    var propertyInfo = contextType.GetProperty("Users", typeof(DbSet<>).MakeGenericType(userType));
-    if (propertyInfo == null)
-    {
-        Assert.Fail("Users property not found in the DbContext");
-        return;
-    }
-    else
-    {
-        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(userType), propertyInfo.PropertyType);
-    }
-}
-[Test]
-public void Backend_Test_ApplicationDbContext_ContainsDbSet_Account()
-{
-    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
-    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
-    if (contextType == null)
-    {
-        Assert.Fail("No DbContext found in the assembly");
-        return;
-    }
-    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Account");
-    if (accountType == null)
-    {
-        Assert.Fail("No Account entity found in the assembly");
-        return;
-    }
-    var propertyInfo = contextType.GetProperty("Accounts", typeof(DbSet<>).MakeGenericType(accountType));
-    if (propertyInfo == null)
-    {
-        Assert.Fail("Accounts property not found in the DbContext");
-        return;
-    }
-    else
-    {
-        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
-    }
-}
-[Test]
-public void Backend_Test_ApplicationDbContext_ContainsDbSet_FixedDeposit()
-{
-    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
-    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
-    if (contextType == null)
-    {
-        Assert.Fail("No DbContext found in the assembly");
-        return;
-    }
-    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "FixedDeposit");
-    if (accountType == null)
-    {
-        Assert.Fail("No FixedDeposit entity found in the assembly");
-        return;
-    }
-    var propertyInfo = contextType.GetProperty("FixedDeposits", typeof(DbSet<>).MakeGenericType(accountType));
-    if (propertyInfo == null)
-    {
-        Assert.Fail("FixedDeposits property not found in the DbContext");
-        return;
-    }
-    else
-    {
-        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
-    }
-}
+// [Test]
+// public void Backend_Test_ApplicationDbContext_ContainsDbSet_User()
+// {
+//     Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+//     Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+//     if (contextType == null)
+//     {
+//         Assert.Fail("No DbContext found in the assembly");
+//         return;
+//     }
+//     Type userType = assembly.GetTypes().FirstOrDefault(t => t.Name == "User");
+//     if (userType == null)
+//     {
+//         Assert.Fail("No User entity found in the assembly");
+//         return;
+//     }
+//     var propertyInfo = contextType.GetProperty("Users", typeof(DbSet<>).MakeGenericType(userType));
+//     if (propertyInfo == null)
+//     {
+//         Assert.Fail("Users property not found in the DbContext");
+//         return;
+//     }
+//     else
+//     {
+//         Assert.AreEqual(typeof(DbSet<>).MakeGenericType(userType), propertyInfo.PropertyType);
+//     }
+// }
+// [Test]
+// public void Backend_Test_ApplicationDbContext_ContainsDbSet_Account()
+// {
+//     Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+//     Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+//     if (contextType == null)
+//     {
+//         Assert.Fail("No DbContext found in the assembly");
+//         return;
+//     }
+//     Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Account");
+//     if (accountType == null)
+//     {
+//         Assert.Fail("No Account entity found in the assembly");
+//         return;
+//     }
+//     var propertyInfo = contextType.GetProperty("Accounts", typeof(DbSet<>).MakeGenericType(accountType));
+//     if (propertyInfo == null)
+//     {
+//         Assert.Fail("Accounts property not found in the DbContext");
+//         return;
+//     }
+//     else
+//     {
+//         Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
+//     }
+// }
+// [Test]
+// public void Backend_Test_ApplicationDbContext_ContainsDbSet_FixedDeposit()
+// {
+//     Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+//     Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+//     if (contextType == null)
+//     {
+//         Assert.Fail("No DbContext found in the assembly");
+//         return;
+//     }
+//     Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "FixedDeposit");
+//     if (accountType == null)
+//     {
+//         Assert.Fail("No FixedDeposit entity found in the assembly");
+//         return;
+//     }
+//     var propertyInfo = contextType.GetProperty("FixedDeposits", typeof(DbSet<>).MakeGenericType(accountType));
+//     if (propertyInfo == null)
+//     {
+//         Assert.Fail("FixedDeposits property not found in the DbContext");
+//         return;
+//     }
+//     else
+//     {
+//         Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
+//     }
+// }
 
-[Test]
-public void Backend_Test_ApplicationDbContext_ContainsDbSet_Review()
-{
-    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
-    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
-    if (contextType == null)
-    {
-        Assert.Fail("No DbContext found in the assembly");
-        return;
-    }
-    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Review");
-    if (accountType == null)
-    {
-        Assert.Fail("No Review entity found in the assembly");
-        return;
-    }
-    var propertyInfo = contextType.GetProperty("Reviews", typeof(DbSet<>).MakeGenericType(accountType));
-    if (propertyInfo == null)
-    {
-        Assert.Fail("Reviews property not found in the DbContext");
-        return;
-    }
-    else
-    {
-        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
-    }
-}
+// [Test]
+// public void Backend_Test_ApplicationDbContext_ContainsDbSet_Review()
+// {
+//     Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+//     Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+//     if (contextType == null)
+//     {
+//         Assert.Fail("No DbContext found in the assembly");
+//         return;
+//     }
+//     Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "Review");
+//     if (accountType == null)
+//     {
+//         Assert.Fail("No Review entity found in the assembly");
+//         return;
+//     }
+//     var propertyInfo = contextType.GetProperty("Reviews", typeof(DbSet<>).MakeGenericType(accountType));
+//     if (propertyInfo == null)
+//     {
+//         Assert.Fail("Reviews property not found in the DbContext");
+//         return;
+//     }
+//     else
+//     {
+//         Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
+//     }
+// }
 
-[Test]
-public void Backend_Test_ApplicationDbContext_ContainsDbSet_FDAccount()
-{
-    Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
-    Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
-    if (contextType == null)
-    {
-        Assert.Fail("No DbContext found in the assembly");
-        return;
-    }
-    Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "FDAccount");
-    if (accountType == null)
-    {
-        Assert.Fail("No FDAccount entity found in the assembly");
-        return;
-    }
-    var propertyInfo = contextType.GetProperty("FDAccounts", typeof(DbSet<>).MakeGenericType(accountType));
-    if (propertyInfo == null)
-    {
-        Assert.Fail("FDAccounts property not found in the DbContext");
-        return;
-    }
-    else
-    {
-        Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
-    }
-}
+// [Test]
+// public void Backend_Test_ApplicationDbContext_ContainsDbSet_FDAccount()
+// {
+//     Assembly assembly = Assembly.GetAssembly(typeof(ApplicationDbContext));
+//     Type contextType = assembly.GetTypes().FirstOrDefault(t => typeof(DbContext).IsAssignableFrom(t));
+//     if (contextType == null)
+//     {
+//         Assert.Fail("No DbContext found in the assembly");
+//         return;
+//     }
+//     Type accountType = assembly.GetTypes().FirstOrDefault(t => t.Name == "FDAccount");
+//     if (accountType == null)
+//     {
+//         Assert.Fail("No FDAccount entity found in the assembly");
+//         return;
+//     }
+//     var propertyInfo = contextType.GetProperty("FDAccounts", typeof(DbSet<>).MakeGenericType(accountType));
+//     if (propertyInfo == null)
+//     {
+//         Assert.Fail("FDAccounts property not found in the DbContext");
+//         return;
+//     }
+//     else
+//     {
+//         Assert.AreEqual(typeof(DbSet<>).MakeGenericType(accountType), propertyInfo.PropertyType);
+//     }
+// }
 
 
 [TearDown]

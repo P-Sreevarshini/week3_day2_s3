@@ -21,7 +21,7 @@ namespace dotnetapp.Controllers
         {
             _fdAccountService = fdAccountService;
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FDAccount>>> GetFDAccounts()
         {
