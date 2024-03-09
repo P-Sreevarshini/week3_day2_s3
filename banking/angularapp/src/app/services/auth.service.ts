@@ -110,43 +110,7 @@ checkEmailExists(email: string): Observable<boolean> {
     console.log(token);
     return !!token; // Return true if the token exists
   }
-
-  // isAdmin(): boolean {
-  //   const token = localStorage.getItem('token');
-  //   const role = localStorage.getItem('userRole');
-  //   if (token) {
-  //     if(role === 'Admin'){
-  //       return true;
-  //     }
-  //     var decode = JSON.parse(atob(token.split('.')[1]));
-
-  //     const decodedToken = this.decodeToken(token);
-  //     const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-  //     if(decode.role === 'Admin')
-  //     console.log(decode.role); 
-
-  //     return true;
-  //   }
-  //   return false; 
-  // }
-
-
-  // isCustomer(): boolean {
-  //   const token = localStorage.getItem('token');
-  //   const role = localStorage.getItem('userRole');
-  //   if (token) {
-  //     if(role === 'Customer'){
-  //       console.log("isCustomer ",role);
-  //       return true;
-  //     }
-
-  //     const decodedToken = this.decodeToken(token);
-  //     const uname = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-  //     return true;
-  //   }
-  //   return false; 
-  // }
-
+  
   isAdmin(): boolean {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('userRole');
