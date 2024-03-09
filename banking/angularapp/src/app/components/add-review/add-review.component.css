@@ -41,7 +41,13 @@ form {
   
   .error-message {
     color: red;
-    font-size: 12px;
     margin-top: 5px;
   }
   
+  .error {
+    font-size: 0.9em;
+  }
+  
+  .asterisk{
+    color: #d9534f;
+  }

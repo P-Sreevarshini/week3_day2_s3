@@ -2,21 +2,21 @@
   <h2>Add Review</h2>
   <form (submit)="addReview(reviewForm)" #reviewForm="ngForm">
     <div>
-      <label for="body">Body:</label>
+      <label for="body">Body<span class="asterisk">*</span>:</label>
       <textarea id="body" name="body" [(ngModel)]="newReview.Body" required minlength="10" maxlength="500"></textarea>
-      <div *ngIf="reviewForm.controls.body?.touched && reviewForm.controls.body?.invalid">
-        <div *ngIf="reviewForm.controls.body.errors?.required">Body is required.</div>
-        <div *ngIf="reviewForm.controls.body.errors?.minlength">Body must be at least 10 characters long.</div>
-        <div *ngIf="reviewForm.controls.body.errors?.maxlength">Body cannot exceed 500 characters.</div>
+      <div class="error-message" *ngIf="reviewForm.controls.body?.touched && reviewForm.controls.body?.invalid">
+        <div *ngIf="reviewForm.controls.body.errors?.required" class="error">Body is required.</div>
+        <div *ngIf="reviewForm.controls.body.errors?.minlength" class="error">Body must be at least 10 characters long.</div>
+        <div *ngIf="reviewForm.controls.body.errors?.maxlength" class="error">Body cannot exceed 500 characters.</div>
       </div>
     </div>
     <div>
-      <label for="rating">Rating:</label>
+      <label for="rating">Rating<span class="asterisk">*</span>:</label>
       <input type="number" id="rating" name="rating" [(ngModel)]="newReview.Rating" min="1" max="5" required>
-      <div *ngIf="reviewForm.controls.rating?.touched && reviewForm.controls.rating?.invalid">
-        <div *ngIf="reviewForm.controls.rating.errors?.required">Rating is required.</div>
-        <div *ngIf="reviewForm.controls.rating.errors?.min">Rating must be at least 1.</div>
-        <div *ngIf="reviewForm.controls.rating.errors?.max">Rating cannot exceed 5.</div>
+      <div class="error-message" *ngIf="reviewForm.controls.rating?.touched && reviewForm.controls.rating?.invalid">
+        <div *ngIf="reviewForm.controls.rating.errors?.required" class="error">Rating is required.</div>
+        <div *ngIf="reviewForm.controls.rating.errors?.min" class="error">Rating must be at least 1.</div>
+        <div *ngIf="reviewForm.controls.rating.errors?.max" class="error">Rating cannot exceed 5.</div>
       </div>
     </div>
     <button type="submit" [disabled]="reviewForm.invalid">Submit Review</button>
