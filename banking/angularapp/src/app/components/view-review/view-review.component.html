@@ -4,8 +4,8 @@
       <thead>
           <tr>
               <th>S.No</th>
-              <th>UserId</th>
-              <th>Review Id</th>
+              <!-- <th>UserId</th> -->
+              <!-- <th>Review Id</th> -->
               <th>User Name</th>
               <th>Feedback Comments</th>
               <th>Ratings (out of 5)</th>
@@ -17,8 +17,8 @@
       <tbody>
           <tr *ngFor="let review of reviews; let i = index">
               <td>{{ i + 1 }}</td>
-              <td>{{ review.UserId }}</td>
-              <td>{{ review.ReviewId }}</td>
+              <!-- <td>{{ review.UserId }}</td> -->
+              <!-- <td>{{ review.ReviewId }}</td> -->
               <td>{{ review.User.Username }}</td>
               <td>{{ review.Body }}</td>
               <td>{{ review.Rating }}</td>
