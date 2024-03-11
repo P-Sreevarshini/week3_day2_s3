@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace dotnetapp
 {
-   public class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -57,7 +57,7 @@ namespace dotnetapp
             Console.ReadKey();
         }
 
-       public static void CreateEmployeeTable(string connectionString)
+        public static void CreateEmployeeTable(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -70,7 +70,7 @@ namespace dotnetapp
             }
         }
 
-       public static void CreateDepartmentTable(string connectionString)
+        public static void CreateDepartmentTable(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -83,7 +83,7 @@ namespace dotnetapp
             }
         }
 
-      public  static void InsertEmployee(string connectionString, int empId, string empName, string email, string phoneNumber, string department)
+        public static void InsertEmployee(string connectionString, int empId, string empName, string email, string phoneNumber, string department)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -98,7 +98,7 @@ namespace dotnetapp
             }
         }
 
-      public  static void InsertDepartment(string connectionString, int deptId, string deptName, string location, int employeeCount)
+        public static void InsertDepartment(string connectionString, int deptId, string deptName, string location, int employeeCount)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -112,73 +112,4 @@ namespace dotnetapp
                 Console.WriteLine($"Inserted {rowsAffected} department(s).");
             }
         }
-
-       public static void DisplayEmployees(string connectionString)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string query = "SELECT * FROM Employee";
-
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                Console.WriteLine("Employees:");
-                while (reader.Read())
-                {
-                    Console.WriteLine($"EmpId: {reader.GetInt32(0)}, EmpName: {reader.GetString(1)}, Email: {reader.GetString(2)}, PhoneNumber: {reader.GetString(3)}, Department: {reader.GetString(4)}");
-                }
-            }
-        }
-
-       public static void DisplayDepartments(string connectionString)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string query = "SELECT * FROM Department";
-
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                Console.WriteLine("Departments:");
-                while (reader.Read())
-                {
-                    Console.WriteLine($"DeptId: {reader.GetInt32(0)}, DeptName: {reader.GetString(1)}, Location: {reader.GetString(2)}, EmployeeCount: {reader.GetInt32(3)}");
-                }
-            }
-        }
-
-       public static void DeleteEmployee(string connectionString, int employeeId)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string deleteQuery = $"DELETE FROM Employee WHERE EmpId = {employeeId}";
-
-                SqlCommand command = new SqlCommand(deleteQuery, connection);
-                int rowsAffected = command.ExecuteNonQuery();
-
-                Console.WriteLine($"Deleted {rowsAffected} employee(s).");
-            }
-        }
-
-     public   static void DeleteDepartment(string connectionString, int departmentId)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string deleteQuery = $"DELETE FROM Department WHERE DeptId = {departmentId}";
-
-                SqlCommand command = new SqlCommand(deleteQuery, connection);
-                int rowsAffected = command.ExecuteNonQuery();
-
-                Console.WriteLine($"Deleted {rowsAffected} department(s).");
-            }
-        }
-    }
-}
+        

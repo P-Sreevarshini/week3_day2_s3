@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetapp", "dotnetapp\dotnetapp.csproj", "{881AB34D-9551-4C83-8B06-C28DBACA35BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnetapp", "..\dotnetapp\dotnetapp.csproj", "{881AB34D-9551-4C83-8B06-C28DBACA35BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{63D49472-58D3-469A-A17A-EC5CDE1217BB}"
 EndProject
