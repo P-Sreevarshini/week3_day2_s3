@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace GroceryManagement
 {
-   public class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -53,35 +53,33 @@ namespace GroceryManagement
             Console.ReadKey();
         }
 
-        
-public  static void AddProduct(SqlConnection connection)
-{
-    Console.WriteLine("Enter product details:");
-    Console.Write("ID: ");
-    int id = Convert.ToInt32(Console.ReadLine());
-    Console.Write("Name: ");
-    string name = Console.ReadLine();
-    Console.Write("Rate: ");
-    decimal rate = Convert.ToDecimal(Console.ReadLine());
-    Console.Write("Stock: ");
-    int stock = Convert.ToInt32(Console.ReadLine());
+       public static void AddProduct(SqlConnection connection)
+        {
+            Console.WriteLine("Enter product details:");
+            Console.Write("ID: ");
+            int id = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Name: ");
+            string name = Console.ReadLine();
+            Console.Write("Rate: ");
+            decimal rate = Convert.ToDecimal(Console.ReadLine());
+            Console.Write("Stock: ");
+            int stock = Convert.ToInt32(Console.ReadLine());
 
-    string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) VALUES (@ID, @Name, @Rate, @Stock)";
-    SqlCommand command = new SqlCommand(insertQuery, connection);
-    command.Parameters.AddWithValue("@ID", id);
-    command.Parameters.AddWithValue("@Name", name);
-    command.Parameters.AddWithValue("@Rate", rate);
-    command.Parameters.AddWithValue("@Stock", stock);
+            string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) VALUES (@ID, @Name, @Rate, @Stock)";
+            SqlCommand command = new SqlCommand(insertQuery, connection);
+            command.Parameters.AddWithValue("@ID", id);
+            command.Parameters.AddWithValue("@Name", name);
+            command.Parameters.AddWithValue("@Rate", rate);
+            command.Parameters.AddWithValue("@Stock", stock);
 
-    int rowsAffected = command.ExecuteNonQuery();
-    if (rowsAffected > 0)
-    {
-        Console.WriteLine("Product added successfully!");
-    }
-}
+            int rowsAffected = command.ExecuteNonQuery();
+            if (rowsAffected > 0)
+            {
+                Console.WriteLine("Product added successfully!");
+            }
+        }
 
-
-      public  static void SearchProduct(SqlConnection connection)
+        public static void SearchProduct(SqlConnection connection)
         {
             Console.Write("Enter the product name to search: ");
             string searchTerm = Console.ReadLine();
@@ -108,24 +106,24 @@ public  static void AddProduct(SqlConnection connection)
             }
         }
 
-      public  static void EditProduct(SqlConnection connection)
+       public static void EditProduct(SqlConnection connection)
         {
             Console.Write("Enter the ID of the product to edit: ");
             int productId = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Enter new product details:");
             Console.Write("Name: ");
-            string name = Console.ReadLine();
+            string newName = Console.ReadLine();
             Console.Write("Rate: ");
-            decimal rate = Convert.ToDecimal(Console.ReadLine());
+            decimal newRate = Convert.ToDecimal(Console.ReadLine());
             Console.Write("Stock: ");
-            int stock = Convert.ToInt32(Console.ReadLine());
+            int newStock = Convert.ToInt32(Console.ReadLine());
 
             string updateQuery = "UPDATE Grocery SET Name = @Name, Rate = @Rate, Stock = @Stock WHERE ID = @ID";
             SqlCommand command = new SqlCommand(updateQuery, connection);
-            command.Parameters.AddWithValue("@Name", name);
-            command.Parameters.AddWithValue("@Rate", rate);
-            command.Parameters.AddWithValue("@Stock", stock);
+            command.Parameters.AddWithValue("@Name", newName);
+            command.Parameters.AddWithValue("@Rate", newRate);
+            command.Parameters.AddWithValue("@Stock", newStock);
             command.Parameters.AddWithValue("@ID", productId);
 
             int rowsAffected = command.ExecuteNonQuery();
