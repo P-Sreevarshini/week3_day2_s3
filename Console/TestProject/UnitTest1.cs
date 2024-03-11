@@ -26,12 +26,12 @@ public class Tests
             dotnetapp.Program.InsertEmployee(EmployeeConnectionString, empId, empName, email, phoneNumber, department);
 
             // Assert
-            bool recordExists = dotnetapp.Program.RecordExists(EmployeeConnectionString, "Employee", empId);
+            bool recordExists = dotnetapp.Program.EmpRecordExists(EmployeeConnectionString, "Employee", empId);
             Assert.IsTrue(recordExists, "Inserted record should exist in the database");
 
             // Delete the inserted record
             dotnetapp.Program.DeleteEmployee(EmployeeConnectionString, empId);
-            bool recordDeleted = !dotnetapp.Program.RecordExists(EmployeeConnectionString, "Employee", empId);
+            bool recordDeleted = !dotnetapp.Program.EmpRecordExists(EmployeeConnectionString, "Employee", empId);
             Assert.IsTrue(recordDeleted, "Inserted record should be deleted from the database");
         }
          [Test]
@@ -44,29 +44,28 @@ public class Tests
             dotnetapp.Program.DeleteEmployee(EmployeeConnectionString, empIdToDelete);
 
             // Assert
-            bool recordExists = dotnetapp.Program.RecordExists(EmployeeConnectionString, "Employee", empIdToDelete);
+            bool recordExists = dotnetapp.Program.EmpRecordExists(EmployeeConnectionString, "Employee", empIdToDelete);
             Assert.IsFalse(recordExists, "Deleted record should not exist in the database");
         }
      [Test]
 public void Test_InsertDepartment_Success()
 {
     // Arrange
-    const int deptId = 409;
+    const int deptId = 400;
     const string deptName = "Marketing";
     const string location = "New York";
-        const int employeeCount = 50; // Provide a value for employeeCount
-
+    const int employeeCount = 50; // Provide a value for employeeCount
 
     // Act
-    dotnetapp.Program.InsertDepartment(DepartmentConnectionString, deptId, deptName, location);
+    dotnetapp.Program.InsertDepartment(DepartmentConnectionString, deptId, deptName, location, employeeCount);
 
     // Assert
-    bool recordExists = dotnetapp.Program.RecordExists(DepartmentConnectionString, "Department", deptId);
+    bool recordExists = dotnetapp.Program.DeptRecordExists(DepartmentConnectionString, "Department", deptId);
     Assert.IsTrue(recordExists, "Inserted record should exist in the database");
 
     // Delete the inserted record
     dotnetapp.Program.DeleteDepartment(DepartmentConnectionString, deptId);
-    bool recordDeleted = !dotnetapp.Program.RecordExists(DepartmentConnectionString, "Department", deptId);
+    bool recordDeleted = !dotnetapp.Program.DeptRecordExists(DepartmentConnectionString, "Department", deptId);
     Assert.IsTrue(recordDeleted, "Inserted record should be deleted from the database");
 }
 
@@ -80,7 +79,7 @@ public void Test_DeleteDepartment_Success()
     dotnetapp.Program.DeleteDepartment(DepartmentConnectionString, deptIdToDelete);
 
     // Assert
-    bool recordExists = dotnetapp.Program.RecordExists(DepartmentConnectionString, "Department", deptIdToDelete);
+    bool recordExists = dotnetapp.Program.DeptRecordExists(DepartmentConnectionString, "Department", deptIdToDelete);
     Assert.IsFalse(recordExists, "Deleted record should not exist in the database");
 }
 
