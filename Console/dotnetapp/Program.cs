@@ -180,5 +180,6 @@ namespace dotnetapp
                 Console.WriteLine($"Deleted {rowsAffected} department(s).");
             }
         }
+        
     }
 }
