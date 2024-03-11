@@ -52,7 +52,7 @@ namespace GroceryManagement.Tests
                         connection.Open();
 
                         // Add product
-                        Program.AddProduct(connection, productId, productName, productRate, productStock);
+                        Program.AddProduct(connection);
 
                         // Retrieve the product ID of the newly added product
                         string query = "SELECT IDENT_CURRENT('Grocery') AS ID";
@@ -117,7 +117,7 @@ namespace GroceryManagement.Tests
                     using (SqlConnection connection = new SqlConnection(ConnectionString))
                     {
                         connection.Open();
-                        Program.EditProduct(connection, productId, updatedProductName, updatedProductRate, updatedProductStock);
+                        Program.EditProduct(connection);
                     }
                 }
                 catch (Exception)
