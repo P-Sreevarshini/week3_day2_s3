@@ -24,8 +24,7 @@ namespace dotnetapp
                 InsertEmployee(employeeConnectionString, 2, "Jane Smith", "jane@example.com", "9876543210", "Finance");
                 InsertEmployee(employeeConnectionString, 3, "David Brown", "david@example.com", "5555555555", "IT");
 
-                // Display all Employees
-                DisplayEmployees(employeeConnectionString);
+               
 
                 // Create Department table
                 CreateDepartmentTable(departmentConnectionString);
@@ -36,8 +35,7 @@ namespace dotnetapp
                 InsertDepartment(departmentConnectionString, 2, "Finance", "Los Angeles", 8);
                 InsertDepartment(departmentConnectionString, 3, "IT", "Chicago", 15);
 
-                // Display all Departments
-                DisplayDepartments(departmentConnectionString);
+       
 
                 // Delete an Employee
                 int employeeIdToDelete = 1; // Specify the employee ID to delete
@@ -112,4 +110,34 @@ namespace dotnetapp
                 Console.WriteLine($"Inserted {rowsAffected} department(s).");
             }
         }
-        
+        public static void DeleteEmployee(string connectionString, int employeeId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = $"DELETE FROM Employee WHERE EmpId = {employeeId}";
+
+                SqlCommand command = new SqlCommand(deleteQuery, connection);
+                int rowsAffected = command.ExecuteNonQuery();
+
+                Console.WriteLine($"Deleted {rowsAffected} employee(s).");
+            }
+        }
+
+        public static void DeleteDepartment(string connectionString, int departmentId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = $"DELETE FROM Department WHERE DeptId = {departmentId}";
+
+                SqlCommand command = new SqlCommand(deleteQuery, connection);
+                int rowsAffected = command.ExecuteNonQuery();
+
+                Console.WriteLine($"Deleted {rowsAffected} department(s).");
+            }
+        }
+    }
+}
