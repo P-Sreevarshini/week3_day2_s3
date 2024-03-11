@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace GroceryManagement
 {
-    class Program
+   public class Program
     {
         static void Main(string[] args)
         {
@@ -53,30 +53,8 @@ namespace GroceryManagement
             Console.ReadKey();
         }
 
-        // static void AddProduct(SqlConnection connection)
-        // {
-        //     Console.WriteLine("Enter product details:");
-
-        //     Console.Write("Name: ");
-        //     string name = Console.ReadLine();
-        //     Console.Write("Rate: ");
-        //     decimal rate = Convert.ToDecimal(Console.ReadLine());
-        //     Console.Write("Stock: ");
-        //     int stock = Convert.ToInt32(Console.ReadLine());
-
-        //     string insertQuery = "INSERT INTO Grocery (Name, Rate, Stock) VALUES (@Name, @Rate, @Stock)";
-        //     SqlCommand command = new SqlCommand(insertQuery, connection);
-        //     command.Parameters.AddWithValue("@Name", name);
-        //     command.Parameters.AddWithValue("@Rate", rate);
-        //     command.Parameters.AddWithValue("@Stock", stock);
-
-        //     int rowsAffected = command.ExecuteNonQuery();
-        //     if (rowsAffected > 0)
-        //     {
-        //         Console.WriteLine("Product added successfully!");
-        //     }
-        // }
-        static void AddProduct(SqlConnection connection)
+        
+public  static void AddProduct(SqlConnection connection)
 {
     Console.WriteLine("Enter product details:");
     Console.Write("ID: ");
@@ -103,7 +81,7 @@ namespace GroceryManagement
 }
 
 
-        static void SearchProduct(SqlConnection connection)
+      public  static void SearchProduct(SqlConnection connection)
         {
             Console.Write("Enter the product name to search: ");
             string searchTerm = Console.ReadLine();
@@ -130,7 +108,7 @@ namespace GroceryManagement
             }
         }
 
-        static void EditProduct(SqlConnection connection)
+      public  static void EditProduct(SqlConnection connection)
         {
             Console.Write("Enter the ID of the product to edit: ");
             int productId = Convert.ToInt32(Console.ReadLine());
