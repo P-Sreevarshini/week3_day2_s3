@@ -75,34 +75,35 @@ namespace TestProject
         }
     
     [Test]
-public void TestCourseTableHasData()
-{
-    // Get the connection string from appsettings.json
-    string connectionString = _configuration.GetConnectionString("Connectionstring");
-
-    // Query to count rows in Course table
-    string query = "SELECT COUNT(*) FROM Course";
-
-    // Variable to store the count
-    int rowCount = 0;
-
-    // Attempt to execute the query
-    using (var connection = new SqlConnection(connectionString))
-    using (var command = new SqlCommand(query, connection))
+    public void TestDepartmentTableHasData()
     {
-        try
+        // Get the connection string from appsettings.json
+        string connectionString = _configuration.GetConnectionString("Connectionstring");
+
+        // Query to check if Department table exists and has data
+        string query = "SELECT * FROM Department";
+
+        // Variable to store the count
+        int rowCount = 0;
+
+        // Attempt to execute the query
+        using (var connection = new SqlConnection(connectionString))
+        using (var command = new SqlCommand(query, connection))
         {
-            connection.Open();
-            rowCount = (int)command.ExecuteScalar();
+            try
+            {
+                connection.Open();
+                rowCount = (int)command.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail($"Failed to execute query: {ex.Message}");
+            }
         }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Failed to execute query: {ex.Message}");
-        }
+
+        // Check if there are any rows in the Department table
+        Assert.IsTrue(rowCount > 0, "No data found in the Department table.");
     }
 
-    // Check if there are any rows in the Course table
-    Assert.IsTrue(rowCount > 0, "No data found in the Course table.");
-}
     }
 }
