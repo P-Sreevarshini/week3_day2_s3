@@ -1,38 +1,60 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace AdoNetExample
+namespace ConsoleApp
 {
     class Program
     {
         static void Main(string[] args)
         {
             // Connection string for EmployeeDB
-            string employeeConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=EmployeeDB;trusted_connection=false;Persist Security Info=False;Encrypt=False";
+            string employeeConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=EmployeeDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
 
             // Connection string for DepartmentDB
             string departmentConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=DepartmentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False";
 
-            // Create Employee table
-            CreateEmployeeTable(employeeConnectionString);
+            try
+            {
+                // Create Employee table
+                CreateEmployeeTable(employeeConnectionString);
+                Console.WriteLine("Employee table created successfully.");
 
-            // Create Department table
-            CreateDepartmentTable(departmentConnectionString);
+                // Insert values into Employee table
+                InsertEmployee(employeeConnectionString, 1, "John Doe", "john@example.com", "1234567890", "HR");
+                InsertEmployee(employeeConnectionString, 2, "Jane Smith", "jane@example.com", "9876543210", "Finance");
+                InsertEmployee(employeeConnectionString, 3, "David Brown", "david@example.com", "5555555555", "IT");
 
-            // Display all Employees
-            DisplayEmployees(employeeConnectionString);
+                // Display all Employees
+                DisplayEmployees(employeeConnectionString);
 
-            // Display all Departments
-            DisplayDepartments(departmentConnectionString);
+                // Create Department table
+                CreateDepartmentTable(departmentConnectionString);
+                Console.WriteLine("Department table created successfully.");
 
-            // Delete an Employee
-            int employeeIdToDelete = 102; 
-            DeleteEmployee(employeeConnectionString, employeeIdToDelete);
+                // Insert values into Department table
+                InsertDepartment(departmentConnectionString, 1, "HR", "New York", 10);
+                InsertDepartment(departmentConnectionString, 2, "Finance", "Los Angeles", 8);
+                InsertDepartment(departmentConnectionString, 3, "IT", "Chicago", 15);
 
-            // Delete a Department
-            int departmentIdToDelete = 201; // Replace 456 with the actual ID of the department you want to delete
+                // Display all Departments
+                DisplayDepartments(departmentConnectionString);
 
-            DeleteDepartment(departmentConnectionString, departmentIdToDelete);
+                // Delete an Employee
+                int employeeIdToDelete = 1; // Specify the employee ID to delete
+                DeleteEmployee(employeeConnectionString, employeeIdToDelete);
+
+                // Delete a Department
+                int departmentIdToDelete = 1; // Specify the department ID to delete
+                DeleteDepartment(departmentConnectionString, departmentIdToDelete);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred:");
+                Console.WriteLine(ex.Message);
+            }
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey();
         }
 
         static void CreateEmployeeTable(string connectionString)
@@ -45,8 +67,6 @@ namespace AdoNetExample
 
                 SqlCommand command = new SqlCommand(createTableQuery, connection);
                 command.ExecuteNonQuery();
-
-                Console.WriteLine("Employee table created successfully.");
             }
         }
 
@@ -60,8 +80,36 @@ namespace AdoNetExample
 
                 SqlCommand command = new SqlCommand(createTableQuery, connection);
                 command.ExecuteNonQuery();
+            }
+        }
 
-                Console.WriteLine("Department table created successfully.");
+        static void InsertEmployee(string connectionString, int empId, string empName, string email, string phoneNumber, string department)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = $"INSERT INTO Employee (EmpId, EmpName, Email, PhoneNumber, Department) VALUES ({empId}, '{empName}', '{email}', '{phoneNumber}', '{department}')";
+
+                SqlCommand command = new SqlCommand(insertQuery, connection);
+                int rowsAffected = command.ExecuteNonQuery();
+
+                Console.WriteLine($"Inserted {rowsAffected} employee(s).");
+            }
+        }
+
+        static void InsertDepartment(string connectionString, int deptId, string deptName, string location, int employeeCount)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = $"INSERT INTO Department (DeptId, DeptName, Location, EmployeeCount) VALUES ({deptId}, '{deptName}', '{location}', {employeeCount})";
+
+                SqlCommand command = new SqlCommand(insertQuery, connection);
+                int rowsAffected = command.ExecuteNonQuery();
+
+                Console.WriteLine($"Inserted {rowsAffected} department(s).");
             }
         }
 
