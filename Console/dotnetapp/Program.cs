@@ -7,61 +7,64 @@ namespace AdoNetExample
     {
         static void Main(string[] args)
         {
-            // Connection string for both databases
-            string connectionString = "User ID=sa;password=examlyMssql@123;server=localhost;Database=demo;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
+            // Connection string for EmployeeDB
+            string employeeConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=EmployeeDB;trusted_connection=false;Persist Security Info=False;Encrypt=False";
 
-            // Create EmployeeDB database and tables
-            CreateEmployeeDB(connectionString);
+            // Connection string for DepartmentDB
+            string departmentConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=DepartmentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False";
 
-            // Create DepartmentDB database and tables
-            CreateDepartmentDB(connectionString);
+            // Create Employee table
+            CreateEmployeeTable(employeeConnectionString);
+
+            // Create Department table
+            CreateDepartmentTable(departmentConnectionString);
 
             // Display all Employees
-            DisplayEmployees(connectionString);
+            DisplayEmployees(employeeConnectionString);
 
             // Display all Departments
-            DisplayDepartments(connectionString);
+            DisplayDepartments(departmentConnectionString);
+
+            // Delete an Employee
+            DeleteEmployee(employeeConnectionString, employeeIdToDelete);
+
+            // Delete a Department
+            DeleteDepartment(departmentConnectionString, departmentIdToDelete);
         }
 
-        static void CreateEmployeeDB(string connectionString)
+        static void CreateEmployeeTable(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                // Create Employee table
-                string createTableQuery = "CREATE DATABASE EmployeeDB; " +
-                                          "USE EmployeeDB; " +
-                                          "CREATE TABLE Employee (EmpId INT PRIMARY KEY, EmpName VARCHAR(50), Email VARCHAR(50), PhoneNumber VARCHAR(20), Department VARCHAR(50));";
-                
+                string createTableQuery = "CREATE TABLE Employee (EmpId INT PRIMARY KEY, EmpName VARCHAR(50), Email VARCHAR(50), PhoneNumber VARCHAR(20), Department VARCHAR(50))";
+
                 SqlCommand command = new SqlCommand(createTableQuery, connection);
                 command.ExecuteNonQuery();
 
-                Console.WriteLine("EmployeeDB and Employee table created successfully.");
+                Console.WriteLine("Employee table created successfully.");
             }
         }
 
-        static void CreateDepartmentDB(string connectionString)
+        static void CreateDepartmentTable(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                // Create Department table
-                string createTableQuery = "CREATE DATABASE DepartmentDB; " +
-                                          "USE DepartmentDB; " +
-                                          "CREATE TABLE Department (DeptId INT PRIMARY KEY, DeptName VARCHAR(50), Location VARCHAR(50), EmployeeCount INT);";
+                string createTableQuery = "CREATE TABLE Department (DeptId INT PRIMARY KEY, DeptName VARCHAR(50), Location VARCHAR(50), EmployeeCount INT)";
 
                 SqlCommand command = new SqlCommand(createTableQuery, connection);
                 command.ExecuteNonQuery();
 
-                Console.WriteLine("DepartmentDB and Department table created successfully.");
+                Console.WriteLine("Department table created successfully.");
             }
         }
 
         static void DisplayEmployees(string connectionString)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString + "Database=EmployeeDB;"))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -80,7 +83,7 @@ namespace AdoNetExample
 
         static void DisplayDepartments(string connectionString)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString + "Database=DepartmentDB;"))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -94,6 +97,36 @@ namespace AdoNetExample
                 {
                     Console.WriteLine($"DeptId: {reader.GetInt32(0)}, DeptName: {reader.GetString(1)}, Location: {reader.GetString(2)}, EmployeeCount: {reader.GetInt32(3)}");
                 }
+            }
+        }
+
+        static void DeleteEmployee(string connectionString, int employeeId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = $"DELETE FROM Employee WHERE EmpId = {employeeId}";
+
+                SqlCommand command = new SqlCommand(deleteQuery, connection);
+                int rowsAffected = command.ExecuteNonQuery();
+
+                Console.WriteLine($"Deleted {rowsAffected} employee(s).");
+            }
+        }
+
+        static void DeleteDepartment(string connectionString, int departmentId)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = $"DELETE FROM Department WHERE DeptId = {departmentId}";
+
+                SqlCommand command = new SqlCommand(deleteQuery, connection);
+                int rowsAffected = command.ExecuteNonQuery();
+
+                Console.WriteLine($"Deleted {rowsAffected} department(s).");
             }
         }
     }
