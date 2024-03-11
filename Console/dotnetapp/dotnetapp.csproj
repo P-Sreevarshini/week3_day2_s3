@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+<ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+</ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
