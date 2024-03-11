@@ -139,5 +139,19 @@ namespace dotnetapp
                 Console.WriteLine($"Deleted {rowsAffected} department(s).");
             }
         }
+        public static bool RecordExists(string connectionString, string tableName, int id)
+        {
+            bool exists = false;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = $"SELECT COUNT(*) FROM {tableName} WHERE EmpId = @Id"; // Use 'EmpId' instead of 'Id'
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", id);
+                int count = (int)command.ExecuteScalar();
+                exists = count > 0;
+            }
+            return exists;
+        }
     }
 }
