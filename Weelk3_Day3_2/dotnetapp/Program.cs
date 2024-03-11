@@ -7,11 +7,14 @@ namespace AdoNetExample
     {
         static void Main(string[] args)
         {
+            // Connection string for appdb
+            string appdbConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=appdb;trusted_connection=false;Persist Security Info=False;Encrypt=False";
+
             // Connection string for EmployeeDB
-            string employeeConnectionString = "Your_Employee_DB_Connection_String";
+            string employeeConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=EmployeeDB;trusted_connection=false;Persist Security Info=False;Encrypt=False";
 
             // Connection string for DepartmentDB
-            string departmentConnectionString = "Your_Department_DB_Connection_String";
+            string departmentConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=DepartmentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False";
 
             // Create Employee table
             CreateEmployeeTable(employeeConnectionString);
