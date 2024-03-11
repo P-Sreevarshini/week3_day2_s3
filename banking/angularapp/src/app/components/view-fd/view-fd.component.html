@@ -1,40 +1,62 @@
-<table>
-  <thead>
-    <tr>
-      <!-- <th>Fixed Deposit ID</th> -->
-      <th>Amount</th>
-      <th>Tenure (Months)</th>
-      <th>Interest Rate</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let fd of fds">
-      <ng-container *ngIf="selectedFd !== fd; else editMode">
-        <!-- <td>{{ fd.FixedDepositId }}</td> -->
-        <td>{{ fd.Amount }}</td>
-        <td>{{ fd.TenureMonths }}</td>
-        <td>{{ fd.InterestRate }}</td>
-        <td>
-          <ng-container *ngIf="userRole === 'Admin'">
-            <button (click)="editFd(fd)" class="edit-btn">Edit</button>
-            <button (click)="deleteFd(fd)" class="delete-btn">Delete</button>
-          </ng-container>
-          <ng-container *ngIf="userRole === 'Customer'">
-            <button (click)="createAccount(fd)" class="edit-btn">Create FD Account </button>
-          </ng-container>
-        </td>
-      </ng-container>
-      <ng-template #editMode>
-        <!-- <td><input [(ngModel)]="fd.FixedDepositId" readonly></td> -->
-        <td><input [(ngModel)]="fd.Amount"></td>
-        <td><input [(ngModel)]="fd.TenureMonths"></td>
-        <td><input [(ngModel)]="fd.InterestRate"></td>
-        <td>
-          <button (click)="updateFd(fd)" class="save-btn">Save</button>
-          <button (click)="cancelEdit()" class="cancel-btn">Cancel</button>
-        </td>
-      </ng-template>
-    </tr>
-  </tbody>
-</table>
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #ddd; /* Border color for table */
+}
+
+/* Table header styles */
+th {
+  background-color: #f2f2f2; /* Header background color */
+  text-align: left;
+  padding: 8px;
+}
+
+/* Table cell styles */
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd; /* Border color for table cells */
+}
+
+/* Alternate row color */
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* Alternate row background color */
+}
+
+/* Button styles */
+button {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Edit button styles */
+.edit-btn {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+/* Delete button styles */
+.delete-btn {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+/* Save button styles */
+.save-btn {
+  background-color: #008CBA; /* Blue */
+  color: white;
+}
+
+/* Cancel button styles */
+.cancel-btn {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+/* Hover effect on buttons */
+button:hover {
+  opacity: 0.8;
+}
