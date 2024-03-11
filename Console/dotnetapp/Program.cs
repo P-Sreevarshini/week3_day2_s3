@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace ConsoleApp
+namespace dotnetapp
 {
    public class Program
     {
@@ -57,7 +57,7 @@ namespace ConsoleApp
             Console.ReadKey();
         }
 
-        static void CreateEmployeeTable(string connectionString)
+       public static void CreateEmployeeTable(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -70,7 +70,7 @@ namespace ConsoleApp
             }
         }
 
-        static void CreateDepartmentTable(string connectionString)
+       public static void CreateDepartmentTable(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -83,7 +83,7 @@ namespace ConsoleApp
             }
         }
 
-        static void InsertEmployee(string connectionString, int empId, string empName, string email, string phoneNumber, string department)
+      public  static void InsertEmployee(string connectionString, int empId, string empName, string email, string phoneNumber, string department)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -98,7 +98,7 @@ namespace ConsoleApp
             }
         }
 
-        static void InsertDepartment(string connectionString, int deptId, string deptName, string location, int employeeCount)
+      public  static void InsertDepartment(string connectionString, int deptId, string deptName, string location, int employeeCount)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -113,7 +113,7 @@ namespace ConsoleApp
             }
         }
 
-        static void DisplayEmployees(string connectionString)
+       public static void DisplayEmployees(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -132,7 +132,7 @@ namespace ConsoleApp
             }
         }
 
-        static void DisplayDepartments(string connectionString)
+       public static void DisplayDepartments(string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -151,7 +151,7 @@ namespace ConsoleApp
             }
         }
 
-        static void DeleteEmployee(string connectionString, int employeeId)
+       public static void DeleteEmployee(string connectionString, int employeeId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -166,7 +166,7 @@ namespace ConsoleApp
             }
         }
 
-        static void DeleteDepartment(string connectionString, int departmentId)
+     public   static void DeleteDepartment(string connectionString, int departmentId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

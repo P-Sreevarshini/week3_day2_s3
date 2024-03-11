@@ -1,98 +1,91 @@
 using NUnit.Framework;
 using System;
-using System.Data.SqlClient;
 
-namespace ConsoleApp.Tests
+namespace TestProject
 {
     [TestFixture]
     public class ProgramTests
     {
-        private const string ConnectionString = "User ID=sa;password=examlyMssql@123;server=localhost;Database=TestDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
-
-        [SetUp]
-        public void Setup()
-        {
-            // Create Employee and Department tables before running tests
-            Program.CreateEmployeeTable(ConnectionString);
-            Program.CreateDepartmentTable(ConnectionString);
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            // Clean up by deleting Employee and Department tables after running tests
-            Program.DropTable(ConnectionString, "Employee");
-            Program.DropTable(ConnectionString, "Department");
-        }
+        private const string EmployeeConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=EmployeeDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
+        private const string DepartmentConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=DepartmentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
 
         [Test]
-        public void CreateEmployeeTable_TableCreated_Success()
-        {
-            // Act
-            bool tableExists = Program.TableExists(ConnectionString, "Employee");
-
-            // Assert
-            Assert.IsTrue(tableExists, "Employee table should exist.");
-        }
-
-        [Test]
-        public void CreateDepartmentTable_TableCreated_Success()
-        {
-            // Act
-            bool tableExists = Program.TableExists(ConnectionString, "Department");
-
-            // Assert
-            Assert.IsTrue(tableExists, "Department table should exist.");
-        }
-
-        [Test]
-        public void InsertEmployee_EmployeeInserted_Success()
+        public void Test_CreateEmployeeTable()
         {
             // Arrange
-            int empId = 1;
-            string empName = "John Doe";
-            string email = "john@example.com";
-            string phoneNumber = "1234567890";
-            string department = "HR";
+            bool tableExistsBefore = TableExists(EmployeeConnectionString, "Employee");
 
             // Act
-            Program.InsertEmployee(ConnectionString, empId, empName, email, phoneNumber, department);
+            CreateEmployeeTable(EmployeeConnectionString);
 
             // Assert
-            bool employeeExists = Program.RecordExists(ConnectionString, "Employee", empId);
-            Assert.IsTrue(employeeExists, "Employee should be inserted into the table.");
+            bool tableExistsAfter = TableExists(EmployeeConnectionString, "Employee");
+            Assert.IsFalse(tableExistsBefore, "Table should not exist before creation");
+            Assert.IsTrue(tableExistsAfter, "Table should exist after creation");
         }
 
         [Test]
-        public void InsertDepartment_DepartmentInserted_Success()
+        public void Test_CreateDepartmentTable()
         {
             // Arrange
-            int deptId = 1;
-            string deptName = "HR";
-            string location = "New York";
-            int employeeCount = 10;
+            bool tableExistsBefore = TableExists(DepartmentConnectionString, "Department");
 
             // Act
-            Program.InsertDepartment(ConnectionString, deptId, deptName, location, employeeCount);
+            CreateDepartmentTable(DepartmentConnectionString);
 
             // Assert
-            bool departmentExists = Program.RecordExists(ConnectionString, "Department", deptId);
-            Assert.IsTrue(departmentExists, "Department should be inserted into the table.");
+            bool tableExistsAfter = TableExists(DepartmentConnectionString, "Department");
+            Assert.IsFalse(tableExistsBefore, "Table should not exist before creation");
+            Assert.IsTrue(tableExistsAfter, "Table should exist after creation");
         }
 
         [Test]
-        public void DeleteEmployee_EmployeeDeleted_Success()
+        public void Test_InsertEmployee()
         {
             // Arrange
-            int empIdToDelete = 1;
-            Program.InsertEmployee(ConnectionString, empIdToDelete, "John Doe", "john@example.com", "1234567890", "HR");
+            const int empId = 4;
+            const string empName = "Alice Cooper";
+            const string email = "alice@example.com";
+            const string phoneNumber = "1234567890";
+            const string department = "Marketing";
 
             // Act
-            Program.DeleteEmployee(ConnectionString, empIdToDelete);
+            InsertEmployee(EmployeeConnectionString, empId, empName, email, phoneNumber, department);
 
             // Assert
-            bool employeeExists = Program.RecordExists(ConnectionString, "Employee", empIdToDelete);
-            Assert.IsFalse(employeeExists, "Employee should be deleted from the table.");
+            bool recordExists = RecordExists(EmployeeConnectionString, "Employee", empId);
+            Assert.IsTrue(recordExists, "Inserted record should exist in the database");
+        }
+
+        [Test]
+        public void Test_InsertDepartment()
+        {
+            // Arrange
+            const int deptId = 4;
+            const string deptName = "Marketing";
+            const string location = "New York";
+            const int employeeCount = 20;
+
+            // Act
+            InsertDepartment(DepartmentConnectionString, deptId, deptName, location, employeeCount);
+
+            // Assert
+            bool recordExists = RecordExists(DepartmentConnectionString, "Department", deptId);
+            Assert.IsTrue(recordExists, "Inserted record should exist in the database");
+        }
+
+        [Test]
+        public void Test_DeleteEmployee()
+        {
+            // Arrange
+            const int employeeIdToDelete = 1; // Assuming employee with ID 1 exists
+
+            // Act
+            DeleteEmployee(EmployeeConnectionString, employeeIdToDelete);
+
+            // Assert
+            bool recordExists = RecordExists(EmployeeConnectionString, "Employee", employeeIdToDelete);
+            Assert.IsFalse(recordExists, "Deleted record should not exist in the database");
         }
     }
 }
