@@ -47,8 +47,8 @@ namespace TestProject
         public void TestStudentTableHasData()
         {
             // Get the connection string from appsettings.json
-            // string connectionString = _configuration.GetConnectionString("StudentConnectionstring");
-            string studentConnectionString = "Data Source=myServerAddress;Initial Catalog=StudentDB;User Id=myUsername;Password=myPassword;";
+            string connectionString = _configuration.GetConnectionString("StudentConnectionstring");
+            // string studentConnectionString = "Data Source=myServerAddress;Initial Catalog=StudentDB;User Id=myUsername;Password=myPassword;";
 
             // Query to count rows in Student table
             string query = "SELECT COUNT(*) FROM Student";
@@ -57,8 +57,8 @@ namespace TestProject
             int rowCount = 0;
 
             // Attempt to execute the query
-            // using (var connection = new SqlConnection(connectionString))
-                        using (var connection = new SqlConnection(studentConnectionString))
+            using (var connection = new SqlConnection(connectionString))
+                        // using (var connection = new SqlConnection(studentConnectionString))
 
             using (var command = new SqlCommand(query, connection))
             {
