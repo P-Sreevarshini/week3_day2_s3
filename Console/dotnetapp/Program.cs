@@ -24,8 +24,7 @@ namespace dotnetapp
                 InsertEmployee(employeeConnectionString, 2, "Jane Smith", "jane@example.com", "9876543210", "Finance");
                 InsertEmployee(employeeConnectionString, 3, "David Brown", "david@example.com", "5555555555", "IT");
 
-                // Display all Employees
-                DisplayEmployees(employeeConnectionString);
+               
 
                 // Create Department table
                 CreateDepartmentTable(departmentConnectionString);
@@ -36,8 +35,7 @@ namespace dotnetapp
                 InsertDepartment(departmentConnectionString, 2, "Finance", "Los Angeles", 8);
                 InsertDepartment(departmentConnectionString, 3, "IT", "Chicago", 15);
 
-                // Display all Departments
-                DisplayDepartments(departmentConnectionString);
+       
 
                 // Delete an Employee
                 int employeeIdToDelete = 1; // Specify the employee ID to delete
@@ -112,45 +110,6 @@ namespace dotnetapp
                 Console.WriteLine($"Inserted {rowsAffected} department(s).");
             }
         }
-
-        public static void DisplayEmployees(string connectionString)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string query = "SELECT * FROM Employee";
-
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                Console.WriteLine("Employees:");
-                while (reader.Read())
-                {
-                    Console.WriteLine($"EmpId: {reader.GetInt32(0)}, EmpName: {reader.GetString(1)}, Email: {reader.GetString(2)}, PhoneNumber: {reader.GetString(3)}, Department: {reader.GetString(4)}");
-                }
-            }
-        }
-
-        public static void DisplayDepartments(string connectionString)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string query = "SELECT * FROM Department";
-
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                Console.WriteLine("Departments:");
-                while (reader.Read())
-                {
-                    Console.WriteLine($"DeptId: {reader.GetInt32(0)}, DeptName: {reader.GetString(1)}, Location: {reader.GetString(2)}, EmployeeCount: {reader.GetInt32(3)}");
-                }
-            }
-        }
-
         public static void DeleteEmployee(string connectionString, int employeeId)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -180,6 +139,19 @@ namespace dotnetapp
                 Console.WriteLine($"Deleted {rowsAffected} department(s).");
             }
         }
-        
+        public static bool RecordExists(string connectionString, string tableName, int id)
+        {
+            bool exists = false;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = $"SELECT COUNT(*) FROM {tableName} WHERE EmpId = @Id"; 
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", id);
+                int count = (int)command.ExecuteScalar();
+                exists = count > 0;
+            }
+            return exists;
+        }
     }
 }
