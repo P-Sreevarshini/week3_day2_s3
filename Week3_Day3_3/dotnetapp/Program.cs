@@ -17,10 +17,8 @@ namespace GroceryManagement
                     Console.WriteLine("Connection successful!");
                     Console.WriteLine("Select an option:");
                     Console.WriteLine("1. Add Product");
-                    Console.WriteLine("2. Display All Products");
-                    Console.WriteLine("3. Delete Product");
-                    Console.WriteLine("4. Search Product");
-                    Console.WriteLine("5. Edit Product");
+                    Console.WriteLine("2. Search Product");
+                    Console.WriteLine("3. Edit Product");
 
                     int option;
                     if (int.TryParse(Console.ReadLine(), out option))
@@ -30,13 +28,12 @@ namespace GroceryManagement
                             case 1:
                                 AddProduct(connection);
                                 break;
-                            case 4:
+                            case 2:
                                 SearchProduct(connection);
                                 break;
-                            case 5:
+                            case 3:
                                 EditProduct(connection);
                                 break;
-                            // Implement other options here
                             default:
                                 Console.WriteLine("Invalid option selected!");
                                 break;
@@ -56,28 +53,55 @@ namespace GroceryManagement
             Console.ReadKey();
         }
 
+        // static void AddProduct(SqlConnection connection)
+        // {
+        //     Console.WriteLine("Enter product details:");
+
+        //     Console.Write("Name: ");
+        //     string name = Console.ReadLine();
+        //     Console.Write("Rate: ");
+        //     decimal rate = Convert.ToDecimal(Console.ReadLine());
+        //     Console.Write("Stock: ");
+        //     int stock = Convert.ToInt32(Console.ReadLine());
+
+        //     string insertQuery = "INSERT INTO Grocery (Name, Rate, Stock) VALUES (@Name, @Rate, @Stock)";
+        //     SqlCommand command = new SqlCommand(insertQuery, connection);
+        //     command.Parameters.AddWithValue("@Name", name);
+        //     command.Parameters.AddWithValue("@Rate", rate);
+        //     command.Parameters.AddWithValue("@Stock", stock);
+
+        //     int rowsAffected = command.ExecuteNonQuery();
+        //     if (rowsAffected > 0)
+        //     {
+        //         Console.WriteLine("Product added successfully!");
+        //     }
+        // }
         static void AddProduct(SqlConnection connection)
-        {
-            Console.WriteLine("Enter product details:");
-            Console.Write("Name: ");
-            string name = Console.ReadLine();
-            Console.Write("Rate: ");
-            decimal rate = Convert.ToDecimal(Console.ReadLine());
-            Console.Write("Stock: ");
-            int stock = Convert.ToInt32(Console.ReadLine());
+{
+    Console.WriteLine("Enter product details:");
+    Console.Write("ID: ");
+    int id = Convert.ToInt32(Console.ReadLine());
+    Console.Write("Name: ");
+    string name = Console.ReadLine();
+    Console.Write("Rate: ");
+    decimal rate = Convert.ToDecimal(Console.ReadLine());
+    Console.Write("Stock: ");
+    int stock = Convert.ToInt32(Console.ReadLine());
 
-            string insertQuery = "INSERT INTO Grocery (Name, Rate, Stock) VALUES (@Name, @Rate, @Stock)";
-            SqlCommand command = new SqlCommand(insertQuery, connection);
-            command.Parameters.AddWithValue("@Name", name);
-            command.Parameters.AddWithValue("@Rate", rate);
-            command.Parameters.AddWithValue("@Stock", stock);
+    string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) VALUES (@ID, @Name, @Rate, @Stock)";
+    SqlCommand command = new SqlCommand(insertQuery, connection);
+    command.Parameters.AddWithValue("@ID", id);
+    command.Parameters.AddWithValue("@Name", name);
+    command.Parameters.AddWithValue("@Rate", rate);
+    command.Parameters.AddWithValue("@Stock", stock);
 
-            int rowsAffected = command.ExecuteNonQuery();
-            if (rowsAffected > 0)
-            {
-                Console.WriteLine("Product added successfully!");
-            }
-        }
+    int rowsAffected = command.ExecuteNonQuery();
+    if (rowsAffected > 0)
+    {
+        Console.WriteLine("Product added successfully!");
+    }
+}
+
 
         static void SearchProduct(SqlConnection connection)
         {
