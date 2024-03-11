@@ -98,9 +98,8 @@ namespace TestProject
                     Assert.Fail($"Failed to execute query: {ex.Message}");
                 }
             }
-
-            // Check if there are any rows in the Department table
             Assert.IsTrue(rowCount > 0, "No data found in the Department table.");
         }
+        
     }
 }
