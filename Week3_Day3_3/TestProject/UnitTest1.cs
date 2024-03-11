@@ -29,7 +29,6 @@ namespace GroceryManagement.Tests
                 connectionSuccessful = false;
             }
 
-            // Assert
             Assert.IsTrue(connectionSuccessful, "Connection should be successful.");
         }
 

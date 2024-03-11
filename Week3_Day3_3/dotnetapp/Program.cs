@@ -76,7 +76,7 @@ namespace GroceryManagement
         //         Console.WriteLine("Product added successfully!");
         //     }
         // }
-        static void AddProduct(SqlConnection connection)
+      public  static void AddProduct(SqlConnection connection)
 {
     Console.WriteLine("Enter product details:");
     Console.Write("ID: ");
@@ -103,7 +103,7 @@ namespace GroceryManagement
 }
 
 
-        static void SearchProduct(SqlConnection connection)
+       public static void SearchProduct(SqlConnection connection)
         {
             Console.Write("Enter the product name to search: ");
             string searchTerm = Console.ReadLine();
@@ -130,7 +130,7 @@ namespace GroceryManagement
             }
         }
 
-        static void EditProduct(SqlConnection connection)
+       public static void EditProduct(SqlConnection connection)
         {
             Console.Write("Enter the ID of the product to edit: ");
             int productId = Convert.ToInt32(Console.ReadLine());
