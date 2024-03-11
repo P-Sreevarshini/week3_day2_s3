@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "dataProviders": {
+    "dotnetapp": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
