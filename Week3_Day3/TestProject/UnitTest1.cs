@@ -73,5 +73,35 @@ namespace TestProject
             // Check if there are any rows in the Student table
             Assert.IsTrue(rowCount > 0, "No data found in the Student table.");
         }
+         [Test]
+        public void TestCourseTableHasData()
+        {
+            // Get the connection string from appsettings.json
+            string connectionString = _configuration.GetConnectionString("Connectionstring");
+
+            // Query to count rows in Course table
+            string query = "SELECT COUNT(*) FROM Course";
+
+            // Variable to store the count
+            int rowCount = 0;
+
+            // Attempt to execute the query
+            using (var connection = new SqlConnection(connectionString))
+            using (var command = new SqlCommand(query, connection))
+            {
+                try
+                {
+                    connection.Open();
+                    rowCount = (int)command.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    Assert.Fail($"Failed to execute query: {ex.Message}");
+                }
+            }
+
+            // Check if there are any rows in the Student table
+            Assert.IsTrue(rowCount > 0, "No data found in the Course table.");
+        }
     }
 }
