@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace GroceryManagement
 {
-   public class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -23,21 +23,30 @@ namespace GroceryManagement
                     int option;
                     if (int.TryParse(Console.ReadLine(), out option))
                     {
-                        switch (option)
-                        {
-                            case 1:
-                                AddProduct(connection);
-                                break;
-                            case 2:
-                                SearchProduct(connection);
-                                break;
-                            case 3:
-                                EditProduct(connection);
-                                break;
-                            default:
-                                Console.WriteLine("Invalid option selected!");
-                                break;
-                        }
+                       switch (option)
+{
+    case 1:
+        Console.Write("Enter product ID: ");
+        int productId = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter product name: ");
+        string productName = Console.ReadLine();
+        Console.Write("Enter product rate: ");
+        decimal productRate = Convert.ToDecimal(Console.ReadLine());
+        Console.Write("Enter product stock: ");
+        int productStock = Convert.ToInt32(Console.ReadLine());
+        AddProduct(connection, productId, productName, productRate, productStock);
+        break;
+    case 2:
+        SearchProduct(connection);
+        break;
+    case 3:
+        EditProduct(connection);
+        break;
+    default:
+        Console.WriteLine("Invalid option selected!");
+        break;
+}
+
                     }
                     else
                     {
@@ -52,7 +61,8 @@ namespace GroceryManagement
 
             Console.ReadKey();
         }
-      public  static void AddProduct(SqlConnection connection)
+
+public static void AddProduct(SqlConnection connection, int productId, string productName, decimal productRate, int productStock)
         {
             Console.WriteLine("Enter product details:");
             Console.Write("ID: ");
@@ -78,8 +88,7 @@ namespace GroceryManagement
             }
         }
 
-
-       public static void SearchProduct(SqlConnection connection)
+        public static string SearchProduct(SqlConnection connection)
         {
             Console.Write("Enter the product name to search: ");
             string searchTerm = Console.ReadLine();
@@ -88,6 +97,7 @@ namespace GroceryManagement
             SqlCommand command = new SqlCommand(searchQuery, connection);
             command.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
 
+            string result = "";
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 if (reader.HasRows)
@@ -96,7 +106,7 @@ namespace GroceryManagement
                     Console.WriteLine("ID\tName\tRate\tStock");
                     while (reader.Read())
                     {
-                        Console.WriteLine($"{reader["ID"]}\t{reader["Name"]}\t{reader["Rate"]}\t{reader["Stock"]}");
+                        result += $"{reader["ID"]}\t{reader["Name"]}\t{reader["Rate"]}\t{reader["Stock"]}\n";
                     }
                 }
                 else
@@ -104,9 +114,10 @@ namespace GroceryManagement
                     Console.WriteLine("No matching products found.");
                 }
             }
+            return result;
         }
 
-       public static void EditProduct(SqlConnection connection)
+        public static void EditProduct(SqlConnection connection)
         {
             Console.Write("Enter the ID of the product to edit: ");
             int productId = Convert.ToInt32(Console.ReadLine());
