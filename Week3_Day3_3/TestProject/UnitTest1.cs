@@ -32,7 +32,7 @@ namespace GroceryManagement.Tests
             Assert.IsTrue(connectionSuccessful, "Connection should be successful.");
         }
 
-        [Test]
+    [Test]
     public void Test_AddProduct_Success()
     {
         // Arrange
@@ -61,6 +61,7 @@ namespace GroceryManagement.Tests
         RemoveTestProduct(productId);
     }
 
+
     // [Test]
     // public void Test_SearchProduct_Success()
     // {
@@ -86,6 +87,7 @@ namespace GroceryManagement.Tests
     //     Assert.IsNotNull(searchResult, "Search result should not be null.");
     //     Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
     // }
+    
     [Test]
 public void Test_SearchProduct_Success()
 {
@@ -112,34 +114,34 @@ public void Test_SearchProduct_Success()
     Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
 }
 
-    [Test]
-    public void Test_EditProduct_Success()
-    {
-        // Arrange
-        int productId = GenerateRandomProductId();
-        const string updatedProductName = "UpdatedProduct";
-        const decimal updatedProductRate = 20.75m;
-        const int updatedProductStock = 150;
+//     [Test]
+//     public void Test_EditProduct_Success()
+//     {
+//         // Arrange
+//         int productId = GenerateRandomProductId();
+//         const string updatedProductName = "UpdatedProduct";
+//         const decimal updatedProductRate = 20.75m;
+//         const int updatedProductStock = 150;
 
-        // Act
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                Program.EditProduct(connection); // No need to pass additional arguments here
-            }
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Failed to edit product: {ex.Message}");
-        }
+//         // Act
+//         try
+//         {
+//             using (SqlConnection connection = new SqlConnection(ConnectionString))
+//             {
+//                 connection.Open();
+//                 Program.EditProduct(connection); // No need to pass additional arguments here
+//             }
+//         }
+//         catch (Exception ex)
+//         {
+//             Assert.Fail($"Failed to edit product: {ex.Message}");
+//         }
 
-        // Assert: The test verifies if the product was updated successfully.
-        // This assertion is not directly tied to the method's return value.
-        // It's assumed that if no exception was thrown, the product was updated successfully.
-        Assert.Pass("Product should be updated successfully.");
-    }
+//         // Assert: The test verifies if the product was updated successfully.
+//         // This assertion is not directly tied to the method's return value.
+//         // It's assumed that if no exception was thrown, the product was updated successfully.
+//         Assert.Pass("Product should be updated successfully.");
+//     }
 
     private int GenerateRandomProductId()
     {

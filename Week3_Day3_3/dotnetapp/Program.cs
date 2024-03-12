@@ -62,31 +62,48 @@ namespace GroceryManagement
             Console.ReadKey();
         }
 
+// public static void AddProduct(SqlConnection connection, int productId, string productName, decimal productRate, int productStock)
+//         {
+//             Console.WriteLine("Enter product details:");
+//             Console.Write("ID: ");
+//             int id = Convert.ToInt32(Console.ReadLine());
+//             Console.Write("Name: ");
+//             string name = Console.ReadLine();
+//             Console.Write("Rate: ");
+//             decimal rate = Convert.ToDecimal(Console.ReadLine());
+//             Console.Write("Stock: ");
+//             int stock = Convert.ToInt32(Console.ReadLine());
+
+//             string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) VALUES (@ID, @Name, @Rate, @Stock)";
+//             SqlCommand command = new SqlCommand(insertQuery, connection);
+//             command.Parameters.AddWithValue("@ID", id);
+//             command.Parameters.AddWithValue("@Name", name);
+//             command.Parameters.AddWithValue("@Rate", rate);
+//             command.Parameters.AddWithValue("@Stock", stock);
+
+//             int rowsAffected = command.ExecuteNonQuery();
+//             if (rowsAffected > 0)
+//             {
+//                 Console.WriteLine("Product added successfully!");
+//             }
+//         }
+
 public static void AddProduct(SqlConnection connection, int productId, string productName, decimal productRate, int productStock)
-        {
-            Console.WriteLine("Enter product details:");
-            Console.Write("ID: ");
-            int id = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Name: ");
-            string name = Console.ReadLine();
-            Console.Write("Rate: ");
-            decimal rate = Convert.ToDecimal(Console.ReadLine());
-            Console.Write("Stock: ");
-            int stock = Convert.ToInt32(Console.ReadLine());
+{
+    string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) VALUES (@ID, @Name, @Rate, @Stock)";
+    SqlCommand command = new SqlCommand(insertQuery, connection);
+    command.Parameters.AddWithValue("@ID", productId);
+    command.Parameters.AddWithValue("@Name", productName);
+    command.Parameters.AddWithValue("@Rate", productRate);
+    command.Parameters.AddWithValue("@Stock", productStock);
 
-            string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) VALUES (@ID, @Name, @Rate, @Stock)";
-            SqlCommand command = new SqlCommand(insertQuery, connection);
-            command.Parameters.AddWithValue("@ID", id);
-            command.Parameters.AddWithValue("@Name", name);
-            command.Parameters.AddWithValue("@Rate", rate);
-            command.Parameters.AddWithValue("@Stock", stock);
+    int rowsAffected = command.ExecuteNonQuery();
+    if (rowsAffected > 0)
+    {
+        Console.WriteLine("Product added successfully!");
+    }
+}
 
-            int rowsAffected = command.ExecuteNonQuery();
-            if (rowsAffected > 0)
-            {
-                Console.WriteLine("Product added successfully!");
-            }
-        }
 
         public static string SearchProduct(SqlConnection connection)
         {
@@ -120,7 +137,9 @@ public static void AddProduct(SqlConnection connection, int productId, string pr
         public static void EditProduct(SqlConnection connection)
         {
             Console.Write("Enter the ID of the product to edit: ");
+            // int productId = Convert.ToInt32(Console.ReadLine());
             int productId = Convert.ToInt32(Console.ReadLine());
+
 
             Console.WriteLine("Enter new product details:");
             Console.Write("Name: ");
@@ -128,7 +147,7 @@ public static void AddProduct(SqlConnection connection, int productId, string pr
             Console.Write("Rate: ");
             decimal rate = Convert.ToDecimal(Console.ReadLine());
             Console.Write("Stock: ");
-            int stock = Convert.SeToInt32(Console.ReadLine());
+            int stock = Convert.ToInt32(Console.ReadLine());
 
             string updateQuery = "UPDATE Grocery SET Name = @Name, Rate = @Rate, Stock = @Stock WHERE ID = @ID";
             SqlCommand command = new SqlCommand(updateQuery, connection);
