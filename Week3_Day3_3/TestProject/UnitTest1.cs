@@ -36,7 +36,7 @@ namespace GroceryManagement.Tests
         public void Test_AddProduct_Success()
         {
             // Arrange
-            int productId = 0;
+            int productId = 305;
             const string productName = "TestProduct";
             const decimal productRate = 10.50m;
             const int productStock = 100;
@@ -103,7 +103,7 @@ namespace GroceryManagement.Tests
         public void Test_EditProduct_Success()
         {
             // Arrange
-            const int productId = 1; // Replace with the actual product ID to edit
+            const int productId = 305; 
             const string updatedProductName = "UpdatedProduct";
             const decimal updatedProductRate = 20.75m;
             const int updatedProductStock = 150;
