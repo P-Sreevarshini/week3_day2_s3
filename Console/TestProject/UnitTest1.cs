@@ -127,7 +127,7 @@ private bool TableExists(string connectionString, string tableName)
 public void Test_InsertDepartment_Success()
 {
     // Arrange
-    const int deptId = 400;
+    const int deptId = 4013;
     const string deptName = "Marketing";
     const string location = "New York";
     const int employeeCount = 50; // Provide a value for employeeCount
@@ -149,7 +149,7 @@ public void Test_InsertDepartment_Success()
 public void Test_DeleteDepartment_Success()
 {
     // Arrange
-    const int deptIdToDelete = 403; // Assuming department with ID 403 exists
+    const int deptIdToDelete = 4013; // Assuming department with ID 403 exists
 
     // Act
     dotnetapp.Program.DeleteDepartment(DepartmentConnectionString, deptIdToDelete);
