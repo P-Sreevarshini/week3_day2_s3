@@ -116,5 +116,18 @@ private int GenerateRandomStudentId()
                 Console.WriteLine($"Failed to remove test student: {ex.Message}");
             }
         }
+         [Test]
+        public void Test_AddStudent_Method_Exists()
+        {
+            var methodInfo = typeof(Program).GetMethod("AddStudent");
+            Assert.IsNotNull(methodInfo);
+        }
+
+        [Test]
+        public void Test_DisplayAllStudents_Method_Exists()
+        {
+            var methodInfo = typeof(Program).GetMethod("DisplayAllStudents");
+            Assert.IsNotNull(methodInfo);
+        }
     }
 }
