@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using dotnetapp; // Make sure this is the correct namespace
+using System.Data.SqlClient;
 
 namespace TestProject;
 
@@ -13,14 +14,36 @@ public class ProgramTests
     private const string DepartmentConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=DepartmentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
 
     [SetUp]
-    public void SetUp()
+public void SetUp()
+{
+    // Check if Employee table exists before creating
+    if (!TableExists(EmployeeConnectionString, "Employee"))
     {
-        // Create Employee table
+        // Create Employee table if it doesn't exist
         Program.CreateEmployeeTable(EmployeeConnectionString);
+    }
 
-        // Create Department table
+    // Check if Department table exists before creating
+    if (!TableExists(DepartmentConnectionString, "Department"))
+    {
+        // Create Department table if it doesn't exist
         Program.CreateDepartmentTable(DepartmentConnectionString);
     }
+}
+
+private bool TableExists(string connectionString, string tableName)
+{
+    using (SqlConnection connection = new SqlConnection(connectionString))
+    {
+        connection.Open();
+        using (SqlCommand command = new SqlCommand($"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{tableName}'", connection))
+        {
+            int count = (int)command.ExecuteScalar();
+            return count > 0;
+        }
+    }
+}
+
 
     // [TearDown]
     // public void TearDown()
