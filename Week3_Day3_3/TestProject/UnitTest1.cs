@@ -56,9 +56,6 @@ namespace GroceryManagement.Tests
             Assert.Fail($"Failed to add product: {ex.Message}");
         }
 
-        // Assert: No assertion is needed as the method does not return a value.
-
-        // Cleanup
         RemoveTestProduct(productId);
     }
 
