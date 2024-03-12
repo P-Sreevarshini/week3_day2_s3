@@ -52,11 +52,47 @@ private bool TableExists(string connectionString, string tableName)
     //     Program.DropEmployeeTable(EmployeeConnectionString);
     //     Program.DropDepartmentTable(DepartmentConnectionString);
     // }
+     [Test]
+        public void Test_SQL_Employee_Department_Connection()
+        {
+            // Arrange
+            bool connectionSuccessful = false;
+
+            // Act
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(EmployeeConnectionString))
+                {
+                    connection.Open();
+                    connectionSuccessful = true;
+                }
+            }
+            catch (Exception)
+            {
+                connectionSuccessful = false;
+            }
+
+            Assert.IsTrue(connectionSuccessful, "Connection should be successful.");
+              try
+            {
+                using (SqlConnection connection = new SqlConnection(DepartmentConnectionString))
+                {
+                    connection.Open();
+                    connectionSuccessful = true;
+                }
+            }
+            catch (Exception)
+            {
+                connectionSuccessful = false;
+            }
+
+            Assert.IsTrue(connectionSuccessful, "Connection should be successful.");
+        }
         [Test]
         public void Test_InsertEmployee_Success()
         {
             // Arrange
-            const int empId = 409;
+            const int empId = 4019;
             const string empName = "Alice Cooper";
             const string email = "alice@example.com";
             const string phoneNumber = "1234567890";
@@ -78,7 +114,7 @@ private bool TableExists(string connectionString, string tableName)
         public void Test_DeleteEmployee_Success()
         {
             // Arrange
-            const int empIdToDelete = 403; // Assuming employee with ID 403 exists
+            const int empIdToDelete = 4019; // Assuming employee with ID 403 exists
 
             // Act
             dotnetapp.Program.DeleteEmployee(EmployeeConnectionString, empIdToDelete);
