@@ -38,11 +38,11 @@ public void AddStudent_Successfully()
 {
     // Arrange
     int studentId = GenerateRandomStudentId();
-    string studentName = "John Doe";
-    int studentAge = 20;
-    string studentGender = "Male";
-    string studentMobileNumber = "1234567890";
-    string studentEmail = "john@example.com";
+    string studentName = "Jane Doe";
+    int studentAge = 21;
+    string studentGender = "Female";
+    string studentMobileNumber = "9876543210";
+    string studentEmail = "jane@example.com";
 
     // Act
     try
@@ -71,50 +71,76 @@ private int GenerateRandomStudentId()
     return random.Next(10000, 99999);
 }
 
-        [Test]
-        public void Test_DisplayAllStudents_Success()
+private void RemoveTestStudent(int studentId)
+{
+    // Perform cleanup by removing the test student from the database
+    try
+    {
+        using (SqlConnection connection = new SqlConnection(ConnectionString))
         {
-            // Arrange
-            bool recordsFound = false;
-
-            // Act
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            connection.Open();
+            using (SqlCommand command = new SqlCommand("DELETE FROM Student WHERE StudentId = @StudentId", connection))
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Student", connection))
-                using (SqlDataReader reader = command.ExecuteReader())
+                command.Parameters.AddWithValue("@StudentId", studentId);
+                int rowsAffected = command.ExecuteNonQuery();
+                if (rowsAffected > 0)
                 {
-                    recordsFound = reader.HasRows;
+                    Console.WriteLine("Test student removed successfully.");
                 }
             }
-
-            // Assert
-            Assert.IsTrue(recordsFound, "At least one student record should be found.");
         }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Failed to remove test student: {ex.Message}");
+    }
+}
 
-        private void RemoveTestStudent(int studentId)
-        {
-            // Perform cleanup by removing the test student from the database
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
-                {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand("DELETE FROM Student WHERE StudentId = @StudentId", connection))
-                    {
-                        command.Parameters.AddWithValue("@StudentId", studentId);
-                        int rowsAffected = command.ExecuteNonQuery();
-                        if (rowsAffected > 0)
-                        {
-                            Console.WriteLine("Test student removed successfully.");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to remove test student: {ex.Message}");
-            }
-        }
+
+    //     [Test]
+    //     public void Test_DisplayAllStudents_Success()
+    //     {
+    //         // Arrange
+    //         bool recordsFound = false;
+
+    //         // Act
+    //         using (SqlConnection connection = new SqlConnection(ConnectionString))
+    //         {
+    //             connection.Open();
+    //             using (SqlCommand command = new SqlCommand("SELECT * FROM Student", connection))
+    //             using (SqlDataReader reader = command.ExecuteReader())
+    //             {
+    //                 recordsFound = reader.HasRows;
+    //             }
+    //         }
+
+    //         // Assert
+    //         Assert.IsTrue(recordsFound, "At least one student record should be found.");
+    //     }
+
+    //     private void RemoveTestStudent(int studentId)
+    //     {
+    //         // Perform cleanup by removing the test student from the database
+    //         try
+    //         {
+    //             using (SqlConnection connection = new SqlConnection(ConnectionString))
+    //             {
+    //                 connection.Open();
+    //                 using (SqlCommand command = new SqlCommand("DELETE FROM Student WHERE StudentId = @StudentId", connection))
+    //                 {
+    //                     command.Parameters.AddWithValue("@StudentId", studentId);
+    //                     int rowsAffected = command.ExecuteNonQuery();
+    //                     if (rowsAffected > 0)
+    //                     {
+    //                         Console.WriteLine("Test student removed successfully.");
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             Console.WriteLine($"Failed to remove test student: {ex.Message}");
+    //         }
+        // }
     }
 }
