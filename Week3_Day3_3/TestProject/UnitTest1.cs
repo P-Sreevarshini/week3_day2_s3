@@ -61,87 +61,108 @@ namespace GroceryManagement.Tests
         RemoveTestProduct(productId);
     }
 
+    
+
+   
+//     [Test]
+// public void Test_SearchProduct_Success()
+// {
+//     // Arrange
+//     const string productName = "TestProduct";
+
+//     // Act
+//     string searchResult = null;
+//     try
+//     {
+//         using (SqlConnection connection = new SqlConnection(ConnectionString))
+//         {
+//             connection.Open();
+//             searchResult = Program.SearchProduct(connection); // No need to pass additional arguments here
+//         }
+//     }
+//     catch (Exception ex)
+//     {
+//         Assert.Fail($"Failed to search product: {ex.Message}");
+//     }
+
+//     // Assert
+//     Assert.IsNotNull(searchResult, "Search result should not be null.");
+//     Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
+// }
 
     // [Test]
-    // public void Test_SearchProduct_Success()
+    // public void Test_EditProduct_Success()
     // {
     //     // Arrange
-    //     const string productName = "TestProduct";
+    //     int productId = GenerateRandomProductId();
+    //     const string updatedProductName = "UpdatedProduct";
+    //     const decimal updatedProductRate = 20.75m;
+    //     const int updatedProductStock = 150;
 
     //     // Act
-    //     string searchResult = null;
     //     try
     //     {
     //         using (SqlConnection connection = new SqlConnection(ConnectionString))
     //         {
     //             connection.Open();
-    //             searchResult = Program.SearchProduct(connection, productName);
+    //             Program.EditProduct(connection); // No need to pass additional arguments here
     //         }
     //     }
     //     catch (Exception ex)
     //     {
-    //         Assert.Fail($"Failed to search product: {ex.Message}");
+    //         Assert.Fail($"Failed to edit product: {ex.Message}");
     //     }
 
-    //     // Assert
-    //     Assert.IsNotNull(searchResult, "Search result should not be null.");
-    //     Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
+    //     // Assert: The test verifies if the product was updated successfully.
+    //     // This assertion is not directly tied to the method's return value.
+    //     // It's assumed that if no exception was thrown, the product was updated successfully.
+    //     Assert.Pass("Product should be updated successfully.");
     // }
-    
-    [Test]
-public void Test_SearchProduct_Success()
-{
-    // Arrange
-    const string productName = "TestProduct";
-
-    // Act
-    string searchResult = null;
-    try
-    {
-        using (SqlConnection connection = new SqlConnection(ConnectionString))
-        {
-            connection.Open();
-            searchResult = Program.SearchProduct(connection); // No need to pass additional arguments here
-        }
-    }
-    catch (Exception ex)
-    {
-        Assert.Fail($"Failed to search product: {ex.Message}");
-    }
-
-    // Assert
-    Assert.IsNotNull(searchResult, "Search result should not be null.");
-    Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
-}
 
 //     [Test]
-//     public void Test_EditProduct_Success()
+// public void Test_EditProduct_Success()
+// {
+//     // Arrange
+//     int productId = GenerateRandomProductId();
+//     string productName = "InitialProduct";
+//     decimal productRate = 10.50m;
+//     int productStock = 100;
+
+//     // Add a product to edit
+//     try
 //     {
-//         // Arrange
-//         int productId = GenerateRandomProductId();
-//         const string updatedProductName = "UpdatedProduct";
-//         const decimal updatedProductRate = 20.75m;
-//         const int updatedProductStock = 150;
-
-//         // Act
-//         try
+//         using (SqlConnection connection = new SqlConnection(ConnectionString))
 //         {
-//             using (SqlConnection connection = new SqlConnection(ConnectionString))
-//             {
-//                 connection.Open();
-//                 Program.EditProduct(connection); // No need to pass additional arguments here
-//             }
+//             connection.Open();
+//             Program.AddProduct(connection, productId, productName, productRate, productStock);
 //         }
-//         catch (Exception ex)
-//         {
-//             Assert.Fail($"Failed to edit product: {ex.Message}");
-//         }
-
-//         // Assert: The test verifies if the product was updated successfully.
-//         // This assertion is not directly tied to the method's return value.
-//         // It's assumed that if no exception was thrown, the product was updated successfully.
-//         Assert.Pass("Product should be updated successfully.");
 //     }
+//     catch (Exception ex)
+//     {
+//         Assert.Fail($"Failed to add product: {ex.Message}");
+//     }
+
+//     // Act (Edit the product)
+//     const string updatedProductName = "UpdatedProduct";
+//     const decimal updatedProductRate = 20.75m;
+//     const int updatedProductStock = 150;
+
+//     try
+//     {
+//         using (SqlConnection connection = new SqlConnection(ConnectionString))
+//         {
+//             connection.Open();
+//             Program.EditProduct(connection, productId, updatedProductName, updatedProductRate, updatedProductStock);
+//         }
+//     }
+//     catch (Exception ex)
+//     {
+//         Assert.Fail($"Failed to edit product: {ex.Message}");
+//     }
+
+//     // Assert: You can add assertions to check if the product was updated successfully.
+//     // For example, you can perform a search for the updated product and verify its details.
+// }
 
     private int GenerateRandomProductId()
     {
@@ -175,6 +196,8 @@ public void Test_SearchProduct_Success()
         }
     }
 }
+
+
 //         [Test]
 //         public void Test_SearchProduct_Success()
 //         {
@@ -205,31 +228,35 @@ public void Test_SearchProduct_Success()
 //             Assert.AreEqual(searchTerm, searchResult, "Search result does not match expected product name.");
 //         }
 
-//         [Test]
-//         public void Test_EditProduct_Success()
-//         {
-//             // Arrange
-//             const int productId = 305; 
-//             const string updatedProductName = "UpdatedProduct";
-//             const decimal updatedProductRate = 20.75m;
-//             const int updatedProductStock = 150;
+        // [Test]
+        // public void Test_EditProduct_Success()
+        // {
+        //     // Arrange
+        //     const int productId = 305; 
+        //     const string updatedProductName = "UpdatedProduct";
+        //     const decimal updatedProductRate = 20.75m;
+        //     const int updatedProductStock = 150;
 
-//             // Act
-//             using (TransactionScope scope = new TransactionScope())
-//             {
-//                 try
-//                 {
-//                     using (SqlConnection connection = new SqlConnection(ConnectionString))
-//                     {
-//                         connection.Open();
-//                         Program.EditProduct(connection);
-//                     }
-//                 }
-//                 catch (Exception)
-//                 {
-//                     Assert.Fail("Failed to edit product.");
-//                 }
-//             }
+        //     // Act
+        //     using (TransactionScope scope = new TransactionScope())
+        //     {
+        //         try
+        //         {
+        //             using (SqlConnection connection = new SqlConnection(ConnectionString))
+        //             {
+        //                 connection.Open();
+        //                 Program.EditProduct(connection);
+        //             }
+        //         }
+        //         catch (Exception)
+        //         {
+        //             Assert.Fail("Failed to edit product.");
+        //         }
+        //     }
+        // }
+
+
+            
 
 //             // Assert
 //             using (SqlConnection connection = new SqlConnection(ConnectionString))
