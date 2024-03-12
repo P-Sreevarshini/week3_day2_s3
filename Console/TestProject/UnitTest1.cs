@@ -6,12 +6,29 @@ namespace TestProject;
 
 public class Tests
 {
-    [TestFixture]
-    public class ProgramTests
-    {
-        private const string EmployeeConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=EmployeeDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
-        private const string DepartmentConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=DepartmentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
+  [TestFixture]
+public class ProgramTests
+{
+    private const string EmployeeConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=EmployeeDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
+    private const string DepartmentConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=DepartmentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
 
+    [SetUp]
+    public void SetUp()
+    {
+        // Create Employee table
+        Program.CreateEmployeeTable(EmployeeConnectionString);
+
+        // Create Department table
+        Program.CreateDepartmentTable(DepartmentConnectionString);
+    }
+
+    // [TearDown]
+    // public void TearDown()
+    // {
+    //     // Clean up tables after each test
+    //     Program.DropEmployeeTable(EmployeeConnectionString);
+    //     Program.DropDepartmentTable(DepartmentConnectionString);
+    // }
         [Test]
         public void Test_InsertEmployee_Success()
         {
