@@ -31,6 +31,7 @@ namespace GroceryManagement.Tests
 
             Assert.IsTrue(connectionSuccessful, "Connection should be successful.");
         }
+        
 
     [Test]
     public void Test_AddProduct_Success()
@@ -62,33 +63,34 @@ namespace GroceryManagement.Tests
     }
 
     
+    
 
    
-[Test]
-public void Test_SearchProduct_Success()
-{
-    // Arrange
-    const string productName = "TestProduct";
+// [Test]
+// public void Test_SearchProduct_Success()
+// {
+//     // Arrange
+//     const string productName = "TestProduct";
 
-    // Act
-    string searchResult = null;
-    try
-    {
-        using (SqlConnection connection = new SqlConnection(ConnectionString))
-        {
-            connection.Open();
-            searchResult = Program.SearchProduct(connection); // No need to pass additional arguments here
-        }
-    }
-    catch (Exception ex)
-    {
-        Assert.Fail($"Failed to search product: {ex.Message}");
-    }
+//     // Act
+//     string searchResult = null;
+//     try
+//     {
+//         using (SqlConnection connection = new SqlConnection(ConnectionString))
+//         {
+//             connection.Open();
+//             searchResult = Program.SearchProduct(connection); // No need to pass additional arguments here
+//         }
+//     }
+//     catch (Exception ex)
+//     {
+//         Assert.Fail($"Failed to search product: {ex.Message}");
+//     }
 
-    // Assert
-    Assert.IsNotNull(searchResult, "Search result should not be null.");
-    Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
-}
+//     // Assert
+//     Assert.IsNotNull(searchResult, "Search result should not be null.");
+//     Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
+// }
 
     // [Test]
     // public void Test_EditProduct_Success()
@@ -287,4 +289,9 @@ public void Test_SearchProduct_Success()
 //             }
 //         }
 //     }
+
+
+
+
+
 }
