@@ -3,9 +3,9 @@ using System.Data.SqlClient;
 
 namespace StudentManagement
 {
-    class Program
+   public class Program
     {
-        static void Main(string[] args)
+       public static void Main(string[] args)
         {
             string connectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=StudentDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
 
