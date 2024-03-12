@@ -36,9 +36,15 @@ namespace GroceryManagement
         int productStock = Convert.ToInt32(Console.ReadLine());
         AddProduct(connection, productId, productName, productRate, productStock);
         break;
+    // case 2:
+    //     SearchProduct(connection);
+    //     break;
     case 2:
-        SearchProduct(connection);
-        break;
+    Console.Write("Enter the product name to search: ");
+    string searchTerm = Console.ReadLine(); // Read the search term from the console
+    SearchProduct(connection, searchTerm); // Pass the search term to the SearchProduct method
+    break;
+
     case 3:
         EditProduct(connection);
         break;
@@ -105,34 +111,32 @@ public static void AddProduct(SqlConnection connection, int productId, string pr
 }
 
 
-        public static string SearchProduct(SqlConnection connection)
+        public static string SearchProduct(SqlConnection connection, string searchTerm)
+{
+    string searchQuery = "SELECT * FROM Grocery WHERE Name LIKE @SearchTerm";
+    SqlCommand command = new SqlCommand(searchQuery, connection);
+    command.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
+
+    string result = "";
+    using (SqlDataReader reader = command.ExecuteReader())
+    {
+        if (reader.HasRows)
         {
-            Console.Write("Enter the product name to search: ");
-            string searchTerm = Console.ReadLine();
-
-            string searchQuery = "SELECT * FROM Grocery WHERE Name LIKE @SearchTerm";
-            SqlCommand command = new SqlCommand(searchQuery, connection);
-            command.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
-
-            string result = "";
-            using (SqlDataReader reader = command.ExecuteReader())
+            result += "Search results:\n";
+            result += "ID\tName\tRate\tStock\n";
+            while (reader.Read())
             {
-                if (reader.HasRows)
-                {
-                    Console.WriteLine("Search results:");
-                    Console.WriteLine("ID\tName\tRate\tStock");
-                    while (reader.Read())
-                    {
-                        result += $"{reader["ID"]}\t{reader["Name"]}\t{reader["Rate"]}\t{reader["Stock"]}\n";
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No matching products found.");
-                }
+                result += $"{reader["ID"]}\t{reader["Name"]}\t{reader["Rate"]}\t{reader["Stock"]}\n";
             }
-            return result;
         }
+        else
+        {
+            result += "No matching products found.";
+        }
+    }
+    return result;
+}
+
 
         public static void EditProduct(SqlConnection connection)
         {

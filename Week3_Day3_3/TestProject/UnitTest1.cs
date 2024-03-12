@@ -62,8 +62,42 @@ namespace GroceryManagement.Tests
         RemoveTestProduct(productId);
     }
 
-    
-    
+ [Test]
+public void Test_SearchProduct_Success()
+{
+    // Arrange
+    const string productName = "TestProduct"; // Product name to be added and searched
+    const string updatedProductName = "UpdatedProduct"; // Product name to be used for editing
+
+    // Add a product to the database
+    AddProduct(productName); // Ensure that AddProduct is accessible from this context
+
+    // Act
+    string searchResult = null;
+    try
+    {
+        using (SqlConnection connection = new SqlConnection(ConnectionString))
+        {
+            connection.Open();
+            searchResult = Program.SearchProduct(connection, productName); // Search for the product
+        }
+    }
+    catch (SqlException ex)
+    {
+        Assert.Fail($"Failed to search product: {ex.Message}");
+    }
+    catch (Exception ex)
+    {
+        Assert.Fail($"An unexpected error occurred while searching product: {ex.Message}");
+    }
+
+    // Assert
+    Assert.IsNotNull(searchResult, "Search result should not be null.");
+    Assert.IsTrue(searchResult.Contains(productName), $"Search result should contain the product name: {productName}");
+
+    // Clean up by removing the test product from the database
+    RemoveTestProduct(productName);
+}
 
    
 // [Test]
