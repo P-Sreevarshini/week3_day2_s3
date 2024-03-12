@@ -128,7 +128,7 @@ public static void AddProduct(SqlConnection connection, int productId, string pr
             Console.Write("Rate: ");
             decimal rate = Convert.ToDecimal(Console.ReadLine());
             Console.Write("Stock: ");
-            int stock = Convert.ToInt32(Console.ReadLine());
+            int stock = Convert.SeToInt32(Console.ReadLine());
 
             string updateQuery = "UPDATE Grocery SET Name = @Name, Rate = @Rate, Stock = @Stock WHERE ID = @ID";
             SqlCommand command = new SqlCommand(updateQuery, connection);

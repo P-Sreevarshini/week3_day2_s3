@@ -86,35 +86,60 @@ namespace GroceryManagement.Tests
     //     Assert.IsNotNull(searchResult, "Search result should not be null.");
     //     Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
     // }
+    [Test]
+public void Test_SearchProduct_Success()
+{
+    // Arrange
+    const string productName = "TestProduct";
 
-    // [Test]
-    // public void Test_EditProduct_Success()
-    // {
-    //     // Arrange
-    //     int productId = GenerateRandomProductId();
-    //     const string updatedProductName = "UpdatedProduct";
-    //     const decimal updatedProductRate = 20.75m;
-    //     const int updatedProductStock = 150;
+    // Act
+    string searchResult = null;
+    try
+    {
+        using (SqlConnection connection = new SqlConnection(ConnectionString))
+        {
+            connection.Open();
+            searchResult = Program.SearchProduct(connection); // No need to pass additional arguments here
+        }
+    }
+    catch (Exception ex)
+    {
+        Assert.Fail($"Failed to search product: {ex.Message}");
+    }
 
-    //     // Act
-    //     try
-    //     {
-    //         using (SqlConnection connection = new SqlConnection(ConnectionString))
-    //         {
-    //             connection.Open();
-    //             Program.EditProduct(connection, productId, updatedProductName, updatedProductRate, updatedProductStock);
-    //         }
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         Assert.Fail($"Failed to edit product: {ex.Message}");
-    //     }
+    // Assert
+    Assert.IsNotNull(searchResult, "Search result should not be null.");
+    Assert.IsTrue(searchResult.Contains(productName), "Search result should contain the product name.");
+}
 
-    //     // Assert: The test verifies if the product was updated successfully.
-    //     // This assertion is not directly tied to the method's return value.
-    //     // It's assumed that if no exception was thrown, the product was updated successfully.
-    //     Assert.Pass("Product should be updated successfully.");
-    // }
+    [Test]
+    public void Test_EditProduct_Success()
+    {
+        // Arrange
+        int productId = GenerateRandomProductId();
+        const string updatedProductName = "UpdatedProduct";
+        const decimal updatedProductRate = 20.75m;
+        const int updatedProductStock = 150;
+
+        // Act
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                Program.EditProduct(connection); // No need to pass additional arguments here
+            }
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"Failed to edit product: {ex.Message}");
+        }
+
+        // Assert: The test verifies if the product was updated successfully.
+        // This assertion is not directly tied to the method's return value.
+        // It's assumed that if no exception was thrown, the product was updated successfully.
+        Assert.Pass("Product should be updated successfully.");
+    }
 
     private int GenerateRandomProductId()
     {
