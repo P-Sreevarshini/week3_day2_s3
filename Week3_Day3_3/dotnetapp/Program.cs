@@ -181,11 +181,11 @@ namespace GroceryManagement
     {
         static void Main(string[] args)
         {
-            string connectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=GroceryDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
+            string ConnectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=GroceryDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
                 {
                     connection.Open();
                     Console.WriteLine("Connection successful!");

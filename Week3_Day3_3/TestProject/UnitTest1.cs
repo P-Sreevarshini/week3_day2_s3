@@ -62,17 +62,17 @@ public void Test_AddProduct()
         AddProduct(connection);
 
         // Verify product has been added
-        Assert.IsTrue(ProductExists(connection, 1001));
+        Assert.IsTrue(ProductExists(connection, 1231));
 
         // Cleanup: Delete the added product
-        DeleteProduct(connection, 1001);
+        DeleteProduct(connection, 1231);
     }
 }
 
 private void AddProduct(SqlConnection connection)
 {
     string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) " +
-                         "VALUES (1001, 'TestProduct', 10.50, 100)";
+                         "VALUES (1231, 'TestProduct', 10.50, 100)";
     SqlCommand command = new SqlCommand(insertQuery, connection);
     command.ExecuteNonQuery();
 }
