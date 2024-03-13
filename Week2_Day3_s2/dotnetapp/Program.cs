@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace GroceryManagement
+namespace EmployeeManagement
 {
     public class Program
     {
@@ -17,9 +17,7 @@ namespace GroceryManagement
                     Console.WriteLine("Connection successful!");
                     Console.WriteLine("Select an option:");
                     Console.WriteLine("1. Add Employee");
-                    Console.WriteLine("2. Add Department");
-                    Console.WriteLine("3. Delete Employee");
-                    Console.WriteLine("4. Delete Department");
+                    Console.WriteLine("2. Delete Employee");
 
                     int option;
                     if (int.TryParse(Console.ReadLine(), out option))
@@ -30,13 +28,7 @@ namespace GroceryManagement
                                 AddEmployee(connection);
                                 break;
                             case 2:
-                                AddDepartment(connection);
-                                break;
-                            case 3:
-                                DeleteEmployee(connection);
-                                break;
-                            case 4:
-                                DeleteDepartment(connection);
+                                 DeleteEmployee(connection);
                                 break;
                             default:
                                 Console.WriteLine("Invalid option selected!");
@@ -87,32 +79,7 @@ namespace GroceryManagement
             }
         }
 
-        public static void AddDepartment(SqlConnection connection)
-        {
-            Console.WriteLine("Enter department details:");
-            Console.Write("Department ID: ");
-            int deptId = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Department Name: ");
-            string deptName = Console.ReadLine();
-            Console.Write("Location: ");
-            string location = Console.ReadLine();
-            Console.Write("Employee Count: ");
-            int employeeCount = Convert.ToInt32(Console.ReadLine());
-
-            string insertQuery = "INSERT INTO Department (DeptId, DeptName, Location, EmployeeCount) " +
-                                 "VALUES (@DeptId, @DeptName, @Location, @EmployeeCount)";
-            SqlCommand command = new SqlCommand(insertQuery, connection);
-            command.Parameters.AddWithValue("@DeptId", deptId);
-            command.Parameters.AddWithValue("@DeptName", deptName);
-            command.Parameters.AddWithValue("@Location", location);
-            command.Parameters.AddWithValue("@EmployeeCount", employeeCount);
-
-            int rowsAffected = command.ExecuteNonQuery();
-            if (rowsAffected > 0)
-            {
-                Console.WriteLine("Department added successfully!");
-            }
-        }
+       
 
         public static void DeleteEmployee(SqlConnection connection)
         {
@@ -131,26 +98,6 @@ namespace GroceryManagement
             else
             {
                 Console.WriteLine("No employee found with the specified ID.");
-            }
-        }
-
-        public static void DeleteDepartment(SqlConnection connection)
-        {
-            Console.Write("Enter the Department ID to delete: ");
-            int deptId = Convert.ToInt32(Console.ReadLine());
-
-            string deleteQuery = "DELETE FROM Department WHERE DeptId = @DeptId";
-            SqlCommand command = new SqlCommand(deleteQuery, connection);
-            command.Parameters.AddWithValue("@DeptId", deptId);
-
-            int rowsAffected = command.ExecuteNonQuery();
-            if (rowsAffected > 0)
-            {
-                Console.WriteLine("Department deleted successfully!");
-            }
-            else
-            {
-                Console.WriteLine("No department found with the specified ID.");
             }
         }
     }
