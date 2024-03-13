@@ -7,7 +7,7 @@ namespace GroceryManagement
     {
         static void Main(string[] args)
         {
-            string connectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=appdbnew;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
+            string connectionString = "User ID=sa;password=examlyMssql@123; server=localhost;Database=GroceryDB;trusted_connection=false;Persist Security Info=False;Encrypt=False;";
 
             try
             {
