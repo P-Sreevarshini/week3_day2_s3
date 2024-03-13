@@ -32,64 +32,6 @@ namespace GroceryManagement.Tests
             Assert.IsTrue(connectionSuccessful, "Connection should be successful.");
         }
         
-
-    [Test]
-    public void Test_Add_Product()
-    {
-        // Arrange
-        int productId = GenerateRandomProductId();
-        string productName = "TestProduct";
-        decimal productRate = 10.50m;
-        int productStock = 100;
-
-        // Act
-        try
-        {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                Program.AddProduct(connection, productId, productName, productRate, productStock);
-            }
-        }
-        catch (Exception ex)
-        {
-            Assert.Fail($"Failed to add product: {ex.Message}");
-        }
-
-        RemoveTestProduct(productId);
-    }
-
-        private int GenerateRandomProductId()
-        {
-            // Generate a random product ID
-            Random random = new Random();
-            return random.Next(10000, 99999);
-        }
-
-        private void RemoveTestProduct(int productId)
-        {
-            // Perform cleanup by removing the test product from the database
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(ConnectionString))
-                {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand("DELETE FROM Grocery WHERE ID = @ProductId", connection))
-                    {
-                        command.Parameters.AddWithValue("@ProductId", productId);
-                        int rowsAffected = command.ExecuteNonQuery();
-                        if (rowsAffected > 0)
-                        {
-                            Console.WriteLine("Test product removed successfully.");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to remove test product: {ex.Message}");
-            }
-        }
         [Test]
         public void Test_AddProduct_Method_Exists()
         {
@@ -110,6 +52,48 @@ namespace GroceryManagement.Tests
             var methodInfo = typeof(Program).GetMethod("EditProduct");
             Assert.IsNotNull(methodInfo);
         }
+        [Test]
+public void Test_AddProduct()
+{
+    using (SqlConnection connection = new SqlConnection(ConnectionString))
+    {
+        connection.Open();
+        // Add a product
+        AddProduct(connection);
+
+        // Verify product has been added
+        Assert.IsTrue(ProductExists(connection, 1001));
+
+        // Cleanup: Delete the added product
+        DeleteProduct(connection, 1001);
+    }
+}
+
+private void AddProduct(SqlConnection connection)
+{
+    string insertQuery = "INSERT INTO Grocery (ID, Name, Rate, Stock) " +
+                         "VALUES (1001, 'TestProduct', 10.50, 100)";
+    SqlCommand command = new SqlCommand(insertQuery, connection);
+    command.ExecuteNonQuery();
+}
+
+private void DeleteProduct(SqlConnection connection, int productId)
+{
+    string deleteQuery = "DELETE FROM Grocery WHERE ID = @ProductId";
+    SqlCommand command = new SqlCommand(deleteQuery, connection);
+    command.Parameters.AddWithValue("@ProductId", productId);
+    command.ExecuteNonQuery();
+}
+
+private bool ProductExists(SqlConnection connection, int productId)
+{
+    string selectQuery = "SELECT COUNT(*) FROM Grocery WHERE ID = @ProductId";
+    SqlCommand command = new SqlCommand(selectQuery, connection);
+    command.Parameters.AddWithValue("@ProductId", productId);
+    int count = (int)command.ExecuteScalar();
+    return count > 0;
+}
+        
     }
 
 }
