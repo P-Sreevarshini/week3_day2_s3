@@ -1,0 +1,17 @@
+﻿@model dotnetapp.Models.ShoppingCartItem
+
+@*<h1>@Model.Title</h1>
+<p>Author: @Model.Author</p>
+<p>Price: @Model.Price</p>
+<p>Description: @Model.Description</p>
+<img src="~/images/@Model.CoverImage" alt="@Model.Title" />*@
+
+<form asp-controller="Book" asp-action="AddToCart" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="BookId" />
+    <input type="number" asp-for="Quantity" value="1" min="1" />
+    <button type="submit">Add to Cart</button>
+</form>
+
+  
