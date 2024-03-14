@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\dotnetapp",
+    "\\dotnetapp\\Controllers",
+    "\\dotnetapp\\Models",
+    "\\dotnetapp\\Views",
+    "\\dotnetapp\\Views\\Home",
+    "\\dotnetapp\\Views\\Menu",
+    "\\TestProject"
+  ],
+  "SelectedNode": "\\TestProject\\UnitTest1.cs",
+  "PreviewInSolutionExplorer": false
+}

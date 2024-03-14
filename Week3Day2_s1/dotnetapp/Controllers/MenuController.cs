@@ -1,27 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace YourNamespace.Controllers
+namespace dotnetapp.Controllers
 {
     public class MenuController : Controller
     {
+        [Route("menu/home")]
         public IActionResult Home()
         {
-            return View();
+            return View("Home");
         }
+        [Route("menu/customers")]
 
         public IActionResult Customers()
         {
-            return View();
+            return View("Customers");
         }
 
+        [Route("menu/products")]
         public IActionResult Products()
         {
-            return View();
+            return View("Products");
         }
 
+        [Route("menu/orders")]
         public IActionResult Orders()
         {
-            return View();
+            return View("Orders");
         }
     }
 }
