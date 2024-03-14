@@ -32,7 +32,7 @@ namespace dotnetapp.Tests
 
         private IHtmlHelper _htmlHelper;
 [Test]
-        public void S1_TestProductsRouteAttribute()
+        public void Test_Products_Route_Attribute()
         {
             // Arrange
             var controller = CreateMenuController();
@@ -47,7 +47,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void S1_TestCustomersRouteAttribute()
+        public void Test_Customers_Route_Attribute()
         {
             // Arrange
             var controller = CreateMenuController();
@@ -62,7 +62,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void S1_TestHomeRouteAttribute()
+        public void Test_Home_Route_Attribute()
         {
             // Arrange
             var controller = CreateMenuController();
@@ -77,7 +77,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void S1_TestOrdersRouteAttribute()
+        public void Test_Orders_Route_Attribute()
         {
             // Arrange
             var controller = CreateMenuController();
@@ -91,7 +91,7 @@ namespace dotnetapp.Tests
             Assert.AreEqual("menu/orders", routeAttribute.Template);
         }
         [Test]
-        public void S1_Test_HomeViewFile_Exists()
+        public void Test_HomeViewFile_Exists()
         {
             string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Home.cshtml");
             bool indexViewExists = File.Exists(indexPath);
@@ -100,7 +100,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void S1_Test_ProductsViewFile_Exists()
+        public void Test_ProductsViewFile_Exists()
         {
             string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Products.cshtml");
             bool indexViewExists = File.Exists(indexPath);
@@ -109,7 +109,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void S1_Test_CustomersViewFile_Exists()
+        public void Test_CustomersViewFile_Exists()
         {
             string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Customers.cshtml");
             bool indexViewExists = File.Exists(indexPath);
@@ -118,7 +118,7 @@ namespace dotnetapp.Tests
         }
 
         [Test]
-        public void S1_Test_OrdersViewFile_Exists()
+        public void Test_OrdersViewFile_Exists()
         {
             string indexPath = Path.Combine(@"/home/coder/project/workspace/dotnetapp/Views/Menu/", "Orders.cshtml");
             bool indexViewExists = File.Exists(indexPath);
