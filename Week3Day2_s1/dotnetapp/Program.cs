@@ -23,10 +23,12 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
-        name: "menu",
-        pattern: "menu/{action=Home}",
-        defaults: new { controller = "Menu" }
-    );
+        // name: "menu",
+        // pattern: "menu/{action=Home}",
+        // defaults: new { controller = "Menu" }
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    // );
 });
 
 
