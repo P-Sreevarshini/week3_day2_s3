@@ -124,6 +124,7 @@ namespace dotnetapp.Tests
 
             Assert.IsTrue(indexViewExists, "Attendance.cshtml view file does not exist.");
         }
+        
 
         private MethodInfo GetActionMethod(EmployeeController controller, string methodName)
         {
