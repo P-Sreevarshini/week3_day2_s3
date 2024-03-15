@@ -1,6 +1,6 @@
 using System;
 
-namespace dotnetapp
+namespace dotnetapp.Models
 {
     public class Event
     {

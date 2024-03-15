@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using dotnetapp.Models;
+using dotnetapp.Models; // Update the namespace to dotnetapp.Models
 
-namespace dotnetapp.Services
+namespace dotnetapp.Services // Update the namespace to dotnetapp.Services
 {
     public class EventService
     {
