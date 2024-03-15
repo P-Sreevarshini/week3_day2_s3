@@ -114,15 +114,6 @@ namespace dotnetapp.Tests
             Assert.AreEqual("NoContentResult", result);
         }
 
-
-
-
-
-
-
-
-
-
         private string GetControllerInstance(string controllerName, string serviceName)
         {
             // Return instance of controller based on controller name and service name
