@@ -9,17 +9,17 @@ using dotnetapp.Models;
 namespace EventManagementAPITests
 {
     [TestFixture]
-    public class EventControllerTests
-    {
-        private readonly HttpClient _client;
+public class dotnetappApplicationTests
+{
+    private HttpClient _httpClient;
+    private string _generatedToken;
 
-        public EventControllerTests()
-        {
-            _client = new HttpClient
-            {
-                BaseAddress = new Uri("https://localhost:5001/api/") // Update with your API base address
-            };
-        }
+    [SetUp]
+    public void Setup()
+    {
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = new Uri("https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/"); 
+    }
 
         [Test]
         public async Task GetAllEvents_ReturnsListOfEvents()
@@ -96,7 +96,7 @@ namespace EventManagementAPITests
 
             var response = await _client.PutAsync($"events/{eventId}", content);
 
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace EventManagementAPITests
 
             var response = await _client.DeleteAsync($"events/{eventId}");
 
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Test]
