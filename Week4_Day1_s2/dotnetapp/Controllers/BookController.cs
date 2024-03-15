@@ -1,9 +1,6 @@
-// BookController.cs
 using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
 using dotnetapp.Services;
-using dotnetapp.Repository;
-
 
 namespace dotnetapp.Controllers
 {
@@ -37,21 +34,32 @@ namespace dotnetapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBook(Book book)
+        public IActionResult AddBook([FromBody] Book book)
         {
-            var addedBook = _bookService.SaveBook(book);
-            return CreatedAtAction(nameof(GetBook), new { id = addedBook.BookId }, addedBook);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newBook = _bookService.SaveBook(book);
+            return CreatedAtAction(nameof(GetBook), new { id = newBook.BookId }, newBook);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateBook(int id, Book book)
+        public IActionResult UpdateBook(int id, [FromBody] Book book)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var updatedBook = _bookService.UpdateBook(id, book);
             if (updatedBook == null)
             {
                 return NotFound();
             }
-            return NoContent();
+
+            return Ok(updatedBook);
         }
 
         [HttpDelete("{id}")]

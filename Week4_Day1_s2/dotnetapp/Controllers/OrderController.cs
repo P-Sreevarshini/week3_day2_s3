@@ -1,8 +1,6 @@
-// OrderController.cs
 using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
 using dotnetapp.Services;
-using dotnetapp.Repository;
 
 namespace dotnetapp.Controllers
 {
@@ -36,21 +34,32 @@ namespace dotnetapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddOrder(Order order)
+        public IActionResult AddOrder([FromBody] Order order)
         {
-            var addedOrder = _orderService.SaveOrder(order);
-            return CreatedAtAction(nameof(GetOrder), new { id = addedOrder.OrderId }, addedOrder);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newOrder = _orderService.SaveOrder(order);
+            return CreatedAtAction(nameof(GetOrder), new { id = newOrder.OrderId }, newOrder);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateOrder(int id, Order order)
+        public IActionResult UpdateOrder(int id, [FromBody] Order order)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var updatedOrder = _orderService.UpdateOrder(id, order);
             if (updatedOrder == null)
             {
                 return NotFound();
             }
-            return NoContent();
+
+            return Ok(updatedOrder);
         }
 
         [HttpDelete("{id}")]

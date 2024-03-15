@@ -14,11 +14,13 @@ public class BookRepository
     public Book GetBook(int id) => _books.FirstOrDefault(b => b.BookId == id);
 
     public Book SaveBook(Book book)
-    {
-        book.BookId = _books.Count + 1;
-        _books.Add(book);
-        return book;
-    }
+{
+    int maxId = _books.Count > 0 ? _books.Max(b => b.BookId) : 0;
+    book.BookId = maxId + 1;
+    _books.Add(book);
+    return book;
+}
+
 
     public Book UpdateBook(int id, Book book)
     {
