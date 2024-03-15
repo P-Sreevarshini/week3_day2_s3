@@ -6,13 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using dotnetapp.Models;
+using System.Reflection;
+
 
 namespace dotnetapp.Tests
 {
     [TestFixture]
     public class BooksControllerTests
     {
+        private const string BookServiceName = "BookService";
+        private const string OrderServiceName = "OrderService";
+        private const string BookRepositoryName = "BookRepository";
+        private const string OrderRepositoryName = "OrderRepository";
         private HttpClient _httpClient;
+        private Assembly _assembly;
+
         private Book _testBook;
         private Order _testOrder;
 
@@ -20,6 +28,7 @@ namespace dotnetapp.Tests
         [SetUp]
         public async Task Setup()
         {
+            _assembly = Assembly.GetAssembly(typeof(dotnetapp.Services.IBookService));
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("http://localhost:8080"); // Base URL of your API
 
@@ -220,19 +229,56 @@ namespace dotnetapp.Tests
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
+        [Test]
+        public void BookService_InstanceNotNull()
+        {
+            AssertServiceInstanceNotNull(BookServiceName);
+        }
 
-        // [TearDown]
-        // public async Task Cleanup()
-        // {
-        //     // Delete the test order after each test case
-        //     if (_testOrder != null)
-        //     {
-        //         var response = await _httpClient.DeleteAsync($"api/orders/{_testOrder.OrderId}");
-        //         response.EnsureSuccessStatusCode();
-        //     }
+        [Test]
+        public void OrderService_InstanceNotNull()
+        {
+            AssertServiceInstanceNotNull(OrderServiceName);
+        }
 
-        //     _httpClient.Dispose();
-        // }
+        [Test]
+        public void BookRepository_InstanceNotNull()
+        {
+            AssertRepositoryInstanceNotNull(BookRepositoryName);
+        }
+
+        [Test]
+        public void OrderRepository_InstanceNotNull()
+        {
+            AssertRepositoryInstanceNotNull(OrderRepositoryName);
+        }
+
+        private void AssertServiceInstanceNotNull(string serviceName)
+        {
+            Type serviceType = _assembly.GetType($"dotnetapp.Services.{serviceName}");
+
+            if (serviceType == null)
+            {
+                Assert.Fail($"Service {serviceName} does not exist.");
+            }
+
+            object serviceInstance = Activator.CreateInstance(serviceType);
+            Assert.IsNotNull(serviceInstance);
+        }
+
+        private void AssertRepositoryInstanceNotNull(string repositoryName)
+        {
+            Type repositoryType = _assembly.GetType($"dotnetapp.Repositories.{repositoryName}");
+
+            if (repositoryType == null)
+            {
+                Assert.Fail($"Repository {repositoryName} does not exist.");
+            }
+
+            object repositoryInstance = Activator.CreateInstance(repositoryType);
+            Assert.IsNotNull(repositoryInstance);
+        }
+
 
         [TearDown]
         public async Task Cleanup()
