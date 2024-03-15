@@ -14,6 +14,7 @@ namespace dotnetapp.Tests
     public class ProductControllerTests
     {
          private const string ProductServiceName = "ProductService";
+         private const string ProductControllerName = "ProductController";
 
         private HttpClient _httpClient;
         private Assembly _assembly;
@@ -82,6 +83,14 @@ namespace dotnetapp.Tests
             Assert.AreEqual(_testProduct.Id, product.Id);
         }
         [Test]
+        public async Task Test_GetProductById_InvalidId_ReturnsNotFound()
+        {
+            var response = await _httpClient.GetAsync("api/product/999999"); // Using an invalid ID
+            
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Test]
         public void Test_ProductService_Exist()
         {
             AssertServiceInstanceNotNull(ProductServiceName);
@@ -99,17 +108,28 @@ namespace dotnetapp.Tests
             object serviceInstance = Activator.CreateInstance(serviceType);
             Assert.IsNotNull(serviceInstance);
         }
+        [Test]
+        public void Test_ProductController_Exist()
+        {
+            AssertControllerClassExist(ProductControllerName);
+        }
+
+        private void AssertControllerClassExist(string controllerName)
+        {
+            Type controllerType = _assembly.GetType($"dotnetapp.Controllers.{controllerName}");
+
+            if (controllerType == null)
+            {
+                Assert.Fail($"Controller {controllerName} does not exist.");
+            }
+        }
+
 
         [TearDown]
         public async Task Cleanup()
         {
-            if (_testProduct != null)
-            {
-                var response = await _httpClient.DeleteAsync($"api/product/{_testProduct.Id}");
-                response.EnsureSuccessStatusCode();
-            }
-
             _httpClient.Dispose();
         }
+
     }
 }
