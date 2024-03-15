@@ -18,7 +18,7 @@ namespace EventManagementAPITests
         public void Setup()
         {
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/");
+            _httpClient.BaseAddress = new Uri("http://localhost:8080");
         }
 
         [Test]
