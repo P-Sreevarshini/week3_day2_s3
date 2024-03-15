@@ -1,181 +1,3 @@
-// using NUnit.Framework;
-// using System;
-// using dotnetapp.Models;
-// using Microsoft.AspNetCore.Mvc;
-// using System.Collections.Generic;
-// using System.Linq;
-// using Microsoft.Extensions.DependencyInjection;
-// using System.IO;
-
-
-
-// namespace dotnetapp.Tests
-// {
-//     [TestFixture]
-//     public class ControllerTests
-//     {
-//         private string _booksControllerName;
-//         private string _ordersControllerName;
-//         private string _bookServiceName;
-//         private string _orderServiceName;
-//         private string _bookRepositoryName;
-//         private string _orderRepositoryName;
-
-//         [SetUp]
-//         public void Setup()
-//         {
-//             _bookRepositoryName = "BookRepository";
-//             _orderRepositoryName = "OrderRepository";
-//             _bookServiceName = "BookService";
-//             _orderServiceName = "OrderService";
-//             _booksControllerName = "BooksController";
-//             _ordersControllerName = "OrdersController";
-//         }
-
-//         [Test]
-//         public void Get_all_Books_Returns_Ok_Result()
-//         {
-//             // Arrange
-//             var booksController = GetControllerInstance(_booksControllerName, _bookServiceName);
-
-//             // Act
-//             var result = GetMethodResult(booksController, "GetAllBooks");
-
-//             // Assert
-//             Assert.AreEqual("OkObjectResult", result);
-//         }
-
-//         [Test]
-//         public void Get_all_Orders_Returns_Ok_Result()
-//         {
-//             // Arrange
-//             var ordersController = GetControllerInstance(_ordersControllerName, _orderServiceName);
-
-//             // Act
-//             var result = GetMethodResult(ordersController, "GetAllOrders");
-
-//             // Assert
-//             Assert.AreEqual("OkObjectResult", result);
-//         }
-
-//         [Test]
-//         public void Get_BookById_Returns_Ok_Result()
-//         {
-//             // Arrange
-//             var booksController = GetControllerInstance(_booksControllerName, _bookServiceName);
-//             int bookId = 1;
-
-//             // Act
-//             var result = GetMethodResult(booksController, "GetBookById", bookId);
-
-//             // Assert
-//             Assert.AreEqual("OkObjectResult", result);
-//         }
-
-//         [Test]
-//         public void Get_OrderById_Returns_Ok_Result()
-//         {
-//             // Arrange
-//             var ordersController = GetControllerInstance(_ordersControllerName, _orderServiceName);
-//             int orderId = 1;
-
-//             // Act
-//             var result = GetMethodResult(ordersController, "GetOrderById", orderId);
-
-//             // Assert
-//             Assert.AreEqual("OkObjectResult", result);
-//         }
-
-//         [Test]
-//         public void Delete_Book_Returns_NoContent_Result()
-//         {
-//             // Arrange
-//             var booksController = GetControllerInstance(_booksControllerName, _bookServiceName);
-//             int bookId = 1;
-
-//             // Act
-//             var result = GetMethodResult(booksController, "DeleteBook", bookId);
-
-//             // Assert
-//             Assert.AreEqual("NoContentResult", result);
-//         }
-
-//         [Test]
-//         public void Delete_Order_Returns_NoContent_Result()
-//         {
-//             // Arrange
-//             var ordersController = GetControllerInstance(_ordersControllerName, _orderServiceName);
-//             int orderId = 1;
-
-//             // Act
-//             var result = GetMethodResult(ordersController, "DeleteOrder", orderId);
-
-//             // Assert
-//             Assert.AreEqual("NoContentResult", result);
-//         }
-
-//         private string GetControllerInstance(string controllerName, string serviceName)
-//         {
-//             // Return instance of controller based on controller name and service name
-//             switch (controllerName)
-//             {
-//                 case "BooksController":
-//                     return "BooksController(" + GetServiceInstance(serviceName) + ")";
-//                 case "OrdersController":
-//                     return "OrdersController(" + GetServiceInstance(serviceName) + ")";
-//                 default:
-//                     return null;
-//             }
-//         }
-
-//         private string GetServiceInstance(string serviceName)
-//         {
-//             // Return instance of service based on service name
-//             switch (serviceName)
-//             {
-//                 case "BookService":
-//                     return "BookService(" + GetRepositoryInstance(_bookRepositoryName) + ")";
-//                 case "OrderService":
-//                     return "OrderService(" + GetRepositoryInstance(_orderRepositoryName) + ")";
-//                 default:
-//                     return null;
-//             }
-//         }
-
-//         private string GetRepositoryInstance(string repositoryName)
-//         {
-//             // Return instance of repository based on repository name
-//             switch (repositoryName)
-//             {
-//                 case "BookRepository":
-//                     return "BookRepository()";
-//                 case "OrderRepository":
-//                     return "OrderRepository()";
-//                 default:
-//                     return null;
-//             }
-//         }
-
-//         private string GetMethodResult(string controller, string methodName, params object[] args)
-//         {
-//             // Simulate method calls and return result type as string
-//             switch (methodName)
-//             {
-//                 case "GetAllBooks":
-//                 case "GetAllOrders":
-//                     return "OkObjectResult";
-//                 case "GetBookById":
-//                 case "GetOrderById":
-//                     return "OkObjectResult";
-//                 case "DeleteBook":
-//                 case "DeleteOrder":
-//                     return "NoContentResult";
-//                 default:
-//                     return null;
-//             }
-//         }
-//     }
-// }
 using NUnit.Framework;
 using System;
 using System.Net;
@@ -191,12 +13,38 @@ namespace dotnetapp.Tests
     public class BooksControllerTests
     {
         private HttpClient _httpClient;
+        private Book _testBook;
+        private Order _testOrder;
+
 
         [SetUp]
-        public void Setup()
+        public async Task Setup()
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("http://localhost:8080"); // Base URL of your API
+
+            // Create a new test book before each test case
+            _testBook = await CreateTestBook();
+            _testOrder = await CreateTestOrder();
+        }
+
+        private async Task<Book> CreateTestBook()
+        {
+            var newBook = new Book
+            {
+                BookId = 0, // Let the server assign the ID
+                BookName = "Test Book",
+                Category = "Test Category",
+                Price = 10.99m
+            };
+
+            var json = JsonConvert.SerializeObject(newBook);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("api/books", content);
+            response.EnsureSuccessStatusCode();
+
+            return JsonConvert.DeserializeObject<Book>(await response.Content.ReadAsStringAsync());
         }
 
         [Test]
@@ -215,8 +63,7 @@ namespace dotnetapp.Tests
         [Test]
         public async Task GetBookById_ValidId_ReturnsBook()
         {
-            var bookId = 1;
-            var response = await _httpClient.GetAsync($"api/books/{bookId}");
+            var response = await _httpClient.GetAsync($"api/books/{_testBook.BookId}");
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
@@ -224,14 +71,13 @@ namespace dotnetapp.Tests
             var book = JsonConvert.DeserializeObject<Book>(content);
 
             Assert.IsNotNull(book);
-            Assert.AreEqual(bookId, book.BookId);
+            Assert.AreEqual(_testBook.BookId, book.BookId);
         }
 
         [Test]
         public async Task GetBookById_InvalidId_ReturnsNotFound()
         {
-            var bookId = 999;
-            var response = await _httpClient.GetAsync($"api/books/{bookId}");
+            var response = await _httpClient.GetAsync($"api/books/999");
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -241,7 +87,7 @@ namespace dotnetapp.Tests
         {
             var newBook = new Book
             {
-                BookId = 555, // Explicit data creation
+                BookId = 0, // Let the server assign the ID
                 BookName = "New Book",
                 Category = "Fiction",
                 Price = 19.99m
@@ -262,81 +108,148 @@ namespace dotnetapp.Tests
         [Test]
         public async Task UpdateBook_ValidId_ReturnsNoContent()
         {
-            var bookId = 2;
-            var updatedBook = new Book
-            {
-                BookId = bookId,
-                BookName = "Updated Book",
-                Category = "Non-fiction",
-                Price = 29.99m
-            };
+            _testBook.BookName = "Updated Book";
 
-            var json = JsonConvert.SerializeObject(updatedBook);
+            var json = JsonConvert.SerializeObject(_testBook);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"api/books/{bookId}", content);
+            var response = await _httpClient.PutAsync($"api/books/{_testBook.BookId}", content);
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-        }
-
-        [Test]
-        public async Task UpdateBook_InvalidId_ReturnsNotFound()
-        {
-            var bookId = 999;
-            var updatedBook = new Book
-            {
-                BookId = bookId,
-                BookName = "Updated Book",
-                Category = "Non-fiction",
-                Price = 29.99m
-            };
-
-            var json = JsonConvert.SerializeObject(updatedBook);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PutAsync($"api/books/{bookId}", content);
-
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Test]
         public async Task DeleteBook_ValidId_ReturnsNoContent()
         {
-            var newBook = new Book
+            var response = await _httpClient.DeleteAsync($"api/books/{_testBook.BookId}");
+
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+          private async Task<Order> CreateTestOrder()
+        {
+            var newOrder = new Order
             {
-                BookId = 777,
-                BookName = "Book to Delete",
-                Category = "Science",
-                Price = 9.99m
+                OrderId = 0, // Let the server assign the ID
+                CustomerName = "Test Customer",
+                TotalAmount = 50.00m
             };
 
-            var json = JsonConvert.SerializeObject(newBook);
+            var json = JsonConvert.SerializeObject(newOrder);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var createResponse = await _httpClient.PostAsync("api/books", content);
-            createResponse.EnsureSuccessStatusCode();
+            var response = await _httpClient.PostAsync("api/orders", content);
+            response.EnsureSuccessStatusCode();
 
-            var createdBook = JsonConvert.DeserializeObject<Book>(await createResponse.Content.ReadAsStringAsync());
-            var bookId = createdBook.BookId;
+            return JsonConvert.DeserializeObject<Order>(await response.Content.ReadAsStringAsync());
+        }
 
-            var response = await _httpClient.DeleteAsync($"api/books/{bookId}");
+        [Test]
+        public async Task GetAllOrders_ReturnsListOfOrders()
+        {
+            var response = await _httpClient.GetAsync("api/orders");
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var orders = JsonConvert.DeserializeObject<Order[]>(content);
+
+            Assert.IsNotNull(orders);
+            Assert.IsTrue(orders.Length > 0);
+        }
+
+        [Test]
+        public async Task GetOrderById_ValidId_ReturnsOrder()
+        {
+            var response = await _httpClient.GetAsync($"api/orders/{_testOrder.OrderId}");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var order = JsonConvert.DeserializeObject<Order>(content);
+
+            Assert.IsNotNull(order);
+            Assert.AreEqual(_testOrder.OrderId, order.OrderId);
+        }
+
+        [Test]
+        public async Task GetOrderById_InvalidId_ReturnsNotFound()
+        {
+            var response = await _httpClient.GetAsync($"api/orders/999");
+
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Test]
+        public async Task AddOrder_ReturnsCreatedResponse()
+        {
+            var newOrder = new Order
+            {
+                OrderId = 0, // Let the server assign the ID
+                CustomerName = "New Customer",
+                TotalAmount = 100.00m
+            };
+
+            var json = JsonConvert.SerializeObject(newOrder);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync("api/orders", content);
+            response.EnsureSuccessStatusCode();
+
+            var createdOrder = JsonConvert.DeserializeObject<Order>(await response.Content.ReadAsStringAsync());
+
+            Assert.IsNotNull(createdOrder);
+            Assert.AreEqual(newOrder.CustomerName, createdOrder.CustomerName);
+        }
+
+        [Test]
+        public async Task UpdateOrder_ValidId_ReturnsNoContent()
+        {
+            _testOrder.CustomerName = "Updated Customer";
+
+            var json = JsonConvert.SerializeObject(_testOrder);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"api/orders/{_testOrder.OrderId}", content);
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Test]
-        public async Task DeleteBook_InvalidId_ReturnsNotFound()
+        public async Task DeleteOrder_ValidId_ReturnsNoContent()
         {
-            var bookId = 999;
+            var response = await _httpClient.DeleteAsync($"api/orders/{_testOrder.OrderId}");
 
-            var response = await _httpClient.DeleteAsync($"api/books/{bookId}");
-
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
+        // [TearDown]
+        // public async Task Cleanup()
+        // {
+        //     // Delete the test order after each test case
+        //     if (_testOrder != null)
+        //     {
+        //         var response = await _httpClient.DeleteAsync($"api/orders/{_testOrder.OrderId}");
+        //         response.EnsureSuccessStatusCode();
+        //     }
+
+        //     _httpClient.Dispose();
+        // }
+
         [TearDown]
-        public void Cleanup()
+        public async Task Cleanup()
         {
+            // Delete the test book after each test case
+            if (_testBook != null)
+            {
+                var response = await _httpClient.DeleteAsync($"api/books/{_testBook.BookId}");
+                response.EnsureSuccessStatusCode();
+            }
+            if (_testOrder != null)
+            {
+                var response = await _httpClient.DeleteAsync($"api/orders/{_testOrder.OrderId}");
+                response.EnsureSuccessStatusCode();
+            }
+
+
             _httpClient.Dispose();
         }
     }
