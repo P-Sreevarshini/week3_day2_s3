@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Models;
+using dotnetapp.Models;
 
-namespace Services
+namespace dotnetapp.Services
 {
     public class EventService
     {
