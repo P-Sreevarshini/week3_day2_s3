@@ -1,3 +1,10 @@
+
+using System.Collections.Generic;
+using System.Linq;
+using dotnetapp.Models;
+
+namespace dotnetapp.Repository
+{
 public class BookRepository
 {
     private readonly List<Book> _books = new List<Book>();
@@ -35,4 +42,5 @@ public class BookRepository
         }
         return false;
     }
+}
 }

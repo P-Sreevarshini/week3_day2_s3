@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
+using dotnetapp.Models;
+
+namespace dotnetapp.Repository
+{
 public class OrderRepository
 {
     private readonly List<Order> _orders = new List<Order>();
@@ -34,4 +40,5 @@ public class OrderRepository
         }
         return false;
     }
+}
 }
