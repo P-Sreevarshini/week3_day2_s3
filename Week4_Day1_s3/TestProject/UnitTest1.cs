@@ -230,30 +230,30 @@ namespace dotnetapp.Tests
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
         [Test]
-        public void Test_BookService_InstanceNotNull()
+        public void Test_BookService_Exist()
         {
             AssertServiceInstanceNotNull(BookServiceName);
         }
 
         [Test]
-        public void Test_OrderService_InstanceNotNull()
+        public void Test_OrderService_Exist()
         {
             AssertServiceInstanceNotNull(OrderServiceName);
         }
 
         [Test]
-        public void Test_BookRepository_InstanceNotNull()
+        public void Test_BookRepository_Exist()
         {
             AssertRepositoryInstanceNotNull(BookRepositoryName);
         }
 
         [Test]
-        public void Test_OrderRepository_InstanceNotNull()
+        public void Test_OrderRepository_Exist()
         {
             AssertRepositoryInstanceNotNull(OrderRepositoryName);
         }
 
-        private void Test_AssertServiceInstanceNotNull(string serviceName)
+        private void AssertServiceInstanceNotNull(string serviceName)
         {
             Type serviceType = _assembly.GetType($"dotnetapp.Services.{serviceName}");
 
@@ -266,7 +266,7 @@ namespace dotnetapp.Tests
             Assert.IsNotNull(serviceInstance);
         }
 
-        private void Test_AssertRepositoryInstanceNotNull(string repositoryName)
+        private void AssertRepositoryInstanceNotNull(string repositoryName)
         {
             Type repositoryType = _assembly.GetType($"dotnetapp.Repository.{repositoryName}");
 
