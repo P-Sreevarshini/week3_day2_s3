@@ -1,30 +1,29 @@
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using dotnetapp.Models;
 using dotnetapp.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetapp.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class BookController : ControllerBase
+    [ApiController]
+    public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bookService)
+        public BooksController(IBookService bookService)
         {
             _bookService = bookService;
         }
 
         [HttpGet]
-        public ActionResult<List<Book>> GetAllBooks()
+        public IActionResult GetAllBooks()
         {
             var books = _bookService.GetAllBooks();
             return Ok(books);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Book> GetBookById(int id)
+        public IActionResult GetBookById(int id)
         {
             var book = _bookService.GetBookById(id);
             if (book == null)
@@ -44,7 +43,11 @@ namespace dotnetapp.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateBook(int id, Book book)
         {
-            _bookService.UpdateBook(id, book);
+            if (id != book.BookId)
+            {
+                return BadRequest();
+            }
+            _bookService.UpdateBook(book);
             return NoContent();
         }
 

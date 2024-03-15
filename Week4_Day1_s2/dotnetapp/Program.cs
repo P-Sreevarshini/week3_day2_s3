@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<BookRepository>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
+// builder.Services.AddScoped<IOrderService, OrderService>();
 
 var app = builder.Build();
 

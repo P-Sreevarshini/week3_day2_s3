@@ -1,42 +1,56 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using dotnetapp.Models;
-using dotnetapp.Repository;
 
 namespace dotnetapp.Services
 {
     public class BookService : IBookService
     {
-        private readonly BookRepository _bookRepository;
+        private readonly List<Book> _books;
 
-        public BookService(BookRepository bookRepository)
+        public BookService()
         {
-            _bookRepository = bookRepository;
+            _books = new List<Book>
+            {
+                new Book { BookId = 1, BookName = "Book 1", Category = "Fiction", Price = 20.99m },
+                new Book { BookId = 2, BookName = "Book 2", Category = "Non-Fiction", Price = 15.99m }
+            };
         }
 
-        public List<Book> GetAllBooks()
+        public IEnumerable<Book> GetAllBooks()
         {
-            return _bookRepository.GetAllBooks();
+            return _books;
         }
 
         public Book GetBookById(int id)
         {
-            return _bookRepository.GetBookById(id);
+            return _books.FirstOrDefault(b => b.BookId == id);
         }
 
         public void AddBook(Book book)
         {
-            _bookRepository.SaveBook(book);
+            book.BookId = _books.Max(b => b.BookId) + 1;
+            _books.Add(book);
         }
 
-        public void UpdateBook(int id, Book book)
+        public void UpdateBook(Book book)
         {
-            _bookRepository.UpdateBook(id, book);
+            var existingBook = _books.FirstOrDefault(b => b.BookId == book.BookId);
+            if (existingBook != null)
+            {
+                existingBook.BookName = book.BookName;
+                existingBook.Category = book.Category;
+                existingBook.Price = book.Price;
+            }
         }
 
         public void DeleteBook(int id)
         {
-            _bookRepository.DeleteBook(id);
+            var bookToRemove = _books.FirstOrDefault(b => b.BookId == id);
+            if (bookToRemove != null)
+            {
+                _books.Remove(bookToRemove);
+            }
         }
     }
 }
