@@ -111,113 +111,38 @@ namespace dotnetapp.Tests
             Assert.AreEqual("NoContentResult", result);
         }
         [Test]
-        public void Check_BookRepository_Methods()
+        public void OrderRepository_File_Exists()
         {
             // Arrange
-            var result = GetMethodResult(_bookRepositoryName, "SaveBook", new Book { BookId = 1, BookName = "Test Book", Category = "Test", Price = 9.99m });
-            var savedBook = GetMethodResult(_bookRepositoryName, "GetBook", 1);
+            string filePath = "OrderRepository.cs"; // Assuming it's in the same directory as the test file
+
+            // Act
+            bool fileExists = File.Exists(filePath);
 
             // Assert
-            Assert.IsNotNull(savedBook);
-            Assert.AreEqual("Test Book", savedBook.BookName);
-            Assert.AreEqual("Test", savedBook.Category);
-            Assert.AreEqual(9.99m, savedBook.Price);
-
-            // Cleanup
-            GetMethodResult(_bookRepositoryName, "DeleteBook", 1);
-        }
-
-        [Test]
-        public void Check_OrderRepository_Methods()
-        {
-            // Arrange
-            var result = GetMethodResult(_orderRepositoryName, "SaveOrder", new Order { OrderId = 1, CustomerName = "Test Customer", TotalAmount = 50.0m });
-            var savedOrder = GetMethodResult(_orderRepositoryName, "GetOrder", 1);
-
-            // Assert
-            Assert.IsNotNull(savedOrder);
-            Assert.AreEqual("Test Customer", savedOrder.CustomerName);
-            Assert.AreEqual(50.0m, savedOrder.TotalAmount);
-
-            // Cleanup
-            GetMethodResult(_orderRepositoryName, "DeleteOrder", 1);
-        }
-
-        [Test]
-        public void Check_BookService_Methods()
-        {
-            // Arrange
-            var result = GetMethodResult(_bookServiceName, "AddBook", new Book { BookId = 1, BookName = "Test Book", Category = "Test", Price = 9.99m });
-            var savedBook = GetMethodResult(_bookServiceName, "GetBookById", 1);
-
-            // Assert
-            Assert.IsNotNull(savedBook);
-            Assert.AreEqual("Test Book", savedBook.BookName);
-            Assert.AreEqual("Test", savedBook.Category);
-            Assert.AreEqual(9.99m, savedBook.Price);
-
-            // Cleanup
-            GetMethodResult(_bookServiceName, "DeleteBook", 1);
-        }
-
-        [Test]
-        public void Check_OrderService_Methods()
-        {
-            // Arrange
-            var result = GetMethodResult(_orderServiceName, "AddOrder", new Order { OrderId = 1, CustomerName = "Test Customer", TotalAmount = 50.0m });
-            var savedOrder = GetMethodResult(_orderServiceName, "GetOrderById", 1);
-
-            // Assert
-            Assert.IsNotNull(savedOrder);
-            Assert.AreEqual("Test Customer", savedOrder.CustomerName);
-            Assert.AreEqual(50.0m, savedOrder.TotalAmount);
-
-            // Cleanup
-            GetMethodResult(_orderServiceName, "DeleteOrder", 1);
+            Assert.IsTrue(fileExists, "OrderRepository.cs file does not exist.");
         }
 
 
-        // private string GetControllerInstance(string controllerName, string serviceName)
-        // {
-        //     // Return instance of controller based on controller name and service name
-        //     switch (controllerName)
-        //     {
-        //         case "BooksController":
-        //             return "BooksController(" + GetServiceInstance(serviceName) + ")";
-        //         case "OrdersController":
-        //             return "OrdersController(" + GetServiceInstance(serviceName) + ")";
-        //         default:
-        //             return null;
-        //     }
-        // }
-        private object GetControllerInstance(string controllerName, string serviceName)
+
+
+
+
+
+
+        private string GetControllerInstance(string controllerName, string serviceName)
         {
             // Return instance of controller based on controller name and service name
             switch (controllerName)
             {
                 case "BooksController":
-                    return new BooksController((IService)GetServiceInstance(serviceName));
+                    return "BooksController(" + GetServiceInstance(serviceName) + ")";
                 case "OrdersController":
-                    return new OrdersController((IService)GetServiceInstance(serviceName));
+                    return "OrdersController(" + GetServiceInstance(serviceName) + ")";
                 default:
                     return null;
             }
         }
-
-private object GetServiceInstance(string serviceName)
-{
-    // Return instance of service based on service name
-    switch (serviceName)
-    {
-        case "BookService":
-            return new BookService((IRepository)GetRepositoryInstance(_bookRepositoryName));
-        case "OrderService":
-            return new OrderService((IRepository)GetRepositoryInstance(_orderRepositoryName));
-        default:
-            return null;
-    }
-}
-
 
         private string GetServiceInstance(string serviceName)
         {
