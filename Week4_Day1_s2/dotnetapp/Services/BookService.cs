@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using dotnetapp.Models;
 using dotnetapp.Repository;
 
@@ -13,29 +14,29 @@ namespace dotnetapp.Services
             _bookRepository = bookRepository;
         }
 
-        public List<Book> GetBooks()
+        public List<Book> GetAllBooks()
         {
-            return _bookRepository.GetBooks();
+            return _bookRepository.GetAllBooks();
         }
 
-        public Book GetBook(int id)
+        public Book GetBookById(int id)
         {
-            return _bookRepository.GetBook(id);
+            return _bookRepository.GetBookById(id);
         }
 
-        public Book SaveBook(Book book)
+        public void AddBook(Book book)
         {
-            return _bookRepository.SaveBook(book);
+            _bookRepository.SaveBook(book);
         }
 
-        public Book UpdateBook(int id, Book book)
+        public void UpdateBook(int id, Book book)
         {
-            return _bookRepository.UpdateBook(id, book);
+            _bookRepository.UpdateBook(id, book);
         }
 
-        public bool DeleteBook(int id)
+        public void DeleteBook(int id)
         {
-            return _bookRepository.DeleteBook(id);
+            _bookRepository.DeleteBook(id);
         }
     }
 }

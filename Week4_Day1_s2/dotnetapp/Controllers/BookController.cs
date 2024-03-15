@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using dotnetapp.Models;
 using dotnetapp.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetapp.Controllers
 {
@@ -16,16 +17,16 @@ namespace dotnetapp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBooks()
+        public ActionResult<List<Book>> GetAllBooks()
         {
-            var books = _bookService.GetBooks();
+            var books = _bookService.GetAllBooks();
             return Ok(books);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetBook(int id)
+        public ActionResult<Book> GetBookById(int id)
         {
-            var book = _bookService.GetBook(id);
+            var book = _bookService.GetBookById(id);
             if (book == null)
             {
                 return NotFound();
@@ -34,42 +35,23 @@ namespace dotnetapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBook([FromBody] Book book)
+        public IActionResult AddBook(Book book)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var newBook = _bookService.SaveBook(book);
-            return CreatedAtAction(nameof(GetBook), new { id = newBook.BookId }, newBook);
+            _bookService.AddBook(book);
+            return CreatedAtAction(nameof(GetBookById), new { id = book.BookId }, book);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateBook(int id, [FromBody] Book book)
+        public IActionResult UpdateBook(int id, Book book)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var updatedBook = _bookService.UpdateBook(id, book);
-            if (updatedBook == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(updatedBook);
+            _bookService.UpdateBook(id, book);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
         {
-            var result = _bookService.DeleteBook(id);
-            if (!result)
-            {
-                return NotFound();
-            }
+            _bookService.DeleteBook(id);
             return NoContent();
         }
     }

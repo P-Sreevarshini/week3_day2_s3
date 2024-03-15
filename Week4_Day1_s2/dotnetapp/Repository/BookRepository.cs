@@ -1,48 +1,43 @@
-
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using dotnetapp.Models;
 
 namespace dotnetapp.Repository
 {
-public class BookRepository
-{
-    private readonly List<Book> _books = new List<Book>();
-
-    public List<Book> GetBooks() => _books;
-
-    public Book GetBook(int id) => _books.FirstOrDefault(b => b.BookId == id);
-
-    public Book SaveBook(Book book)
-{
-    int maxId = _books.Count > 0 ? _books.Max(b => b.BookId) : 0;
-    book.BookId = maxId + 1;
-    _books.Add(book);
-    return book;
-}
-
-
-    public Book UpdateBook(int id, Book book)
+    public class BookRepository
     {
-        var existingBook = _books.FirstOrDefault(b => b.BookId == id);
-        if (existingBook != null)
-        {
-            existingBook.BookName = book.BookName;
-            existingBook.Category = book.Category;
-            existingBook.Price = book.Price;
-        }
-        return existingBook;
-    }
+        private readonly List<Book> _books = new List<Book>();
 
-    public bool DeleteBook(int id)
-    {
-        var bookToRemove = _books.FirstOrDefault(b => b.BookId == id);
-        if (bookToRemove != null)
+        public List<Book> GetAllBooks() => _books;
+
+        public Book GetBookById(int id) => _books.FirstOrDefault(b => b.BookId == id);
+
+        public void AddBook(Book book)
         {
-            _books.Remove(bookToRemove);
-            return true;
+            // Generate a new BookId
+            book.BookId = _books.Count + 1;
+            _books.Add(book);
         }
-        return false;
+
+        public void UpdateBook(int id, Book book)
+        {
+            var existingBook = _books.FirstOrDefault(b => b.BookId == id);
+            if (existingBook != null)
+            {
+                existingBook.BookName = book.BookName;
+                existingBook.Category = book.Category;
+                existingBook.Price = book.Price;
+            }
+        }
+
+        public void DeleteBook(int id)
+        {
+            var bookToRemove = _books.FirstOrDefault(b => b.BookId == id);
+            if (bookToRemove != null)
+            {
+                _books.Remove(bookToRemove);
+            }
+        }
     }
-}
 }

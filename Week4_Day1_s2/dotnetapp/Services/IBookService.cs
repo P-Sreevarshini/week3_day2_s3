@@ -5,10 +5,10 @@ namespace dotnetapp.Services
 {
     public interface IBookService
     {
-        List<Book> GetBooks();
-        Book GetBook(int id);
-        Book SaveBook(Book book);
-        Book UpdateBook(int id, Book book);
-        bool DeleteBook(int id);
+        List<Book> GetAllBooks();
+        Book GetBookById(int id);
+        void AddBook(Book book);
+        void UpdateBook(int id, Book book);
+        void DeleteBook(int id);
     }
 }
