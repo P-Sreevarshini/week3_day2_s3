@@ -9,22 +9,22 @@ using dotnetapp.Models;
 namespace EventManagementAPITests
 {
     [TestFixture]
-public class dotnetappApplicationTests
-{
-    private HttpClient _httpClient;
-    private string _generatedToken;
-
-    [SetUp]
-    public void Setup()
+    public class dotnetappApplicationTests
     {
-        _httpClient = new HttpClient();
-        _httpClient.BaseAddress = new Uri("https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/"); 
-    }
+        private HttpClient _httpClient;
+        private string _generatedToken;
+
+        [SetUp]
+        public void Setup()
+        {
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri("https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/"); 
+        }
 
         [Test]
         public async Task GetAllEvents_ReturnsListOfEvents()
         {
-            var response = await _client.GetAsync("events");
+            var response = await _httpClient.GetAsync("/events");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
@@ -38,7 +38,7 @@ public class dotnetappApplicationTests
         public async Task GetEventById_ReturnsEvent()
         {
             var eventId = 1; // Update with an existing event ID
-            var response = await _client.GetAsync($"events/{eventId}");
+            var response = await _httpClient.GetAsync($"events/{eventId}");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
@@ -52,7 +52,7 @@ public class dotnetappApplicationTests
         public async Task GetEventById_InvalidId_ReturnsNotFound()
         {
             var eventId = 999; // Update with a non-existing event ID
-            var response = await _client.GetAsync($"events/{eventId}");
+            var response = await _httpClient.GetAsync($"events/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -70,7 +70,7 @@ public class dotnetappApplicationTests
             var json = JsonConvert.SerializeObject(newEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PostAsync("events", content);
+            var response = await _httpClient.PostAsync("events", content);
             response.EnsureSuccessStatusCode();
 
             var createdEvent = JsonConvert.DeserializeObject<Event>(await response.Content.ReadAsStringAsync());
@@ -94,7 +94,7 @@ public class dotnetappApplicationTests
             var json = JsonConvert.SerializeObject(updatedEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PutAsync($"events/{eventId}", content);
+            var response = await _httpClient.PutAsync($"events/{eventId}", content);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -113,7 +113,7 @@ public class dotnetappApplicationTests
             var json = JsonConvert.SerializeObject(updatedEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _client.PutAsync($"events/{eventId}", content);
+            var response = await _httpClient.PutAsync($"events/{eventId}", content);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -123,7 +123,7 @@ public class dotnetappApplicationTests
         {
             var eventId = 1; // Update with an existing event ID
 
-            var response = await _client.DeleteAsync($"events/{eventId}");
+            var response = await _httpClient.DeleteAsync($"events/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -133,7 +133,7 @@ public class dotnetappApplicationTests
         {
             var eventId = 999; // Update with a non-existing event ID
 
-            var response = await _client.DeleteAsync($"events/{eventId}");
+            var response = await _httpClient.DeleteAsync($"events/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
