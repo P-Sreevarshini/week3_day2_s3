@@ -39,6 +39,7 @@ namespace dotnetapp.Controllers
             return Ok(@event); // HTTP 200
         }
 
+
         [HttpPost]
         public ActionResult<Event> CreateEvent(Event newEvent)
         {
