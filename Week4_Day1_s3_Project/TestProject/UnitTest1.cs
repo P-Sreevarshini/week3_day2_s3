@@ -65,7 +65,6 @@ namespace EventManagementAPITests
         [Test]
         public async Task CreateEvent_ReturnsCreatedResponse()
         {
-            // Create new event
             var newEvent = new Event
             {
                 Name = "New Event",
@@ -85,7 +84,6 @@ namespace EventManagementAPITests
 
             Assert.IsNotNull(createdEvent);
             Assert.AreEqual(newEvent.Name, createdEvent.Name);
-            // Add more assertions as needed
         }
 
         [Test]
@@ -132,6 +130,7 @@ namespace EventManagementAPITests
             // Create a new event first
             var newEvent = new Event
             {
+                EventId = 555,
                 Name = "Event to Delete",
                 Date = DateTime.Now.AddDays(5),
                 Location = "Location to Delete"
