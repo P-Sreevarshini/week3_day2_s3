@@ -6,297 +6,163 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using dotnetapp.Models;
-using System.Reflection;
 
-
-namespace dotnetapp.Tests
+namespace EventManagementAPITests
 {
     [TestFixture]
-    public class BooksControllerTests
+    public class dotnetappApplicationTests
     {
-        private const string BookServiceName = "BookService";
-        private const string OrderServiceName = "OrderService";
-        private const string BookRepositoryName = "BookRepository";
-        private const string OrderRepositoryName = "OrderRepository";
         private HttpClient _httpClient;
-        private Assembly _assembly;
-
-        private Book _testBook;
-        private Order _testOrder;
-
 
         [SetUp]
-        public async Task Setup()
+        public void Setup()
         {
-            _assembly = Assembly.GetAssembly(typeof(dotnetapp.Services.IBookService));
             _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:8080"); // Base URL of your API
-
-            // Create a new test book before each test case
-            _testBook = await CreateTestBook();
-            _testOrder = await CreateTestOrder();
-        }
-
-        private async Task<Book> CreateTestBook()
-        {
-            var newBook = new Book
-            {
-                BookId = 0, // Let the server assign the ID
-                BookName = "Test Book",
-                Category = "Test Category",
-                Price = 10.99m
-            };
-
-            var json = JsonConvert.SerializeObject(newBook);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PostAsync("api/books", content);
-            response.EnsureSuccessStatusCode();
-
-            return JsonConvert.DeserializeObject<Book>(await response.Content.ReadAsStringAsync());
+            _httpClient.BaseAddress = new Uri("http://localhost:8080");
         }
 
         [Test]
-        public async Task GetAllBooks_ReturnsListOfBooks()
+        public async Task GetAllEvents_ReturnsListOfEvents()
         {
-            var response = await _httpClient.GetAsync("api/books");
+            // No need for explicit data creation
+            var response = await _httpClient.GetAsync("api/event");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var books = JsonConvert.DeserializeObject<Book[]>(content);
+            var events = JsonConvert.DeserializeObject<Event[]>(content);
 
-            Assert.IsNotNull(books);
-            Assert.IsTrue(books.Length > 0);
+            Assert.IsNotNull(events);
+            Assert.IsTrue(events.Length > 0);
         }
 
-        [Test]
-        public async Task GetBookById_ValidId_ReturnsBook()
+       [Test]
+        public async Task GetEventById_ReturnsEvent()
         {
-            var response = await _httpClient.GetAsync($"api/books/{_testBook.BookId}");
+            // No need for explicit data creation
+            var eventId = 3;
+            var response = await _httpClient.GetAsync($"api/event/{eventId}");
 
+            // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
-            var content = await response.Content.ReadAsStringAsync();
-            var book = JsonConvert.DeserializeObject<Book>(content);
+            response.EnsureSuccessStatusCode();
 
-            Assert.IsNotNull(book);
-            Assert.AreEqual(_testBook.BookId, book.BookId);
+            var content = await response.Content.ReadAsStringAsync();
+            var @event = JsonConvert.DeserializeObject<Event>(content);
+
+            Assert.IsNotNull(@event);
+            Assert.AreEqual(eventId, @event.EventId);
         }
 
+
         [Test]
-        public async Task GetBookById_InvalidId_ReturnsNotFound()
+        public async Task GetEventById_InvalidId_ReturnsNotFound()
         {
-            var response = await _httpClient.GetAsync($"api/books/999");
+            // No need for explicit data creation
+            var eventId = 999;
+            var response = await _httpClient.GetAsync($"api/event/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Test]
-        public async Task AddBook_ReturnsCreatedResponse()
+        public async Task CreateEvent_ReturnsCreatedResponse()
         {
-            var newBook = new Book
+            var newEvent = new Event
             {
-                BookId = 0, // Let the server assign the ID
-                BookName = "New Book",
-                Category = "Fiction",
-                Price = 19.99m
+                EventId = 555, // Explicit data creation
+                Name = "New Event",
+                Date = DateTime.Now.AddDays(30),
+                Location = "New Location"
             };
 
-            var json = JsonConvert.SerializeObject(newBook);
+            var json = JsonConvert.SerializeObject(newEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/books", content);
+            var response = await _httpClient.PostAsync("api/event", content);
             response.EnsureSuccessStatusCode();
 
-            var createdBook = JsonConvert.DeserializeObject<Book>(await response.Content.ReadAsStringAsync());
+            var createdEvent = JsonConvert.DeserializeObject<Event>(await response.Content.ReadAsStringAsync());
 
-            Assert.IsNotNull(createdBook);
-            Assert.AreEqual(newBook.BookName, createdBook.BookName);
+            Assert.IsNotNull(createdEvent);
+            Assert.AreEqual(newEvent.Name, createdEvent.Name);
         }
 
         [Test]
-        public async Task UpdateBook_ValidId_ReturnsNoContent()
+        public async Task UpdateEvent_ValidId_ReturnsNoContent()
         {
-            _testBook.BookName = "Updated Book";
+            // Explicit data creation
+            var eventId = 2;
+            var updatedEvent = new Event
+            {
+                Name = "Updated Event",
+                Date = DateTime.Now.AddDays(10),
+                Location = "Updated Location"
+            };
 
-            var json = JsonConvert.SerializeObject(_testBook);
+            var json = JsonConvert.SerializeObject(updatedEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"api/books/{_testBook.BookId}", content);
+            var response = await _httpClient.PutAsync($"api/event/{eventId}", content);
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Test]
-        public async Task DeleteBook_ValidId_ReturnsNoContent()
+        public async Task UpdateEvent_InvalidId_ReturnsNotFound()
         {
-            var response = await _httpClient.DeleteAsync($"api/books/{_testBook.BookId}");
-
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-        }
-          private async Task<Order> CreateTestOrder()
-        {
-            var newOrder = new Order
+            // No need for explicit data creation
+            var eventId = 999;
+            var updatedEvent = new Event
             {
-                OrderId = 0, // Let the server assign the ID
-                CustomerName = "Test Customer",
-                TotalAmount = 50.00m
+                Name = "Updated Event",
+                Date = DateTime.Now.AddDays(10),
+                Location = "Updated Location"
             };
 
-            var json = JsonConvert.SerializeObject(newOrder);
+            var json = JsonConvert.SerializeObject(updatedEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/orders", content);
-            response.EnsureSuccessStatusCode();
-
-            return JsonConvert.DeserializeObject<Order>(await response.Content.ReadAsStringAsync());
-        }
-
-        [Test]
-        public async Task GetAllOrders_ReturnsListOfOrders()
-        {
-            var response = await _httpClient.GetAsync("api/orders");
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-            var orders = JsonConvert.DeserializeObject<Order[]>(content);
-
-            Assert.IsNotNull(orders);
-            Assert.IsTrue(orders.Length > 0);
-        }
-
-        [Test]
-        public async Task GetOrderById_ValidId_ReturnsOrder()
-        {
-            var response = await _httpClient.GetAsync($"api/orders/{_testOrder.OrderId}");
-
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-
-            var content = await response.Content.ReadAsStringAsync();
-            var order = JsonConvert.DeserializeObject<Order>(content);
-
-            Assert.IsNotNull(order);
-            Assert.AreEqual(_testOrder.OrderId, order.OrderId);
-        }
-
-        [Test]
-        public async Task GetOrderById_InvalidId_ReturnsNotFound()
-        {
-            var response = await _httpClient.GetAsync($"api/orders/999");
+            var response = await _httpClient.PutAsync($"api/event/{eventId}", content);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Test]
-        public async Task AddOrder_ReturnsCreatedResponse()
+        public async Task DeleteEvent_ValidId_ReturnsNoContent()
         {
-            var newOrder = new Order
+            // Explicit data creation
+            var newEvent = new Event
             {
-                OrderId = 0, // Let the server assign the ID
-                CustomerName = "New Customer",
-                TotalAmount = 100.00m
+                EventId = 777,
+                Name = "Event to Delete",
+                Date = DateTime.Now.AddDays(5),
+                Location = "Location to Delete"
             };
 
-            var json = JsonConvert.SerializeObject(newOrder);
+            var json = JsonConvert.SerializeObject(newEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/orders", content);
-            response.EnsureSuccessStatusCode();
+            var createResponse = await _httpClient.PostAsync("api/event", content);
+            createResponse.EnsureSuccessStatusCode();
 
-            var createdOrder = JsonConvert.DeserializeObject<Order>(await response.Content.ReadAsStringAsync());
+            var createdEvent = JsonConvert.DeserializeObject<Event>(await createResponse.Content.ReadAsStringAsync());
+            var eventId = createdEvent.EventId;
 
-            Assert.IsNotNull(createdOrder);
-            Assert.AreEqual(newOrder.CustomerName, createdOrder.CustomerName);
-        }
-
-        [Test]
-        public async Task UpdateOrder_ValidId_ReturnsNoContent()
-        {
-            _testOrder.CustomerName = "Updated Customer";
-
-            var json = JsonConvert.SerializeObject(_testOrder);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var response = await _httpClient.PutAsync($"api/orders/{_testOrder.OrderId}", content);
+            var response = await _httpClient.DeleteAsync($"api/event/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         [Test]
-        public async Task DeleteOrder_ValidId_ReturnsNoContent()
+        public async Task DeleteEvent_InvalidId_ReturnsNotFound()
         {
-            var response = await _httpClient.DeleteAsync($"api/orders/{_testOrder.OrderId}");
+            // No need for explicit data creation
+            var eventId = 999;
 
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-        }
-        [Test]
-        public void BookService_InstanceNotNull()
-        {
-            AssertServiceInstanceNotNull(BookServiceName);
-        }
+            var response = await _httpClient.DeleteAsync($"api/event/{eventId}");
 
-        [Test]
-        public void OrderService_InstanceNotNull()
-        {
-            AssertServiceInstanceNotNull(OrderServiceName);
-        }
-
-        [Test]
-        public void BookRepository_InstanceNotNull()
-        {
-            AssertRepositoryInstanceNotNull(BookRepositoryName);
-        }
-
-        [Test]
-        public void OrderRepository_InstanceNotNull()
-        {
-            AssertRepositoryInstanceNotNull(OrderRepositoryName);
-        }
-
-        private void AssertServiceInstanceNotNull(string serviceName)
-        {
-            Type serviceType = _assembly.GetType($"dotnetapp.Services.{serviceName}");
-
-            if (serviceType == null)
-            {
-                Assert.Fail($"Service {serviceName} does not exist.");
-            }
-
-            object serviceInstance = Activator.CreateInstance(serviceType);
-            Assert.IsNotNull(serviceInstance);
-        }
-
-        private void AssertRepositoryInstanceNotNull(string repositoryName)
-        {
-            Type repositoryType = _assembly.GetType($"dotnetapp.Repositories.{repositoryName}");
-
-            if (repositoryType == null)
-            {
-                Assert.Fail($"Repository {repositoryName} does not exist.");
-            }
-
-            object repositoryInstance = Activator.CreateInstance(repositoryType);
-            Assert.IsNotNull(repositoryInstance);
-        }
-
-
-        [TearDown]
-        public async Task Cleanup()
-        {
-            // Delete the test book after each test case
-            if (_testBook != null)
-            {
-                var response = await _httpClient.DeleteAsync($"api/books/{_testBook.BookId}");
-                response.EnsureSuccessStatusCode();
-            }
-            if (_testOrder != null)
-            {
-                var response = await _httpClient.DeleteAsync($"api/orders/{_testOrder.OrderId}");
-                response.EnsureSuccessStatusCode();
-            }
-
-
-            _httpClient.Dispose();
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }
