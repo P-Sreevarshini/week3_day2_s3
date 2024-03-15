@@ -24,7 +24,8 @@ namespace EventManagementAPITests
         [Test]
         public async Task GetAllEvents_ReturnsListOfEvents()
         {
-            var response = await _httpClient.GetAsync("api/event"); // Corrected route
+            // No need for explicit data creation
+            var response = await _httpClient.GetAsync("api/event");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
@@ -37,11 +38,12 @@ namespace EventManagementAPITests
        [Test]
         public async Task GetEventById_ReturnsEvent()
         {
-            var eventId = 3; // Update with an existing event ID
-            var response = await _httpClient.GetAsync($"api/event/{eventId}"); // Corrected route
+            // No need for explicit data creation
+            var eventId = 3;
+            var response = await _httpClient.GetAsync($"api/event/{eventId}");
 
             // Assert
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode); // Added status code assertion
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
             response.EnsureSuccessStatusCode();
 
@@ -56,8 +58,9 @@ namespace EventManagementAPITests
         [Test]
         public async Task GetEventById_InvalidId_ReturnsNotFound()
         {
-            var eventId = 999; // Update with a non-existing event ID
-            var response = await _httpClient.GetAsync($"api/event/{eventId}"); // Corrected route
+            // No need for explicit data creation
+            var eventId = 999;
+            var response = await _httpClient.GetAsync($"api/event/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -67,6 +70,7 @@ namespace EventManagementAPITests
         {
             var newEvent = new Event
             {
+                EventId = 555, // Explicit data creation
                 Name = "New Event",
                 Date = DateTime.Now.AddDays(30),
                 Location = "New Location"
@@ -75,11 +79,9 @@ namespace EventManagementAPITests
             var json = JsonConvert.SerializeObject(newEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            // Post the new event
-            var response = await _httpClient.PostAsync("api/event", content); // Corrected route
+            var response = await _httpClient.PostAsync("api/event", content);
             response.EnsureSuccessStatusCode();
 
-            // Deserialize the created event
             var createdEvent = JsonConvert.DeserializeObject<Event>(await response.Content.ReadAsStringAsync());
 
             Assert.IsNotNull(createdEvent);
@@ -89,7 +91,8 @@ namespace EventManagementAPITests
         [Test]
         public async Task UpdateEvent_ValidId_ReturnsNoContent()
         {
-            var eventId = 2; // Update with an existing event ID
+            // Explicit data creation
+            var eventId = 2;
             var updatedEvent = new Event
             {
                 Name = "Updated Event",
@@ -100,7 +103,7 @@ namespace EventManagementAPITests
             var json = JsonConvert.SerializeObject(updatedEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"api/event/{eventId}", content); // Corrected route
+            var response = await _httpClient.PutAsync($"api/event/{eventId}", content);
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
@@ -108,7 +111,8 @@ namespace EventManagementAPITests
         [Test]
         public async Task UpdateEvent_InvalidId_ReturnsNotFound()
         {
-            var eventId = 999; // Update with a non-existing event ID
+            // No need for explicit data creation
+            var eventId = 999;
             var updatedEvent = new Event
             {
                 Name = "Updated Event",
@@ -119,7 +123,7 @@ namespace EventManagementAPITests
             var json = JsonConvert.SerializeObject(updatedEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"api/event/{eventId}", content); // Corrected route
+            var response = await _httpClient.PutAsync($"api/event/{eventId}", content);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -127,10 +131,10 @@ namespace EventManagementAPITests
         [Test]
         public async Task DeleteEvent_ValidId_ReturnsNoContent()
         {
-            // Create a new event first
+            // Explicit data creation
             var newEvent = new Event
             {
-                EventId = 555,
+                EventId = 777,
                 Name = "Event to Delete",
                 Date = DateTime.Now.AddDays(5),
                 Location = "Location to Delete"
@@ -138,15 +142,14 @@ namespace EventManagementAPITests
 
             var json = JsonConvert.SerializeObject(newEvent);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var createResponse = await _httpClient.PostAsync("api/event", content); // Corrected route
+
+            var createResponse = await _httpClient.PostAsync("api/event", content);
             createResponse.EnsureSuccessStatusCode();
 
-            // Get the ID of the created event
             var createdEvent = JsonConvert.DeserializeObject<Event>(await createResponse.Content.ReadAsStringAsync());
             var eventId = createdEvent.EventId;
 
-            // Delete the event
-            var response = await _httpClient.DeleteAsync($"api/event/{eventId}"); // Corrected route
+            var response = await _httpClient.DeleteAsync($"api/event/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
@@ -154,9 +157,10 @@ namespace EventManagementAPITests
         [Test]
         public async Task DeleteEvent_InvalidId_ReturnsNotFound()
         {
-            var eventId = 999; // Update with a non-existing event ID
+            // No need for explicit data creation
+            var eventId = 999;
 
-            var response = await _httpClient.DeleteAsync($"api/event/{eventId}"); // Corrected route
+            var response = await _httpClient.DeleteAsync($"api/event/{eventId}");
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
