@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 // Add services for repositories and services
 builder.Services.AddScoped<BookRepository>();
-builder.Services.AddScoped<OrderRepository>();
+// builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
 // builder.Services.AddScoped<IOrderService, OrderService>();
 
