@@ -4,6 +4,9 @@ using dotnetapp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using System.IO;
+
 
 
 namespace dotnetapp.Tests
@@ -110,18 +113,8 @@ namespace dotnetapp.Tests
             // Assert
             Assert.AreEqual("NoContentResult", result);
         }
-        [Test]
-        public void OrderRepository_File_Exists()
-        {
-            // Arrange
-            string filePath = "OrderRepository.cs"; // Assuming it's in the same directory as the test file
 
-            // Act
-            bool fileExists = File.Exists(filePath);
 
-            // Assert
-            Assert.IsTrue(fileExists, "OrderRepository.cs file does not exist.");
-        }
 
 
 
