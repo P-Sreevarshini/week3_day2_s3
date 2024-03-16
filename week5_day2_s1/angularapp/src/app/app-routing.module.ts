@@ -7,7 +7,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { LoginComponent } from './components/login/login.component';
 import { ErrorComponent } from './components/error/error.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { StudentComponent } from './components/student/student.component';
+import { StudentComponent } from './components/user/student.component';
 import { AddCourseComponent } from './components/add-course/add-course.component';
 import { ViewCourseComponent } from './components/view-course/view-course.component';
 import { AddEnquiryComponent } from './components/add-enquiry/add-enquiry.component';

@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
-import { StudentComponent } from './components/student/student.component';
+import { StudentComponent } from './components/user/student.component';
 import { ViewCourseComponent } from './components/view-course/view-course.component';
 import { AddEnquiryComponent } from './components/add-enquiry/add-enquiry.component';
 import { ViewEnquiryComponent } from './components/view-enquiry/view-enquiry.component';
