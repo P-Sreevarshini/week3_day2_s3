@@ -8,7 +8,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginModel login)
     {
-        if (login.Username == "admin" && login.Password == "password" || login.Username == "user" && login.Password == "password")
+        if (login.Username == "admin" && login.Password == "password")
         {
             return Ok(new { message = "Login successful" });
         }
