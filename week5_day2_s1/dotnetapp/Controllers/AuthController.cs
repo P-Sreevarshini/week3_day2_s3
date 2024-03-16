@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using dotnetapp.Models; // Add this line to import the namespace
 
 [Route("api/[controller]")]
 [ApiController]
@@ -7,21 +8,14 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginModel login)
     {
-        // Implement authentication logic here
-        if (login.Username == "admin" && login.Password == "password")
+        if (login.Username == "admin" && login.Password == "password" || login.Username == "user" && login.Password == "password")
         {
-            var token = "your-generated-token";
-            return Ok(new { token });
+            return Ok(new { message = "Login successful" });
         }
         else
         {
-            return Unauthorized();
+            return Unauthorized(new { message = "Invalid username or password" });
         }
     }
 }
 
-public class LoginModel
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
-}
