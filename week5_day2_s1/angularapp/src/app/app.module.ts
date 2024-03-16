@@ -16,6 +16,7 @@ import { AddEnquiryComponent } from './components/add-enquiry/add-enquiry.compon
 import { ViewEnquiryComponent } from './components/view-enquiry/view-enquiry.component';
 import { AddPaymentComponent } from './components/add-payment/add-payment.component';
 import { ViewPaymentComponent } from './components/view-payment/view-payment.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 // import { LoginComponent } from './login/login.component';
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ViewPaymentComponent } from './components/view-payment/view-payment.com
     AddEnquiryComponent,
     ViewEnquiryComponent,
     AddPaymentComponent,
-    ViewPaymentComponent
+    ViewPaymentComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
