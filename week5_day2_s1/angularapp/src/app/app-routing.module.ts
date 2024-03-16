@@ -6,9 +6,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  // { path: '', redirectTo: '/login', pathMatch: 'full' } // Default route to redirect to login page
-];
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] }
+  ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
