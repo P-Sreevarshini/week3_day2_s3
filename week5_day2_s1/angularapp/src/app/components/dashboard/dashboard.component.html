@@ -1,12 +1,5 @@
-<!-- dashboard.component.html -->
-
-<div *ngIf="isAdmin(); else notAdmin">
     <h1>Welcome to the Dashboard</h1>
-    <p>This is the dashboard content for admin users.</p>
+    <p>This is the dashboard content for authenticated users.</p>
   </div>
   
-  <ng-template #notAdmin>
-    <h1>Access Denied</h1>
-    <p>You do not have permission to access this page.</p>
-  </ng-template>
   

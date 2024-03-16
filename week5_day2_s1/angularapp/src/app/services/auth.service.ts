@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080//api/Auth'; // Replace with your backend API URL
+  private apiUrl = 'http://localhost:8080/api/Auth'; // Corrected API URL
 
   constructor(private http: HttpClient) {}
 
@@ -16,4 +16,9 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/login`, { username, password });
   }
 
+  isLoggedIn(): boolean {
+    // Implement your logic to check if user is logged in
+    // For now, returning true for demonstration purpose
+    return true;
+  }
 }
