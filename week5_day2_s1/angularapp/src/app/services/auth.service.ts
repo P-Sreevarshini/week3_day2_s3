@@ -8,12 +8,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/Auth'; // Corrected API URL
+  private apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io/api/Auth'; // Corrected API URL
 
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { username, password });
+    return this.http.post<any>(this.apiUrl, { username, password }); // Removed /login from the URL
   }
 
   isLoggedIn(): boolean {
