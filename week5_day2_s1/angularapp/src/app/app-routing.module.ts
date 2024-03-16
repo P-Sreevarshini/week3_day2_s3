@@ -1,42 +1,18 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-// import { AuthGuard } from './authguard/auth.guard';
-import { HomeComponent } from './components/home/home.component';
-import { AdminComponent } from './components/admin/admin.component';
-// import { OrganizerComponent } from './organizer/organizer.component';
+import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { ErrorComponent } from './components/error/error.component';
-import { RegistrationComponent } from './components/registration/registration.component';
-import { StudentComponent } from './components/user/student.component';
-import { AddCourseComponent } from './components/add-course/add-course.component';
-import { ViewCourseComponent } from './components/view-course/view-course.component';
-import { AddEnquiryComponent } from './components/add-enquiry/add-enquiry.component';
-import { ViewEnquiryComponent } from './components/view-enquiry/view-enquiry.component';
-import { AddPaymentComponent } from './components/add-payment/add-payment.component';
-import { ViewPaymentComponent } from './components/view-payment/view-payment.component';
+import { AuthGuard } from './components/authguard/auth.guard';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: RegistrationComponent },
-  { path: 'admin/dashboard', component: AdminComponent },
-  { path: 'student/dashboard', component: StudentComponent },
-  { path: 'course/add', component: AddCourseComponent },
-  { path: 'courses/view', component: ViewCourseComponent },
-  { path: 'enquiry/add', component: AddEnquiryComponent },
-  { path: 'enquiry/view', component: ViewEnquiryComponent },
-  { path: 'payment/make', component: AddPaymentComponent },
-  { path: 'payments/view', component: ViewPaymentComponent },
-  {
-    path: 'error',
-    component: ErrorComponent,
-    data: { message: 'Oops! Something went wrong.' },
-  },
-  { path: '**', redirectTo: '/error', pathMatch: 'full' }, // Handle all other routes and redirect to the error page
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  // Add more routes for other components
+  { path: '', redirectTo: '/login', pathMatch: 'full' } // Default route to redirect to login page
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

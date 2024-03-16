@@ -1,19 +1,21 @@
 // auth.guard.ts
+
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { JwtService } from 'src/app/services/jwt.service';
+import { CanActivate, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const userRole = this.jwtService.getUserRole(); // Implement this method in JwtService
-    return userRole === 'admin'; // Or whatever role should have access
+  constructor(private router: Router) { }
+
+  canActivate(): boolean {
+    if (localStorage.getItem('token')) {
+      return true;
+    } else {
+      this.router.navigate(['/login']);
+      return false;
+    }
   }
 }
