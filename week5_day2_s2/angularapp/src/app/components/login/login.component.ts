@@ -15,6 +15,11 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  ngOnInit(): void {
+    // Ensure token is destroyed when user navigates to login page
+    this.authService.logout();
+  }
+
   login(): void {
     this.authService.login(this.username, this.password).subscribe(
       response => {
