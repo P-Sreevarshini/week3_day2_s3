@@ -21,7 +21,7 @@ export class JwtService {
 
   // Function to remove JWT token from local storage
   destroyToken(): void {
-    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('jwtToken'); // Remove the JWT token from local storage
   }
 
   // Function to check if user is logged in
