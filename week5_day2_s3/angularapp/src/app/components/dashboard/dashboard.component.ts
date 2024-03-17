@@ -1,4 +1,7 @@
+// dashboard.component.ts
+
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +9,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  isAdmin: boolean = false;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
   }
 
 }
