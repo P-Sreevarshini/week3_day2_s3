@@ -27,9 +27,8 @@ export class AuthService {
       );
   }
 
-  isLoggedIn(): boolean {
-    // Implement your logic to check if user is logged in
-    // For now, returning false since no actual authentication logic is implemented
-    return false;
-  }
+  // isLoggedIn(): boolean {
+    
+  //   return true;
+  // }
 }
