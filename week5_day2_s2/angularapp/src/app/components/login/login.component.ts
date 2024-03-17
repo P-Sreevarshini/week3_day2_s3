@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    this.authService.logout();
     this.authService.login(this.username, this.password).subscribe(
       response => {
         this.router.navigate(['/dashboard']);

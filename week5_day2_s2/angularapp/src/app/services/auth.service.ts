@@ -77,7 +77,7 @@ export class AuthService {
 
   // Function to logout user and remove JWT token
   logout(): void {
-    this.jwtService.destroyToken();
+    this.jwtService.removeToken();
   }
 
   // Function to check if user is logged in

@@ -1,5 +1,3 @@
-// jwtservice.service.ts
-
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -20,12 +18,7 @@ export class JwtService {
   }
 
   // Function to remove JWT token from local storage
-  destroyToken(): void {
-    localStorage.removeItem('jwtToken'); // Remove the JWT token from local storage
-  }
-
-  // Function to check if user is logged in
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  removeToken(): void {
+    localStorage.removeItem('jwtToken');
   }
 }
