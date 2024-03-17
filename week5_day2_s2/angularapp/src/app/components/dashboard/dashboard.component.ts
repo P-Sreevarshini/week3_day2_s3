@@ -14,7 +14,6 @@ export class DashboardComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    // Check if the user is logged in as admin
     this.isAdmin = this.authService.isAdmin();
   }
 

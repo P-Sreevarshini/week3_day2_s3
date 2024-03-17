@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
     [HttpPost("api/login")]
     public IActionResult Login([FromBody] LoginModel login)
     {
-        if (login.Username == "admin" && login.Password == "password" || )
+        if (login.Username == "admin" && login.Password == "admin@123" || login.Username == "user" && login.Password == "user@123")
         {
             var token = GenerateJwtToken(login.Username);
             return Ok(new { token });
