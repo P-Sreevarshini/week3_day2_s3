@@ -77,13 +77,13 @@ export class AuthService {
 
   // Function to logout user and remove JWT token
   logout(): void {
-    this.jwtService.removeToken();
+    this.jwtService.destroyToken();
   }
 
   // Function to check if user is logged in
   isLoggedIn(): boolean {
-    // return this.jwtService.isLoggedIn();
-    return true;
+    return this.jwtService.isLoggedIn();
+    // return true;
   }
   isAdmin(): boolean {
     const token = this.jwtService.getToken();
