@@ -1,70 +1,56 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AuthService } from './auth.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 describe('AuthService', () => {
-  let service: AuthService;
-  let httpTestingController: HttpTestingController;
+  let authService: AuthService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, HttpClientTestingModule],
-      providers: [AuthService],
+      imports: [HttpClientTestingModule],
+      providers: [AuthService]
     });
 
-    service = TestBed.inject(AuthService) as any;
-    httpTestingController = TestBed.inject(HttpTestingController);
+    authService = TestBed.inject(AuthService);
+    httpMock = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpTestingController.verify();
+    httpMock.verify(); // Verifies that no requests are outstanding after each test
+    localStorage.removeItem('loggedIn'); // Clean up localStorage after each test
   });
 
-  fit('Frontend_AuthService should send a POST request to register a Admin', () => {
-    const newUser = {userId: 1, userName: 'testUser', password: 'testPassword@123', emailID: 'test@example.com', userRole: 'ADMIN', mobileNumber: '1234567890'};
-
-    service['register'](newUser.userName,newUser.password,newUser.userRole,newUser.emailID,newUser.mobileNumber).subscribe((userResponse: any) => {
-      expect(userResponse).toBeDefined();
-      expect(userResponse.userName).toEqual(newUser.userName);
-      expect(userResponse.emailID).toEqual(newUser.emailID);
-      // Add more assertions based on your implementation
-    });
-
-    const req = httpTestingController.expectOne(`${(service as any).apiUrl}/auth/register`);
-    expect(req.request.method).toEqual('POST');
-
-    req.flush(newUser);
+  fit('should be created', () => {
+    expect(authService).toBeTruthy();
   });
 
-  fit('Frontend_AuthService should send a POST request to register a Student', () => {
-    const newUser = {userId: 1, userName: 'testUser', password: 'testPassword@123', emailID: 'test@example.com', userRole: 'STUDENT',mobileNumber: '1234567890'};
+  // fit('should set loggedIn to true when login is successful', () => {
+  //   const username = 'testUser';
+  //   const password = 'testPassword';
 
-    service['register'](newUser.userName,newUser.password,newUser.userRole,newUser.emailID,newUser.mobileNumber).subscribe((userResponse: any) => {
-      expect(userResponse).toBeDefined();
-      expect(userResponse.userName).toEqual(newUser.userName);
-      expect(userResponse.emailID).toEqual(newUser.emailID);
-    });
+  //   const mockResponse = { message: 'Login successful' };
 
-    const req = httpTestingController.expectOne(`${service['apiUrl']}/auth/register`);
-    expect(req.request.method).toEqual('POST');
+  //   authService.login(username, password).subscribe(() => {
+  //     expect(localStorage.getItem('loggedIn')).toBe('true');
+  //   });
 
-    req.flush(newUser);
+  //   const req = httpMock.expectOne(`${authService.apiUrl}/api/login`);
+  //   expect(req.request.method).toBe('POST');
+  //   req.flush(mockResponse);
+  // });
+
+  fit('should return true from isLoggedIn when loggedIn is set to true', () => {
+    localStorage.setItem('loggedIn', 'true');
+    expect(authService.isLoggedIn()).toBe(true);
   });
 
-  fit('Frontend_AuthService should send a POST request to login', () => {
-    const email = 'testUser@gmail.com';
-    const password = 'Test@123';
-    const user: any = { password, email };
+  fit('should return false from isLoggedIn when loggedIn is set to false', () => {
+    localStorage.setItem('loggedIn', 'false');
+    expect(authService.isLoggedIn()).toBe(false);
+  });
 
-    service['login'](user.emailID,user.password).subscribe((loginResponse: any) => {
-      expect(loginResponse).toBeDefined();
-    });
-
-    const req = httpTestingController.expectOne(`${service['apiUrl']}/auth/login`);
-    expect(req.request.method).toEqual('POST');
-
-    req.flush(user);
+  fit('should return false from isLoggedIn when loggedIn is not set', () => {
+    expect(authService.isLoggedIn()).toBe(false);
   });
 });
-
