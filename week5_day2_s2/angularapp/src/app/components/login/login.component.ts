@@ -1,34 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { JwtService } from 'src/app/services/jwt.service';
+canActivate Method:
 
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
-})
-export class LoginComponent implements OnInit {
-  username: string;
-  password: string;
-
-  constructor(private authService: AuthService, private router: Router, private jwtService: JwtService) {}
-
-  ngOnInit(): void {
-    // Ensure token is destroyed when user navigates to login page
-    this.authService.logout();
-  }
-
-  login(): void {
-    this.authService.logout();
-    this.authService.login(this.username, this.password).subscribe(
-      response => {
-        this.router.navigate(['/dashboard']);
-      },
-      error => {
-        // Handle login error
-        console.error('Login failed:', error);
-      }
-    );
-  }
-}
+This method is required by the CanActivate interface.
+It checks if the user is logged in by calling the isLoggedIn() method of the AuthService.
+If the user is logged in (isLoggedIn() returns true), it allows access to the route by returning true.
+If the user is not logged in, it redirects the user to the login page ('/login') using the Router and returns false to prevent access to the route.
