@@ -1,9 +1,9 @@
+// auth.service.ts
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators'; // Import the map operator
-import { Router } from '@angular/router'; // Import Router
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,24 +11,19 @@ import { Router } from '@angular/router'; // Import Router
 export class AuthService {
   private apiUrl = 'https://8080-dfbbeddfccdbcfacbdcbaeadbebabcdebdca.premiumproject.examly.io';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
   login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/login`, { username, password })
-      .pipe(
-        map(response => {
-          // Check if login was successful
-          if (response && response.message === "Login successful") {
-            // Redirect to the dashboard component
-            this.router.navigate(['/dashboard']);
-          }
-          return response;
-        })
-      );
+    return this.http.post<any>(`${this.apiUrl}/api/login`, { username, password }).pipe(
+      tap(response => {
+        if (response && response.message === "Login successful") {
+          localStorage.setItem('loggedIn', 'true');
+        }
+      })
+    );
   }
 
-  // isLoggedIn(): boolean {
-    
-  //   return true;
-  // }
+  isLoggedIn(): boolean {
+    return localStorage.getItem('loggedIn') === 'true';
+  }
 }

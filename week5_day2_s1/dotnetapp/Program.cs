@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -33,8 +27,10 @@ app.UseHttpsRedirection();
 // Enable CORS
 app.UseCors("AllowOrigin");
 
+// Apply Authorization
 app.UseAuthorization();
 
+// Map Controllers
 app.MapControllers();
 
 app.Run();
