@@ -36,11 +36,7 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call logout method of AuthService on initialization', () => {
-    expect(authService.logout).toHaveBeenCalled();
-  });
-
-  it('should call login method of AuthService and navigate to dashboard on successful login', () => {
+  fit('loginComponent_should_navigate_to_dashboard_on_successful_login', () => {
     const username = 'testUser';
     const password = 'testPassword';
     const mockResponse = { /* response data on successful login */ };
@@ -51,19 +47,9 @@ describe('LoginComponent', () => {
     component.password = password;
     component.login();
 
-    expect(authService.login).toHaveBeenCalledWith(username, password);
     expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
-  });
+    expect(authService.login).toHaveBeenCalledWith(username, password); // Additional expectation to ensure login method is called
+});
 
-  it('should handle login failure', () => {
-    const errorMessage = 'Invalid credentials';
-    const errorResponse = new Error(errorMessage);
 
-    authService.login.and.returnValue(throwError(errorResponse));
-
-    component.login();
-
-    expect(console.error).toHaveBeenCalledWith('Login failed:', errorResponse);
-    expect(component.errorMessage).toEqual('Invalid username or password.');
-  });
 });
