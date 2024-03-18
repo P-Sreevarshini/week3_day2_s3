@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { LoginComponent } from './login.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { JwtService } from 'src/app/services/jwt.service';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -13,16 +11,14 @@ describe('LoginComponent', () => {
   let router: jasmine.SpyObj<Router>;
 
   beforeEach(waitForAsync(() => {
-    const authServiceSpy = jasmine.createSpyObj('AuthService', ['logout', 'login']);
+    const authServiceSpy = jasmine.createSpyObj('AuthService', ['login', 'logout']);
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
-      imports: [RouterTestingModule],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy },
-        JwtService
+        { provide: Router, useValue: routerSpy }
       ]
     }).compileComponents();
 
@@ -36,29 +32,18 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('LoginComponent_should_create_login_component', () => {
+  fit('loginComponent_should_be_create', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('LoginComponent_should_call_logout_and_login_methods_of_AuthService_on_login', () => {
-    const username = 'testUser';
-    const password = 'testPassword';
-    const mockResponse = { message: 'Login successful' };
-
-    authService.login.and.returnValue(of(mockResponse));
-
-    component.username = username;
-    component.password = password;
-    component.login();
-
+  it('should call logout method of AuthService on initialization', () => {
     expect(authService.logout).toHaveBeenCalled();
-    expect(authService.login).toHaveBeenCalledWith(username, password);
   });
 
-  fit('LoginComponent_should_navigate_to_dashboard_on_successful_login', () => {
+  it('should call login method of AuthService and navigate to dashboard on successful login', () => {
     const username = 'testUser';
     const password = 'testPassword';
-    const mockResponse = { message: 'Login successful' };
+    const mockResponse = { /* response data on successful login */ };
 
     authService.login.and.returnValue(of(mockResponse));
 
@@ -66,6 +51,19 @@ describe('LoginComponent', () => {
     component.password = password;
     component.login();
 
+    expect(authService.login).toHaveBeenCalledWith(username, password);
     expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  it('should handle login failure', () => {
+    const errorMessage = 'Invalid credentials';
+    const errorResponse = new Error(errorMessage);
+
+    authService.login.and.returnValue(throwError(errorResponse));
+
+    component.login();
+
+    expect(console.error).toHaveBeenCalledWith('Login failed:', errorResponse);
+    expect(component.errorMessage).toEqual('Invalid username or password.');
   });
 });

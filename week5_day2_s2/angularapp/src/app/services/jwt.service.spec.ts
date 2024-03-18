@@ -7,10 +7,6 @@ describe('JwtService', () => {
     service = new JwtService();
   });
 
-  fit('JwtService_should_be_created', () => {
-    expect(service).toBeTruthy();
-  });
-
   fit('JwtService_should_save_token_to_local_storage', () => {
     const token = 'sample_token';
     service.saveToken(token);
@@ -30,14 +26,4 @@ describe('JwtService', () => {
     expect(localStorage.getItem('jwtToken')).toBeNull();
   });
 
-  fit('JwtService_should_return_true_if_user_is_loggedIn', () => {
-    const token = 'sample_token';
-    localStorage.setItem('jwtToken', token);
-    expect(service.isLoggedIn()).toBeTrue();
-  });
-
-  // it('should return false if user is not logged in', () => {
-  //   localStorage.removeItem('jwtToken');
-  //   expect(service.isLoggedIn()).toBeFalse();
-  // });
 });

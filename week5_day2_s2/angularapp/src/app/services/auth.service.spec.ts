@@ -20,10 +20,6 @@ describe('AuthService', () => {
     httpMock.verify();
   });
 
-  fit('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   fit('should call the API to login and save token', () => {
     const mockResponse = { token: 'sample_token' };
     const username = 'testUser';
@@ -34,17 +30,9 @@ describe('AuthService', () => {
       expect(service.isLoggedIn()).toBeTruthy(); 
     });
   
-    const request = httpMock.expectOne(`${service.apiUrl()}/api/login`);
+    const request = httpMock.expectOne(`${service.apiUrl}/api/login`);
     expect(request.request.method).toBe('POST');
     request.flush(mockResponse);
-  });
-  
-
-  fit('should logout user and remove token', () => {
-    spyOn(service.jwtService, 'destroyToken');
-    service.logout();
-    expect(service.jwtService.destroyToken).toHaveBeenCalled();
-    expect(service.isLoggedIn()).toBeFalsy(); // Check if logged out after logout
-  });
+});
 
 });

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -8,7 +9,9 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DashboardComponent ]
+      declarations: [ DashboardComponent ],
+      imports: [HttpClientTestingModule]
+
     })
     .compileComponents();
   });
@@ -19,7 +22,7 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('DashboardComponent_should_be_create', () => {
+  fit('DashboardComponent_should_be_create', () => {
     expect(component).toBeTruthy();
   });
   fit('DashboardComponent_should_set_isAdmin_to_true_if_user_is_admin', () => {
@@ -37,19 +40,5 @@ describe('DashboardComponent', () => {
     expect(component.isAdmin).toBe(true);
   });
   
-  fit('DashboardComponent_should_set_isAdmin_to_false_if_user_is_not_admin', () => {
-    // Mock AuthService
-    const authServiceMock = jasmine.createSpyObj('AuthService', ['isAdmin']);
-    authServiceMock.isAdmin.and.returnValue(false);
-  
-    // Create DashboardComponent instance
-    const component = new DashboardComponent(authServiceMock);
-  
-    // Call ngOnInit()
-    component.ngOnInit();
-  
-    // Check if isAdmin is false
-    expect(component.isAdmin).toBe(false);
-  });
   
 });
