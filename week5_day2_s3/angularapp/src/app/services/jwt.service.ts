@@ -22,6 +22,6 @@ export class JwtService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getToken();
+    return !!this.getToken( );
   }
 }
