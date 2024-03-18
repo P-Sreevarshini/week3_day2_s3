@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { JwtService } from 'src/app/services/jwt.service';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +10,9 @@ import { JwtService } from 'src/app/services/jwt.service';
 export class LoginComponent implements OnInit {
   username: string;
   password: string;
+  errorMessage: string;
 
-  constructor(private authService: AuthService, private router: Router, private jwtService: JwtService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     // Ensure token is destroyed when user navigates to login page
@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.logout();
     this.authService.login(this.username, this.password).subscribe(
       response => {
         this.router.navigate(['/dashboard']);
@@ -28,6 +27,7 @@ export class LoginComponent implements OnInit {
       error => {
         // Handle login error
         console.error('Login failed:', error);
+        this.errorMessage = 'Invalid username or password.';
       }
     );
   }
