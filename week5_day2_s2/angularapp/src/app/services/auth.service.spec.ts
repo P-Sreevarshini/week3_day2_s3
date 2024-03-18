@@ -20,7 +20,7 @@ describe('AuthService', () => {
     httpMock.verify();
   });
 
-  fit('should call the API to login and save token', () => {
+  fit('AuthService_should_call_API_to_login_and_save_token', () => {
     const mockResponse = { token: 'sample_token' };
     const username = 'testUser';
     const password = 'testPassword';

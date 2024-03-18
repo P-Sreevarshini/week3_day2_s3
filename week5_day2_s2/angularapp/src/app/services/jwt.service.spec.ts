@@ -19,7 +19,7 @@ describe('JwtService', () => {
     expect(service.getToken()).toEqual(token);
   });
 
-  fit('JwtService_should_remove _token_from_local_storage', () => {
+  fit('JwtService_should_remove_token_from_local_storage', () => {
     const token = 'sample_token';
     localStorage.setItem('jwtToken', token);
     service.destroyToken();

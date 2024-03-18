@@ -36,7 +36,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('LoginComponent_should_create_login_component', () => {
+  fit('LoginComponent_should_be_created', () => {
     expect(component).toBeTruthy();
   });
 
