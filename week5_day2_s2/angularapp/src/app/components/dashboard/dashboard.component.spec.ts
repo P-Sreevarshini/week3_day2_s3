@@ -19,7 +19,37 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('DashboardComponent_should_be_create', () => {
     expect(component).toBeTruthy();
   });
+  fit('DashboardComponent_should_set_isAdmin_to_true_if_user_is_admin', () => {
+    // Mock AuthService
+    const authServiceMock = jasmine.createSpyObj('AuthService', ['isAdmin']);
+    authServiceMock.isAdmin.and.returnValue(true);
+  
+    // Create DashboardComponent instance
+    const component = new DashboardComponent(authServiceMock);
+  
+    // Call ngOnInit()
+    component.ngOnInit();
+  
+    // Check if isAdmin is true
+    expect(component.isAdmin).toBe(true);
+  });
+  
+  fit('DashboardComponent_should_set_isAdmin_to_false_if_user_is_not_admin', () => {
+    // Mock AuthService
+    const authServiceMock = jasmine.createSpyObj('AuthService', ['isAdmin']);
+    authServiceMock.isAdmin.and.returnValue(false);
+  
+    // Create DashboardComponent instance
+    const component = new DashboardComponent(authServiceMock);
+  
+    // Call ngOnInit()
+    component.ngOnInit();
+  
+    // Check if isAdmin is false
+    expect(component.isAdmin).toBe(false);
+  });
+  
 });

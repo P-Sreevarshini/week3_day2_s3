@@ -38,34 +38,7 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-//   fit('Login_component_should_call_authService.login_navigate to dashboard on successful login', () => {
-//     const username = 'testUser';
-//     const password = 'testPassword';
-//     const mockResponse = { message: 'Login successful' };
-
-//     authService.login.and.returnValue(of(mockResponse));
-
-//     component.username = username;
-//     component.password = password;
-//     component.login();
-
-//     expect(authService.login).toHaveBeenCalledWith(username, password);
-//     expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
-//   });
-
-//   fit('should handle login failure', () => {
-//     const errorMessage = 'Invalid credentials';
-//     const errorResponse = new Error(errorMessage);
-
-//     authService.login.and.returnValue(throwError(errorResponse));
-
-//     component.login();
-
-//     expect(authService.login).toHaveBeenCalled();
-//     expect(console.error).toHaveBeenCalledWith('Login failed:', errorResponse);
-//   });
-
-fit('should call authService.login on login attempt', () => {
+fit('Login_component_should_call_authService.login_on_login_attempt', () => {
     const username = 'testUser';
     const password = 'testPassword';
     const mockResponse = { message: 'Login successful' };
@@ -79,7 +52,7 @@ fit('should call authService.login on login attempt', () => {
     expect(authService.login).toHaveBeenCalledWith(username, password);
   });
   
-  fit('should navigate to dashboard on successful login', () => {
+  fit('Login_component_should_navigate_to_dashboard_on_successful_login', () => {
     const username = 'testUser';
     const password = 'testPassword';
     const mockResponse = { message: 'Login successful' };
@@ -92,7 +65,6 @@ fit('should call authService.login on login attempt', () => {
   
     expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
   });
-  
 
 
 });

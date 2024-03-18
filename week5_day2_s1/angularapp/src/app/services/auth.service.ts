@@ -22,7 +22,6 @@ export class AuthService {
       })
     );
   }
-
   isLoggedIn(): boolean {
     return localStorage.getItem('loggedIn') === 'true';
   }
