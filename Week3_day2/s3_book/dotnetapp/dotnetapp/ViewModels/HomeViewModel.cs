@@ -1,4 +1,5 @@
-// HomeViewModel.cs
+using System.Collections.Generic;
+using dotnetapp.Models;
 namespace dotnetapp.ViewModels
 {
     public class HomeViewModel 

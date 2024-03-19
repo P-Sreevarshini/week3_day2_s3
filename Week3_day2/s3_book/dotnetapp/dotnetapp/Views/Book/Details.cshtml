@@ -4,7 +4,6 @@
 <p>Author: @Model.Author</p>
 <p>Price: @Model.Price</p>
 <p>Description: @Model.Description</p>
-<img src="@Model.CoverImage" alt="@Model.Title" />
 
 <form asp-controller="Book" asp-action="AddToCart" method="post">
     <input type="hidden" name="bookId" value="@Model.Id" />

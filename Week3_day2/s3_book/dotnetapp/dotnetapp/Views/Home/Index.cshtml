@@ -1,8 +1,8 @@
-﻿@model List<Book>
+﻿@model dotnetapp.ViewModels.HomeViewModel
 
 <h1>Featured Books</h1>
 
-@foreach (var book in Model)
+@foreach (var book in Model.FeaturedBooks)
 {
     <div>
         <h2>@book.Title</h2>

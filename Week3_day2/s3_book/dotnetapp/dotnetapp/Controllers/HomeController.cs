@@ -1,7 +1,7 @@
-// HomeController.cs
 using Microsoft.AspNetCore.Mvc;
-using dotnetapp.Data; // Add the correct namespace for ApplicationDbContext
-
+using dotnetapp.Data;
+using dotnetapp.ViewModels;
+using System.Linq;
 
 public class HomeController : Controller
 {
@@ -14,7 +14,10 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var books = _context.Books.ToList();
-        return View(books);
+        var model = new HomeViewModel
+        {
+            FeaturedBooks = _context.Books.ToList()
+        };
+        return View(model);
     }
 }
