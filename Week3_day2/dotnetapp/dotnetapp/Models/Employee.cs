@@ -23,6 +23,7 @@ namespace dotnetapp.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [MinAge(25, ErrorMessage = "Employee must be 25 years or older")]
         public DateTime Dob { get; set; }
+        [Required(ErrorMessage = "Department is required")]
 
         public string Dept { get; set; }
     }

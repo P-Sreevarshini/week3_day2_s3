@@ -20,21 +20,38 @@ public class EmployeeController : Controller
     }
 
     // POST: Employee/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(Employee employee)
-    {
-        if (ModelState.IsValid)
-        {
-            // Validation passed, add the employee to the database
-            _context.Employees.Add(employee);
-            _context.SaveChanges();
-            return RedirectToAction("Success");
-        }
+    // [HttpPost]
+    // [ValidateAntiForgeryToken]
+    // public IActionResult Create(Employee employee)
+    // {
+    //     if (ModelState.IsValid)
+    //     {
+    //         // Validation passed, add the employee to the database
+    //         _context.Employees.Add(employee);
+    //         _context.SaveChanges();
+    //         return RedirectToAction("Success");
+    //     }
 
-        // Validation failed, return to the Create view with error messages
-        return View(employee);
+    //     // Validation failed, return to the Create view with error messages
+    //     return View(employee);
+    // }
+    // POST: Employee/Create
+[HttpPost]
+[ValidateAntiForgeryToken]
+public IActionResult Create(Employee employee)
+{
+    if (ModelState.IsValid)
+    {
+        // Validation passed, add the employee to the database
+        _context.Employees.Add(employee);
+        _context.SaveChanges();
+        return RedirectToAction("Success");
     }
+
+    // Validation failed, return to the Create view with error messages
+    return View(employee);
+}
+
 
     public IActionResult Success()
     {
