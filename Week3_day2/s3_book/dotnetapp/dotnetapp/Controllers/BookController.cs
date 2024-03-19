@@ -17,6 +17,17 @@ namespace dotnetapp.Controllers
             _context = context;
         }
 
+        // public IActionResult Details(int bookId)
+        // {
+        //     var book = _context.Books.FirstOrDefault(b => b.Id == bookId);
+
+        //     if (book == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     Console.WriteLine(book.Title);
+        //     return View(book);
+        // }
         public IActionResult Details(int bookId)
         {
             var book = _context.Books.FirstOrDefault(b => b.Id == bookId);
@@ -25,9 +36,10 @@ namespace dotnetapp.Controllers
             {
                 return NotFound();
             }
-            Console.WriteLine(book.Title);
-            return View(book);
+
+            return View(book); // Return the Book model to the view
         }
+
 
 
 
