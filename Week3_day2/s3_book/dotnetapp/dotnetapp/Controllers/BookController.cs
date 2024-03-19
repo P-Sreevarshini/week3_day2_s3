@@ -57,9 +57,7 @@ namespace dotnetapp.Controllers
                 });
             }
 
-            // return RedirectToAction("Cart");
-                return RedirectToAction("Cart", "ShoppingCart"); // Redirect to the shopping cart page
-
+            return RedirectToAction("Cart");
         }
 
 
