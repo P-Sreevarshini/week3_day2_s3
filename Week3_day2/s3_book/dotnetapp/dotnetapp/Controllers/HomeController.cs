@@ -1,8 +1,5 @@
-﻿using dotnetapp.Data;
+// HomeController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using dotnetapp.Models;
 
 public class HomeController : Controller
 {
@@ -15,7 +12,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var featuredBooks = _context.Books.ToList();
-        return View(featuredBooks);
+        var books = _context.Books.ToList();
+        return View(books);
     }
 }

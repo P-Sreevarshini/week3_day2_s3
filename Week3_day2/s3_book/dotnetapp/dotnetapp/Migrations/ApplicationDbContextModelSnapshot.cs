@@ -57,38 +57,6 @@ namespace dotnetapp.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Books");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Author = "Author 1",
-                            CategoryId = 1,
-                            CoverImage = "book1.jpg",
-                            Description = "Description for Book 1",
-                            Price = 19.99m,
-                            Title = "Book Title 1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Author = "Author 2",
-                            CategoryId = 2,
-                            CoverImage = "book2.jpg",
-                            Description = "Description for Book 2",
-                            Price = 24.99m,
-                            Title = "Book Title 2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Author = "Author 3",
-                            CategoryId = 3,
-                            CoverImage = "book3.jpg",
-                            Description = "Description for Book 3",
-                            Price = 29.99m,
-                            Title = "Book Title 3"
-                        });
                 });
 
             modelBuilder.Entity("dotnetapp.Models.Category", b =>
@@ -106,23 +74,6 @@ namespace dotnetapp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Fiction"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Non-Fiction"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Science"
-                        });
                 });
 
             modelBuilder.Entity("dotnetapp.Models.ShoppingCart", b =>
@@ -161,21 +112,7 @@ namespace dotnetapp.Migrations
 
                     b.HasIndex("ShoppingCartId");
 
-                    b.ToTable("ShoppingCartItem");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BookId = 1,
-                            Quantity = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BookId = 2,
-                            Quantity = 2
-                        });
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("dotnetapp.Models.Book", b =>

@@ -1,12 +1,12 @@
-﻿@model List<dotnetapp.Models.Book>
+﻿@model List<Book>
 
 <h1>Featured Books</h1>
+
 @foreach (var book in Model)
 {
-    <div class="book">
+    <div>
         <h2>@book.Title</h2>
         <p>Author: @book.Author</p>
         <p>Price: @book.Price</p>
-        <a asp-controller="Book" asp-action="Details" asp-route-bookId="@book.Id">Details</a>
     </div>
 }

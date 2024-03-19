@@ -1,34 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using dotnetapp.Data;
-using dotnetapp.ViewModels;
-using Microsoft.EntityFrameworkCore;
+// ShoppingCartController.cs
+using Microsoft.AspNetCore.Mvc;
 
-namespace dotnetapp.Controllers
+public class ShoppingCartController : Controller
 {
+    private readonly ApplicationDbContext _context;
 
-    public class ShoppingCartController : Controller
+    public ShoppingCartController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public ShoppingCartController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        public IActionResult Index()
-        {
-            var shoppingCart = _context.ShoppingCarts
-            .Include(cart => cart.Items)
-            .ThenInclude(item => item.Book);
-            //.FirstOrDefault(cart => cart.SessionId == sessionId);
-
-            var model = new ShoppingCartViewModel
-            {
-                //Cart = shoppingCart
-            };
-            return View(model);
-        }
-
-        // Add actions for adding, updating, and removing items from the cart
+    public IActionResult Index()
+    {
+        // Add logic to get shopping cart items
+        return View();
     }
 }

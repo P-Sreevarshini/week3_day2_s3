@@ -1,66 +1,52 @@
-﻿using dotnetapp.Data;
-using dotnetapp.Models;
+// BookController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
-namespace dotnetapp.Controllers
+public class BookController : Controller
 {
-    public class BookController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public BookController(ApplicationDbContext context)
     {
-        private static ShoppingCart shoppingCart = new ShoppingCart();
+        _context = context;
+    }
 
-        private readonly ApplicationDbContext _context;
-
-        public BookController(ApplicationDbContext context)
+    public IActionResult Details(int bookId)
+    {
+        var book = _context.Books.FirstOrDefault(b => b.Id == bookId);
+        if (book == null)
         {
-            _context = context;
+            return NotFound();
         }
+        return View(book);
+    }
 
-        public IActionResult Details(int bookId)
+    [HttpPost]
+    public IActionResult AddToCart(int bookId, int quantity)
+    {
+        // Add logic to add book to shopping cart
+        return RedirectToAction("Index", "ShoppingCart");
+    }
+}
+
+// CategoryController.cs
+using Microsoft.AspNetCore.Mvc;
+
+public class CategoryController : Controller
+{
+    private readonly ApplicationDbContext _context;
+
+    public CategoryController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public IActionResult Index(int categoryId)
+    {
+        var category = _context.Categories.Include(c => c.Books).FirstOrDefault(c => c.Id == categoryId);
+        if (category == null)
         {
-            var book = _context.Books.FirstOrDefault(b => b.Id == bookId);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-            Console.WriteLine(book.Title);
-            return View(book);
+            return NotFound();
         }
-
-
-
-        [HttpPost]
-        public IActionResult AddToCart(int bookId, int quantity)
-        {
-            Console.WriteLine(bookId);
-            var book = _context.Books.FirstOrDefault(b => b.Id == bookId);
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            // Check if the book is already in the cart, and update the quantity if it is
-            var existingItem = shoppingCart.Items.FirstOrDefault(item => item.BookId == bookId);
-            if (existingItem != null)
-            {
-                existingItem.Quantity += quantity;
-            }
-            else
-            {
-                shoppingCart.Items.Add(new ShoppingCartItem
-                {
-                    BookId = bookId,
-                    Quantity = quantity
-                });
-            }
-
-            return RedirectToAction("Cart");
-        }
-
-
-        // Implement methods for getting/creating the shopping cart and other actions as needed
+        return View(category);
     }
 }
