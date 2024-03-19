@@ -19,44 +19,21 @@ public class EmployeeController : Controller
         return View();
     }
 
-    // POST: Employee/Create
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
-    // public IActionResult Create(Employee employee)
-    // {
-    //     if (ModelState.IsValid)
-    //     {
-    //         // Validation passed, add the employee to the database
-    //         _context.Employees.Add(employee);
-    //         _context.SaveChanges();
-    //         return RedirectToAction("Success");
-    //     }
-
-    //     // Validation failed, return to the Create view with error messages
-    //     return View(employee);
-    // }
-    // POST: Employee/Create
-[HttpPost]
-[ValidateAntiForgeryToken]
-public IActionResult Create(Employee employee)
-{
-    if (ModelState.IsValid)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(Employee employee)
     {
-        // Validation passed, add the employee to the database
-        _context.Employees.Add(employee);
-        _context.SaveChanges();
-        return RedirectToAction("Success");
+        if (ModelState.IsValid)
+        {
+            _context.Employees.Add(employee);
+            _context.SaveChanges();
+            return RedirectToAction("Success");
+        }
+
+        return View(employee);
     }
-
-    // Validation failed, return to the Create view with error messages
-    return View(employee);
-}
-
-
     public IActionResult Success()
     {
        return View();
     }
-
-    // ... (other controller actions for Edit, Delete, Index, etc.)
 }
