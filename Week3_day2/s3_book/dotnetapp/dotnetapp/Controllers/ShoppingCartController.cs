@@ -24,10 +24,11 @@ namespace dotnetapp.Controllers
 
             var model = new ShoppingCartViewModel
             {
-                // Cart = shoppingCart
+                //Cart = shoppingCart
             };
             return View(model);
         }
 
+        // Add actions for adding, updating, and removing items from the cart
     }
 }

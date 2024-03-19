@@ -17,17 +17,6 @@ namespace dotnetapp.Controllers
             _context = context;
         }
 
-        // public IActionResult Details(int bookId)
-        // {
-        //     var book = _context.Books.FirstOrDefault(b => b.Id == bookId);
-
-        //     if (book == null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     Console.WriteLine(book.Title);
-        //     return View(book);
-        // }
         public IActionResult Details(int bookId)
         {
             var book = _context.Books.FirstOrDefault(b => b.Id == bookId);
@@ -36,10 +25,9 @@ namespace dotnetapp.Controllers
             {
                 return NotFound();
             }
-
-            return View(book); // Return the Book model to the view
+            Console.WriteLine(book.Title);
+            return View(book);
         }
-
 
 
 
@@ -69,7 +57,9 @@ namespace dotnetapp.Controllers
                 });
             }
 
-            return RedirectToAction("Cart");
+            // return RedirectToAction("Cart");
+                return RedirectToAction("Cart", "ShoppingCart"); // Redirect to the shopping cart page
+
         }
 
 
