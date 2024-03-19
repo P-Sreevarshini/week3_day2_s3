@@ -1,5 +1,6 @@
 // BookController.cs
 using Microsoft.AspNetCore.Mvc;
+using dotnetapp.Data; // Add the correct namespace for ApplicationDbContext
 
 public class BookController : Controller
 {
@@ -28,25 +29,3 @@ public class BookController : Controller
     }
 }
 
-// CategoryController.cs
-using Microsoft.AspNetCore.Mvc;
-
-public class CategoryController : Controller
-{
-    private readonly ApplicationDbContext _context;
-
-    public CategoryController(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
-    public IActionResult Index(int categoryId)
-    {
-        var category = _context.Categories.Include(c => c.Books).FirstOrDefault(c => c.Id == categoryId);
-        if (category == null)
-        {
-            return NotFound();
-        }
-        return View(category);
-    }
-}

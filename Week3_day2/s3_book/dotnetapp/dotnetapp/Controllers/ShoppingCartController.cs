@@ -1,5 +1,7 @@
 // ShoppingCartController.cs
 using Microsoft.AspNetCore.Mvc;
+using dotnetapp.Data; // Add the correct namespace for ApplicationDbContext
+
 
 public class ShoppingCartController : Controller
 {
