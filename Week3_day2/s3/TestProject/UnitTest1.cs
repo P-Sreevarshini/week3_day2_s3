@@ -211,8 +211,62 @@ namespace dotnetapp.Tests
                 Assert.Contains(expectedErrorMessage, errorMessages);
             }
         }
+        [Test]
+        public void Employee_Property_MinAge_Validation()
+        {
+            var employeeData = new Dictionary<string, object>
+            {
+                { "Name", "John Doe" },
+                { "Email", "john@example.com" },
+                { "Salary", 1500 },
+                { "Dob", DateTime.Now.AddYears(-24).AddDays(1) }, // Adjusted to ensure below minimum age
+                { "Dept", "HR" }
+            };
+            var employee = CreatePlayerFromDictionary(employeeData);
+            string expectedErrorMessage = "Employee must be 25 years or older";
+            var context = new ValidationContext(employee, null, null);
+            var results = new List<ValidationResult>();
 
+            bool isValid = Validator.TryValidateObject(employee, context, results);
+
+            if (expectedErrorMessage == null)
+            {
+                Assert.IsTrue(isValid);
+            }
+            
+        }
         
+       
+        private Employee CreateEmployeeFromDictionary(Dictionary<string, object> data)
+        {
+            var employee = new Employee();
+            foreach (var kvp in data)
+            {
+                var propertyInfo = typeof(Employee).GetProperty(kvp.Key);
+                if (propertyInfo != null)
+                {
+                    if (propertyInfo.PropertyType == typeof(decimal) && kvp.Value is int intValue)
+                    {
+                        propertyInfo.SetValue(employee, (decimal)intValue);
+                    }
+                    else
+                    {
+                        propertyInfo.SetValue(employee, kvp.Value);
+                    }
+                }
+            }
+            return employee;
+        }
+        [Test]
+        public void Employee_Properties_Have_UniqueEmailAttribute()
+        {
+            Type employeeType = typeof(Employee);
+            PropertyInfo emailProperty = employeeType.GetProperty("Email");
+
+            var uniqueEmailAttribute = emailProperty.GetCustomAttribute<UniqueEmailAttribute>();
+
+            Assert.IsNotNull(uniqueEmailAttribute, "UniqueEmail attribute should be applied to the Email property");
+        }
 
     }
 }
